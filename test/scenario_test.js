@@ -1,0 +1,133 @@
+const assert = require('chai').assert;
+const Scenario = require('../src/scenario.js');
+const sinon = require('sinon');
+
+describe('Scenario', function () {
+    const scenario = new Scenario();
+
+    before(function () {
+        scenario.$ = sinon.stub();
+        scenario.$ = scenario.$.returns(scenario.$);
+        scenario.$.delay = sinon.stub().returnsThis();
+        scenario.$.animate = sinon.stub().returnsThis();
+        scenario.$.append = sinon.stub().returnsThis();
+        scenario.$.click = sinon.stub().returnsThis();
+    });
+
+    describe('#load()', function () {
+        it('should get content with $ as yaml and set an object', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                ['- abc', '- def', '- ghi'].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url);
+
+            // assert
+            assert.deepEqual(
+                scenario.sentences,
+                ['abc', 'def', 'ghi']
+            );
+        });
+    });
+
+    describe('#init()', function () {
+        it('should reset pos', function () {
+            // arrange
+            scenario.pos = 20;
+
+            // act
+            scenario.init();
+
+            // assert
+            assert.equal(scenario.pos, 0);
+        });
+        it('should bind click on next button', function () {
+            // arrange
+            let nextButtonMock = {
+                click: sinon.spy()
+            };
+            scenario.$.withArgs(scenario.config.ui.next).returns(nextButtonMock);
+
+            // act
+            scenario.init();
+
+            // assert
+            assert(nextButtonMock.click.called)
+        });
+    });
+
+    describe('#display()', function () {
+        it('should display all letters in the sentence', function () {
+            // arrange
+            let bStub = {
+                delay: sinon.stub().returnsThis(),
+                animate: sinon.stub().returnsThis(),
+            }
+            let cStub = {
+                delay: sinon.stub().returnsThis(),
+                animate: sinon.stub().returnsThis(),
+            }
+            scenario.$.withArgs('<span>b</span>').returns(bStub);
+            scenario.$.withArgs('<span>c</span>').returns(cStub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(scenario.config.target).returns(displayMock);
+            scenario.sentences = [
+                'a',
+                'bc',
+                'def'
+            ];
+
+            // act
+            scenario.display(1);
+
+            // assert
+            assert(displayMock.append.withArgs(bStub));
+            assert(displayMock.append.withArgs(cStub));
+
+        });
+    });
+
+    describe('#flush()', function () {
+        it('should flush display', function () {
+            // arrange
+            let displayMock = {
+                text: sinon.spy()
+            }
+            scenario.$.withArgs(scenario.config.target).returns(displayMock);
+
+            // act
+            scenario.flush();
+
+            // assert
+            assert(displayMock.text.withArgs(''));
+        });
+    });
+
+    describe('#appendLetterElement()', function () {
+        it('should append one letter to display', function () {
+            // arrange
+            let letterStub = {
+                delay: sinon.stub().returnsThis(),
+                animate: sinon.stub().returnsThis(),
+            }
+            scenario.$.withArgs('<span>s</span>').returns(letterStub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(scenario.config.target).returns(displayMock)
+            let letter = 's';
+
+            // act
+            scenario.appendLetterElement('s', 10);
+
+            // assert
+            assert(displayMock.append.withArgs(letterStub));
+        });
+    });
+});
