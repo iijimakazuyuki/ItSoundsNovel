@@ -87,8 +87,8 @@ describe('Scenario', function () {
             scenario.display(1);
 
             // assert
-            assert(displayMock.append.withArgs(bStub));
-            assert(displayMock.append.withArgs(cStub));
+            assert(displayMock.append.withArgs(bStub).called);
+            assert(displayMock.append.withArgs(cStub).called);
 
         });
     });
@@ -105,7 +105,7 @@ describe('Scenario', function () {
             scenario.flush();
 
             // assert
-            assert(displayMock.text.withArgs(''));
+            assert(displayMock.text.withArgs('').called);
         });
     });
 
@@ -127,7 +127,7 @@ describe('Scenario', function () {
             scenario.appendLetterElement('s', 10);
 
             // assert
-            assert(displayMock.append.withArgs(letterStub));
+            assert(displayMock.append.withArgs(letterStub).called);
         });
     });
 });
