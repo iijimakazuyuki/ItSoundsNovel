@@ -19,7 +19,20 @@ describe('Scenario', function () {
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
-                ['- abc', '- def', '- ghi'].join('\n')
+                [
+                    '- abc',
+                    '- def',
+                    '- ghi',
+                    '- 1',
+                    '- message: jkl',
+                    '- config:',
+                    '    delay: 10',
+                    '    duration: 100',
+                    '- message: mno',
+                    '  config:',
+                    '    delay: 10',
+                    '    duration: 100',
+                ].join('\n')
             );
             let url = '';
 
@@ -28,8 +41,54 @@ describe('Scenario', function () {
 
             // assert
             assert.deepEqual(
-                scenario.sentences,
-                ['abc', 'def', 'ghi']
+                scenario.directions,
+                [
+                    { message: 'abc' },
+                    { message: 'def' },
+                    { message: 'ghi' },
+                    { message: 1 },
+                    { message: 'jkl' },
+                    { config: { delay: 10, duration: 100 } },
+                    { message: 'mno', config: { delay: 10, duration: 100 } },
+                ]
+            );
+        });
+        it('should get content with $ as yaml and set an object', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- abc',
+                    '- def',
+                    '- ghi',
+                    '- 1',
+                    '- message: jkl',
+                    '- config:',
+                    '    delay: 10',
+                    '    duration: 100',
+                    '- message: mno',
+                    '  config:',
+                    '    delay: 10',
+                    '    duration: 100',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    { message: 'abc' },
+                    { message: 'def' },
+                    { message: 'ghi' },
+                    { message: 1 },
+                    { message: 'jkl' },
+                    { config: { delay: 10, duration: 100 } },
+                    { message: 'mno', config: { delay: 10, duration: 100 } },
+                ]
             );
         });
     });
@@ -77,10 +136,10 @@ describe('Scenario', function () {
                 append: sinon.spy()
             };
             scenario.$.withArgs(scenario.config.target).returns(displayMock);
-            scenario.sentences = [
-                'a',
-                'bc',
-                'def'
+            scenario.directions = [
+                { message: 'a' },
+                { message: 'bc' },
+                { message: 'def' },
             ];
 
             // act

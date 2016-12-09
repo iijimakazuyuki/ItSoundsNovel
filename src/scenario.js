@@ -15,6 +15,22 @@ class DisplayConfig {
         this.delay = config.delay;
         this.duration = config.duration;
     }
+    update(config) {
+        if (config.target) this.target = config.target;
+        if (config.ui) this.ui = config.ui;
+        if (config.delay) this.delay = config.delay;
+        if (config.duration) this.duration = config.duration;
+    }
+    copy() {
+        return new DisplayConfig({
+            target: this.target,
+            ui: {
+                next: this.ui.next,
+            },
+            delay: this.delay,
+            duration: this.duration,
+        });
+    }
 }
 
 /**
@@ -30,6 +46,20 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
 });
 
 /**
+ * A direction of a scenario.
+ */
+class Direction {
+    constructor(direction) {
+        if (typeof direction === 'string' || typeof direction === 'number') {
+            this.message = direction;
+            return;
+        }
+        if (direction.message) this.message = direction.message;
+        if (direction.config) this.config = direction.config;
+    }
+}
+
+/**
  * Scenario for a sound novel.
  */
 class Scenario {
@@ -40,15 +70,15 @@ class Scenario {
         this.pos = 0;
 
         /**
-         * The sentences of the loading scenario.
-         * @type {string[]}
+         * The directions of the loading scenario.
+         * @type {Direction[]}
          */
-        this.sentences = [];
+        this.directions = [];
 
         /**
          * The display configuration of the loading scenario.
          */
-        this.config = DEFAULT_DISPLAY_CONFIG;
+        this.config = DEFAULT_DISPLAY_CONFIG.copy();
 
         /**
          * JQuery.
@@ -64,7 +94,9 @@ class Scenario {
         this.$.get({
             url: url,
             success: data => {
-                this.sentences = yaml.safeLoad(data);
+                this.directions = yaml
+                    .safeLoad(data)
+                    .map(direction => new Direction(direction));
                 this.init();
             },
             dataType: 'text',
@@ -88,8 +120,23 @@ class Scenario {
      * @param {number} n Position of the sentence.
      */
     display(n) {
-        let sentence = this.sentences[n].split('');
-        sentence.forEach((v, i) => this.appendLetterElement(v, i));
+        let direction = this.directions[n];
+        if (!direction.message) {
+            this.config.update(direction.config);
+            this.display(++this.pos);
+            return;
+        }
+        let sentence = direction.message.split('');
+        let config;
+        if (direction.config) {
+            config = this.config.copy();
+            config.update(direction.config);
+        } else {
+            config = this.config;
+        }
+        sentence.forEach(
+            (v, i) => this.appendLetterElement(v, i, config)
+        );
     }
 
     /**
@@ -103,17 +150,18 @@ class Scenario {
      * Display one letter in the sentence.
      * @param {string} letter The letter in the sentence.
      * @param {number} index The index of the letter in the sentence.
+     * @param {DisplayConfig} config The display configuration.
      */
-    appendLetterElement(letter, index) {
+    appendLetterElement(letter, index, config = this.config) {
         let elementLetter = this.$('<span>' + letter + '</span>')
-            .delay(index * this.config.delay)
+            .delay(index * config.delay)
             .animate({
                 opacity: 'toggle',
             }, {
-                duration: this.config.duration,
+                duration: config.duration,
                 start: () => elementLetter.css('display', 'inline'),
             });
-        this.$(this.config.target).append(elementLetter);
+        this.$(config.target).append(elementLetter);
     }
 }
 
