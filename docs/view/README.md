@@ -9,3 +9,6 @@ How to make HTML using it-sounds-novel
 
 [Put a next button](put_a_next_button.md)
 --------------------------------------------------------------------------------
+
+[Put a background window](put_a_background_window.md)
+--------------------------------------------------------------------------------

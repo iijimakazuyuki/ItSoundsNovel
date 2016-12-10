@@ -14,6 +14,7 @@ class DisplayConfig {
         if (config.delay) this.message.delay = config.delay;
         if (config.duration) this.message.duration = config.duration;
         if (config.message) this.message = config.message;
+        if (config.background) this.background = config.background;
         if (config.ui) this.ui = config.ui;
     }
     update(config) {
@@ -27,6 +28,7 @@ class DisplayConfig {
                 this.message.duration = config.message.duration;
             }
         }
+        if (config.background) this.background = config.background;
         if (config.ui) this.ui = config.ui;
     }
     copy() {
@@ -35,6 +37,11 @@ class DisplayConfig {
                 target: this.message.target,
                 delay: this.message.delay,
                 duration: this.message.duration,
+            },
+            background: {
+                target: this.background.target,
+                delay: this.background.delay,
+                duration: this.background.duration,
             },
             ui: {
                 next: this.ui.next,
@@ -52,6 +59,10 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
         delay: 50,
         duration: 500,
     },
+    background: {
+        target: '#backgroundWindow',
+        duration: 1000,
+    },
     ui: {
         next: '#nextButton',
     },
@@ -67,6 +78,7 @@ class Direction {
             return;
         }
         if (direction.message) this.message = direction.message;
+        if (direction.background) this.background = direction.background;
         if (direction.config) this.config = new DisplayConfig(direction.config);
         if (direction.sound) {
             if (typeof direction.sound === 'string') {
@@ -140,6 +152,11 @@ class Scenario {
      */
     display(n) {
         let direction = this.directions[n];
+        if (direction.background) {
+            this.displayBackground(direction.background.image);
+            this.display(++this.pos);
+            return;
+        }
         if (direction.sound) {
             this.play(direction.sound);
             this.display(++this.pos);
@@ -161,6 +178,28 @@ class Scenario {
         sentence.forEach(
             (v, i) => this.appendLetterElement(v, i, config)
         );
+    }
+
+    /**
+     * Display a background image.
+     * @param {string} url The url of the background image.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    displayBackground(url, config = this.config) {
+        let previousImage = $(config.background.target + ' .backgroundImage');
+        let image = this.$('<img>', {
+            src: url,
+            class: 'backgroundImage',
+        }).css({
+            display: 'none',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: -1,
+        }).fadeIn(config.background.duration, () => {
+            previousImage.remove();
+        });
+        this.$(config.background.target).append(image);
     }
 
     /**
