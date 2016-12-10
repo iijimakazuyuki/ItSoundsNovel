@@ -2,20 +2,21 @@ const assert = require('chai').assert;
 const Scenario = require('../src/scenario.js');
 const sinon = require('sinon');
 
-describe('Scenario', function () {
+describe('Scenario', function() {
     const scenario = new Scenario();
 
-    before(function () {
+    before(function() {
         scenario.$ = sinon.stub();
         scenario.$ = scenario.$.returns(scenario.$);
         scenario.$.delay = sinon.stub().returnsThis();
         scenario.$.animate = sinon.stub().returnsThis();
         scenario.$.append = sinon.stub().returnsThis();
         scenario.$.click = sinon.stub().returnsThis();
+        scenario.$.css = sinon.stub().returnsThis();
     });
 
-    describe('#load()', function () {
-        it('should get content with $ as yaml and set an object', function () {
+    describe('#load()', function() {
+        it('should get content with $ as yaml and set an object', function() {
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -55,8 +56,8 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#init()', function () {
-        it('should reset pos', function () {
+    describe('#init()', function() {
+        it('should reset pos', function() {
             // arrange
             scenario.pos = 20;
 
@@ -66,7 +67,7 @@ describe('Scenario', function () {
             // assert
             assert.equal(scenario.pos, 0);
         });
-        it('should bind click on next button', function () {
+        it('should bind click on next button', function() {
             // arrange
             let nextButtonMock = {
                 click: sinon.spy()
@@ -81,14 +82,16 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#display()', function () {
-        it('should display all letters in the sentence', function () {
+    describe('#display()', function() {
+        it('should display all letters in the sentence', function() {
             // arrange
             let bStub = {
+                css: sinon.stub().returnsThis(),
                 delay: sinon.stub().returnsThis(),
                 animate: sinon.stub().returnsThis(),
             }
             let cStub = {
+                css: sinon.stub().returnsThis(),
                 delay: sinon.stub().returnsThis(),
                 animate: sinon.stub().returnsThis(),
             }
@@ -114,8 +117,8 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#flush()', function () {
-        it('should flush display', function () {
+    describe('#flush()', function() {
+        it('should flush display', function() {
             // arrange
             let displayMock = {
                 text: sinon.spy()
@@ -130,10 +133,11 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#appendLetterElement()', function () {
-        it('should append one letter to display', function () {
+    describe('#appendLetterElement()', function() {
+        it('should append one letter to display', function() {
             // arrange
             let letterStub = {
+                css: sinon.stub().returnsThis(),
                 delay: sinon.stub().returnsThis(),
                 animate: sinon.stub().returnsThis(),
             }
@@ -151,8 +155,8 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#play()', function () {
-        it('should create an audio element', function () {
+    describe('#play()', function() {
+        it('should create an audio element', function() {
             // arrange
             scenario.$[0] = {
                 play: sinon.spy(),
