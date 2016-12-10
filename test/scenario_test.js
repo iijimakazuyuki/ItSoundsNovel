@@ -142,7 +142,6 @@ describe('Scenario', function () {
                 append: sinon.spy()
             };
             scenario.$.withArgs(scenario.config.target).returns(displayMock)
-            let letter = 's';
 
             // act
             scenario.appendLetterElement('s', 10);
