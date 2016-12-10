@@ -189,4 +189,23 @@ describe('Scenario', function () {
             assert(displayMock.append.withArgs(letterStub).called);
         });
     });
+
+    describe('#play()', function () {
+        it('should create an audio element', function () {
+            // arrange
+            scenario.$[0] = {
+                play: sinon.spy(),
+            };
+
+            // act
+            scenario.play(['sound.ogg', 'sound.mp3']);
+
+            // assert
+            assert(scenario.$.withArgs('<audio>').called);
+            assert(scenario.$.withArgs('<source>', { src: 'sound.ogg' }).called);
+            assert(scenario.$.withArgs('<source>', { src: 'sound.mp3' }).called);
+            assert(scenario.$.append.withArgs().called);
+            assert(scenario.$[0].play.called);
+        });
+    });
 });

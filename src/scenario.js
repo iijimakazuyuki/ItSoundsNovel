@@ -56,6 +56,13 @@ class Direction {
         }
         if (direction.message) this.message = direction.message;
         if (direction.config) this.config = direction.config;
+        if (direction.sound) {
+            if (typeof direction.sound === 'string') {
+                this.sound = [direction.sound];
+            } else {
+                this.sound = direction.sound;
+            }
+        }
     }
 }
 
@@ -121,6 +128,11 @@ class Scenario {
      */
     display(n) {
         let direction = this.directions[n];
+        if (direction.sound) {
+            this.play(direction.sound);
+            this.display(++this.pos);
+            return;
+        }
         if (!direction.message) {
             this.config.update(direction.config);
             this.display(++this.pos);
@@ -162,6 +174,22 @@ class Scenario {
                 start: () => elementLetter.css('display', 'inline'),
             });
         this.$(config.target).append(elementLetter);
+    }
+
+    /**
+     * Play a sound.
+     * @param {string[]} urls The urls of the sound
+     */
+    play(urls) {
+        let audio = this.$('<audio>');
+
+        let sources = urls.map(url =>
+            this.$('<source>', {
+                src: url,
+            })
+        );
+        audio.append(sources);
+        audio[0].play();
     }
 }
 
