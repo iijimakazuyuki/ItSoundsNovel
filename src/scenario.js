@@ -166,12 +166,17 @@ class Scenario {
      */
     appendLetterElement(letter, index, config = this.config) {
         let elementLetter = this.$('<span>' + letter + '</span>')
+            .css({
+                display: 'none',
+            })
             .delay(index * config.delay)
             .animate({
                 opacity: 'toggle',
             }, {
                 duration: config.duration,
-                start: () => elementLetter.css('display', 'inline'),
+                start: () => {
+                    elementLetter.css('display', 'inline');
+                },
             });
         this.$(config.target).append(elementLetter);
     }
