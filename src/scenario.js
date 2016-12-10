@@ -10,25 +10,35 @@ const $ = require('jquery');
  */
 class DisplayConfig {
     constructor(config) {
-        this.target = config.target;
-        this.ui = config.ui;
-        this.delay = config.delay;
-        this.duration = config.duration;
+        this.message = {};
+        if (config.delay) this.message.delay = config.delay;
+        if (config.duration) this.message.duration = config.duration;
+        if (config.message) this.message = config.message;
+        if (config.ui) this.ui = config.ui;
     }
     update(config) {
-        if (config.target) this.target = config.target;
+        if (config.delay) this.message.delay = config.delay;
+        if (config.duration) this.message.duration = config.duration;
+        if (config.message) {
+            if (config.message.delay) {
+                this.message.delay = config.message.delay;
+            }
+            if (config.message.duration) {
+                this.message.duration = config.message.duration;
+            }
+        }
         if (config.ui) this.ui = config.ui;
-        if (config.delay) this.delay = config.delay;
-        if (config.duration) this.duration = config.duration;
     }
     copy() {
         return new DisplayConfig({
-            target: this.target,
+            message: {
+                target: this.message.target,
+                delay: this.message.delay,
+                duration: this.message.duration,
+            },
             ui: {
                 next: this.ui.next,
             },
-            delay: this.delay,
-            duration: this.duration,
         });
     }
 }
@@ -37,12 +47,14 @@ class DisplayConfig {
  * Default display configuration.
  */
 const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
-    target: '#messageWindow',
+    message: {
+        target: '#messageWindow',
+        delay: 50,
+        duration: 500,
+    },
     ui: {
         next: '#nextButton',
     },
-    delay: 50,
-    duration: 500,
 });
 
 /**
@@ -55,7 +67,7 @@ class Direction {
             return;
         }
         if (direction.message) this.message = direction.message;
-        if (direction.config) this.config = direction.config;
+        if (direction.config) this.config = new DisplayConfig(direction.config);
         if (direction.sound) {
             if (typeof direction.sound === 'string') {
                 this.sound = [direction.sound];
@@ -155,7 +167,7 @@ class Scenario {
      * Flush the displayed sentence.
      */
     flush() {
-        this.$(this.config.target).text('');
+        this.$(this.config.message.target).text('');
     }
 
     /**
@@ -169,16 +181,16 @@ class Scenario {
             .css({
                 display: 'none',
             })
-            .delay(index * config.delay)
+            .delay(index * config.message.delay)
             .animate({
                 opacity: 'toggle',
             }, {
-                duration: config.duration,
+                duration: config.message.duration,
                 start: () => {
                     elementLetter.css('display', 'inline');
                 },
             });
-        this.$(config.target).append(elementLetter);
+        this.$(config.message.target).append(elementLetter);
     }
 
     /**
