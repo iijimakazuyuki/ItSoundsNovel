@@ -29,6 +29,10 @@ describe('Scenario', function () {
                     '- config:',
                     '    delay: 10',
                     '    duration: 100',
+                    '- config:',
+                    '    message:',
+                    '      delay: 10',
+                    '      duration: 100',
                     '- message: mno',
                     '  config:',
                     '    delay: 10',
@@ -49,8 +53,16 @@ describe('Scenario', function () {
                     { message: 'ghi' },
                     { message: 1 },
                     { message: 'jkl' },
-                    { config: { delay: 10, duration: 100 } },
-                    { message: 'mno', config: { delay: 10, duration: 100 } },
+                    {
+                        config: { message: { delay: 10, duration: 100 } }
+                    },
+                    {
+                        config: { message: { delay: 10, duration: 100 } }
+                    },
+                    {
+                        message: 'mno',
+                        config: { message: { delay: 10, duration: 100 } }
+                    },
                 ]
             );
         });
@@ -100,7 +112,7 @@ describe('Scenario', function () {
             let displayMock = {
                 append: sinon.spy()
             };
-            scenario.$.withArgs(scenario.config.target).returns(displayMock);
+            scenario.$.withArgs(scenario.config.message.target).returns(displayMock);
             scenario.directions = [
                 { message: 'a' },
                 { message: 'bc' },
@@ -123,7 +135,7 @@ describe('Scenario', function () {
             let displayMock = {
                 text: sinon.spy()
             }
-            scenario.$.withArgs(scenario.config.target).returns(displayMock);
+            scenario.$.withArgs(scenario.config.message.target).returns(displayMock);
 
             // act
             scenario.flush();
@@ -145,7 +157,7 @@ describe('Scenario', function () {
             let displayMock = {
                 append: sinon.spy()
             };
-            scenario.$.withArgs(scenario.config.target).returns(displayMock)
+            scenario.$.withArgs(scenario.config.message.target).returns(displayMock)
 
             // act
             scenario.appendLetterElement('s', 10);

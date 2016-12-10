@@ -342,6 +342,93 @@ describe('ItSoundsNovel View', function () {
         })
     });
 
+    describe('Display a background image', function () {
+
+        /**
+         * The path to the tested view.
+         */
+        const PATH = 'display_a_background_image.html';
+
+        /**
+         * The first sentence in the sequence.
+         */
+        const FIRST_SENTENCE = "I am a cat. I don't have my name yet.";
+
+        /**
+         * The second sentence in the sequence.
+         */
+        const SECOND_SENTENCE = "I don't know where I was born.";
+
+        /**
+         * The timeout for displaying the background image.
+         */
+        const TIMEOUT_FOR_DISPLAYING_IMAGE = 1000;
+
+        /**
+         * The timeout for displaying the first sentence.
+         * The last letter of the sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] *  36 + 500 [ms] = 2300 [ms] < 5000 [ms] (= timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
+
+        /**
+         * @param browserDriverName {string} The browser name ofWebDriver.
+         * @returns {Thenable} The WebDriver test sequence.
+         */
+        const TEST_SEQUENCE_OF = browserDriverName => {
+            let driver = browserDrivers.get(browserDriverName);
+            return driver.get(BASE_URL + PATH)
+                .then(() =>
+                    driver.findElement({ className: 'backgroundImage' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementIsVisible(element),
+                        TIMEOUT_FOR_DISPLAYING_IMAGE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIRST_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ className: 'backgroundImage' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementIsVisible(element),
+                        TIMEOUT_FOR_DISPLAYING_IMAGE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                );
+        }
+
+        it('should be performed in Firefox', function () {
+            return TEST_SEQUENCE_OF('firefox');
+        });
+        it('should be performed in Chrome', function () {
+            return TEST_SEQUENCE_OF('chrome');
+        })
+        it('should be performed in IE', function () {
+            return TEST_SEQUENCE_OF('ie');
+        })
+        it('should be performed in Edge', function () {
+            return TEST_SEQUENCE_OF('MicrosoftEdge');
+        })
+    });
+
     after(function () {
         let stopAppServer = new Promise(resolve => {
             appServer.close(resolve);

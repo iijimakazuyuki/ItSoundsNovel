@@ -10,25 +10,42 @@ const $ = require('jquery');
  */
 class DisplayConfig {
     constructor(config) {
-        this.target = config.target;
-        this.ui = config.ui;
-        this.delay = config.delay;
-        this.duration = config.duration;
+        this.message = {};
+        if (config.delay) this.message.delay = config.delay;
+        if (config.duration) this.message.duration = config.duration;
+        if (config.message) this.message = config.message;
+        if (config.background) this.background = config.background;
+        if (config.ui) this.ui = config.ui;
     }
     update(config) {
-        if (config.target) this.target = config.target;
+        if (config.delay) this.message.delay = config.delay;
+        if (config.duration) this.message.duration = config.duration;
+        if (config.message) {
+            if (config.message.delay) {
+                this.message.delay = config.message.delay;
+            }
+            if (config.message.duration) {
+                this.message.duration = config.message.duration;
+            }
+        }
+        if (config.background) this.background = config.background;
         if (config.ui) this.ui = config.ui;
-        if (config.delay) this.delay = config.delay;
-        if (config.duration) this.duration = config.duration;
     }
     copy() {
         return new DisplayConfig({
-            target: this.target,
+            message: {
+                target: this.message.target,
+                delay: this.message.delay,
+                duration: this.message.duration,
+            },
+            background: {
+                target: this.background.target,
+                delay: this.background.delay,
+                duration: this.background.duration,
+            },
             ui: {
                 next: this.ui.next,
             },
-            delay: this.delay,
-            duration: this.duration,
         });
     }
 }
@@ -37,12 +54,18 @@ class DisplayConfig {
  * Default display configuration.
  */
 const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
-    target: '#messageWindow',
+    message: {
+        target: '#messageWindow',
+        delay: 50,
+        duration: 500,
+    },
+    background: {
+        target: '#backgroundWindow',
+        duration: 1000,
+    },
     ui: {
         next: '#nextButton',
     },
-    delay: 50,
-    duration: 500,
 });
 
 /**
@@ -55,7 +78,8 @@ class Direction {
             return;
         }
         if (direction.message) this.message = direction.message;
-        if (direction.config) this.config = direction.config;
+        if (direction.background) this.background = direction.background;
+        if (direction.config) this.config = new DisplayConfig(direction.config);
         if (direction.sound) {
             if (typeof direction.sound === 'string') {
                 this.sound = [direction.sound];
@@ -128,6 +152,11 @@ class Scenario {
      */
     display(n) {
         let direction = this.directions[n];
+        if (direction.background) {
+            this.displayBackground(direction.background.image);
+            this.display(++this.pos);
+            return;
+        }
         if (direction.sound) {
             this.play(direction.sound);
             this.display(++this.pos);
@@ -152,10 +181,32 @@ class Scenario {
     }
 
     /**
+     * Display a background image.
+     * @param {string} url The url of the background image.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    displayBackground(url, config = this.config) {
+        let previousImage = $(config.background.target + ' .backgroundImage');
+        let image = this.$('<img>', {
+            src: url,
+            class: 'backgroundImage',
+        }).css({
+            display: 'none',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: -1,
+        }).fadeIn(config.background.duration, () => {
+            previousImage.remove();
+        });
+        this.$(config.background.target).append(image);
+    }
+
+    /**
      * Flush the displayed sentence.
      */
     flush() {
-        this.$(this.config.target).text('');
+        this.$(this.config.message.target).text('');
     }
 
     /**
@@ -169,16 +220,16 @@ class Scenario {
             .css({
                 display: 'none',
             })
-            .delay(index * config.delay)
+            .delay(index * config.message.delay)
             .animate({
                 opacity: 'toggle',
             }, {
-                duration: config.duration,
+                duration: config.message.duration,
                 start: () => {
                     elementLetter.css('display', 'inline');
                 },
             });
-        this.$(config.target).append(elementLetter);
+        this.$(config.message.target).append(elementLetter);
     }
 
     /**
