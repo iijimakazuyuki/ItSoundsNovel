@@ -6,3 +6,6 @@ How to write scenarios
 
 [Change the display speed](change_the_display_speed.md)
 --------------------------------------------------------------------------------
+
+[Play sounds](play_sounds.md)
+--------------------------------------------------------------------------------
