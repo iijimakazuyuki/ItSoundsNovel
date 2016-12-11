@@ -1,0 +1,11 @@
+- bgm: bgm/bgm_1.mp3
+  loop:
+    head: 9.6
+- I am a cat. I don't have my name yet.
+- bgm:
+  - bgm/bgm_2.mp3
+  - bgm/bgm_2.ogg
+  loop: none
+- I don't know where I was born.
+- bgm: stop
+- I only remember that I was meowing in dim and wet place.
