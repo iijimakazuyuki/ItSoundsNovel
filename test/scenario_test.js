@@ -185,9 +185,18 @@ describe('Scenario', function () {
     describe('#play()', function () {
         it('should create an audio element', function () {
             // arrange
-            scenario.$[0] = {
+            let audioStub = {
+                append: sinon.spy(),
+            };
+            audioStub[0] = {
                 play: sinon.spy(),
             };
+            scenario.$.withArgs('<audio>').returns(audioStub);
+            scenario.$.withArgs('<audio>');
+            let oggStub = sinon.stub();
+            scenario.$.withArgs('<source>', { src: 'sound.ogg' }).returns(oggStub);
+            let mp3Stub = sinon.stub();
+            scenario.$.withArgs('<source>', { src: 'sound.mp3' }).returns(mp3Stub);
 
             // act
             scenario.play(['sound.ogg', 'sound.mp3']);
@@ -196,8 +205,11 @@ describe('Scenario', function () {
             assert(scenario.$.withArgs('<audio>').called);
             assert(scenario.$.withArgs('<source>', { src: 'sound.ogg' }).called);
             assert(scenario.$.withArgs('<source>', { src: 'sound.mp3' }).called);
-            assert(scenario.$.append.withArgs().called);
-            assert(scenario.$[0].play.called);
+            assert(audioStub.append.withArgs([
+                oggStub,
+                mp3Stub,
+            ]).called);
+            assert(audioStub[0].play.called);
         });
     });
 });
