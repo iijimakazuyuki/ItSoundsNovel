@@ -186,7 +186,8 @@ class Scenario {
      * @param {DisplayConfig} config The display configuration.
      */
     displayBackground(url, config = this.config) {
-        let previousImage = $(config.background.target + ' .backgroundImage');
+        let previousImage =
+            this.$(config.background.target + ' .backgroundImage');
         let image = this.$('<img>', {
             src: url,
             class: 'backgroundImage',
