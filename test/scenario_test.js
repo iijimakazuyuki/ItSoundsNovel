@@ -41,6 +41,8 @@ describe('Scenario', function () {
                     '- sound:',
                     '  - abc.mp3',
                     '  - def.mp3',
+                    '- background:',
+                    '    image: abc.jpg',
                 ].join('\n')
             );
             let url = '';
@@ -77,6 +79,11 @@ describe('Scenario', function () {
                             'abc.mp3',
                             'def.mp3',
                         ],
+                    },
+                    {
+                        background: {
+                            image: 'abc.jpg',
+                        },
                     },
                 ]
             );
@@ -141,6 +148,30 @@ describe('Scenario', function () {
             assert(displayMock.append.withArgs(bStub).called);
             assert(displayMock.append.withArgs(cStub).called);
 
+        });
+    });
+
+    describe('#displayBackground()', function () {
+        it('should display an image in the background window', function () {
+            // arrange
+            let stub = {
+                css: sinon.stub().returnsThis(),
+                fadeIn: sinon.stub().returnsThis(),
+            };
+            let backgroundMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs('<img>', {
+                src: 'a.jpg',
+                class: 'backgroundImage',
+            }).returns(stub);
+            scenario.$.withArgs(scenario.config.background.target).returns(backgroundMock);
+
+            // act
+            scenario.displayBackground('a.jpg');
+
+            // assert
+            assert(backgroundMock.append.withArgs(stub).called);
         });
     });
 
