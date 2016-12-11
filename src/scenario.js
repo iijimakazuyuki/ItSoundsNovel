@@ -51,6 +51,43 @@ class DisplayConfig {
 }
 
 /**
+ * Default loop configuration.
+ */
+const DEFAULT_LOOP_CONFIG = {
+    loop: true,
+    head: 0,
+};
+
+/**
+ * Configuration for background music.
+ */
+class BgmConfig {
+    constructor(bgm, loopConfig = DEFAULT_LOOP_CONFIG) {
+        /**
+         * The urls of background music.
+         * @type{string[]}
+         */
+        this.sources = [];
+
+        if (bgm === 'stop') {
+            this.control = 'stop';
+        } else if (typeof bgm === 'string') {
+            this.sources = [bgm];
+        } else {
+            this.sources = bgm;
+        }
+        if (typeof loopConfig === 'string') {
+            this.loop = loopConfig !== 'none';
+        } else {
+            if (loopConfig.loop) this.loop = loopConfig.loop;
+            else this.loop = DEFAULT_LOOP_CONFIG.loop;
+            if (loopConfig.head) this.head = loopConfig.head;
+            else this.head = DEFAULT_LOOP_CONFIG.head;
+        }
+    }
+}
+
+/**
  * Default display configuration.
  */
 const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
@@ -86,6 +123,10 @@ class Direction {
             } else {
                 this.sound = direction.sound;
             }
+        }
+        if (direction.bgm) {
+            if (direction.loop) this.bgm = new BgmConfig(direction.bgm, direction.loop)
+            else this.bgm = new BgmConfig(direction.bgm);
         }
     }
 }
@@ -152,6 +193,11 @@ class Scenario {
      */
     display(n) {
         let direction = this.directions[n];
+        if (direction.bgm) {
+            this.playBgm(direction.bgm);
+            this.display(++this.pos);
+            return;
+        }
         if (direction.background) {
             this.displayBackground(direction.background.image);
             this.display(++this.pos);
@@ -231,6 +277,36 @@ class Scenario {
                 },
             });
         this.$(config.message.target).append(elementLetter);
+    }
+
+    /**
+     * Play background music.
+     * @param {BgmConfig} config The background music configuration.
+     */
+    playBgm(config) {
+        let previousBgm = this.$('#backgroundMusic');
+        if (previousBgm.length > 0) {
+            previousBgm[0].pause();
+            previousBgm.remove();
+        }
+        if (config.control === 'stop') return;
+        let audio = this.$('<audio>', {
+            id: 'backgroundMusic',
+        });
+        let sources = config.sources.map(url =>
+            this.$('<source>', {
+                src: url,
+            })
+        );
+        if (config.loop) {
+            audio.bind('ended', () => {
+                audio[0].currentTime = config.head;
+                audio[0].play();
+            });
+        }
+        audio.append(sources);
+        this.$('body').append(audio);
+        audio[0].play();
     }
 
     /**

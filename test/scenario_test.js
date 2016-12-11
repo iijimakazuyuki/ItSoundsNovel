@@ -43,6 +43,16 @@ describe('Scenario', function () {
                     '  - def.mp3',
                     '- background:',
                     '    image: abc.jpg',
+                    '- bgm: stop',
+                    '- bgm: abc.mp3',
+                    '- bgm:',
+                    '  - abc.mp3',
+                    '  - def.mp3',
+                    '- bgm: abc.mp3',
+                    '  loop: none',
+                    '- bgm: abc.mp3',
+                    '  loop:',
+                    '    head: 2.5',
                 ].join('\n')
             );
             let url = '';
@@ -83,6 +93,50 @@ describe('Scenario', function () {
                     {
                         background: {
                             image: 'abc.jpg',
+                        },
+                    },
+                    {
+                        bgm: {
+                            control: 'stop',
+                            head: 0,
+                            loop: true,
+                            sources: [],
+                        },
+                    },
+                    {
+                        bgm: {
+                            head: 0,
+                            loop: true,
+                            sources: [
+                                'abc.mp3',
+                            ],
+                        },
+                    },
+                    {
+                        bgm: {
+                            head: 0,
+                            loop: true,
+                            sources: [
+                                'abc.mp3',
+                                'def.mp3',
+                            ],
+                        },
+                    },
+                    {
+                        bgm: {
+                            loop: false,
+                            sources: [
+                                'abc.mp3',
+                            ],
+                        },
+                    },
+                    {
+                        bgm: {
+                            head: 2.5,
+                            loop: true,
+                            sources: [
+                                'abc.mp3',
+                            ],
                         },
                     },
                 ]
@@ -210,6 +264,77 @@ describe('Scenario', function () {
 
             // assert
             assert(displayMock.append.withArgs(letterStub).called);
+        });
+    });
+
+    describe('#playBgm()', function () {
+        it('should create an audio element which repeats', function () {
+            // arrange
+            let audioStub = {
+                append: sinon.spy(),
+                bind: sinon.spy(),
+            };
+            audioStub[0] = {
+                play: sinon.spy(),
+            }
+            scenario.$.withArgs('<audio>').returns(audioStub);
+            scenario.$.withArgs('<audio>');
+            let oggStub = sinon.stub();
+            scenario.$.withArgs('<source>', { src: 'bgm.ogg' }).returns(oggStub);
+            let mp3Stub = sinon.stub();
+            scenario.$.withArgs('<source>', { src: 'bgm.mp3' }).returns(mp3Stub);
+
+            // act
+            scenario.playBgm({
+                loop: true,
+                head: 0,
+                sources: ['bgm.ogg', 'bgm.mp3'],
+            });
+
+            // assert
+            assert(scenario.$.withArgs('<audio>').called);
+            assert(scenario.$.withArgs('<source>', { src: 'bgm.ogg' }).called);
+            assert(scenario.$.withArgs('<source>', { src: 'bgm.mp3' }).called);
+            assert(audioStub.append.withArgs([
+                oggStub,
+                mp3Stub,
+            ]).called);
+            assert(audioStub[0].play.called);
+            assert(audioStub.bind.called);
+        });
+        it('should create an audio element which does not repeat', function () {
+            // arrange
+            let audioStub = {
+                append: sinon.spy(),
+                bind: sinon.spy(),
+            };
+            audioStub[0] = {
+                play: sinon.spy(),
+            }
+            scenario.$.withArgs('<audio>').returns(audioStub);
+            scenario.$.withArgs('<audio>');
+            let oggStub = sinon.stub();
+            scenario.$.withArgs('<source>', { src: 'bgm.ogg' }).returns(oggStub);
+            let mp3Stub = sinon.stub();
+            scenario.$.withArgs('<source>', { src: 'bgm.mp3' }).returns(mp3Stub);
+
+            // act
+            scenario.playBgm({
+                loop: false,
+                head: 0,
+                sources: ['bgm.ogg', 'bgm.mp3'],
+            });
+
+            // assert
+            assert(scenario.$.withArgs('<audio>').called);
+            assert(scenario.$.withArgs('<source>', { src: 'bgm.ogg' }).called);
+            assert(scenario.$.withArgs('<source>', { src: 'bgm.mp3' }).called);
+            assert(audioStub.append.withArgs([
+                oggStub,
+                mp3Stub,
+            ]).called);
+            assert(audioStub[0].play.called);
+            assert(audioStub.bind.notCalled);
         });
     });
 
