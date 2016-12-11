@@ -37,6 +37,10 @@ describe('Scenario', function () {
                     '  config:',
                     '    delay: 10',
                     '    duration: 100',
+                    '- sound: abc.mp3',
+                    '- sound:',
+                    '  - abc.mp3',
+                    '  - def.mp3',
                 ].join('\n')
             );
             let url = '';
@@ -62,6 +66,17 @@ describe('Scenario', function () {
                     {
                         message: 'mno',
                         config: { message: { delay: 10, duration: 100 } }
+                    },
+                    {
+                        sound: [
+                            'abc.mp3',
+                        ],
+                    },
+                    {
+                        sound: [
+                            'abc.mp3',
+                            'def.mp3',
+                        ],
                     },
                 ]
             );
