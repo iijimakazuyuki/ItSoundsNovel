@@ -1,0 +1,23 @@
+<html>
+
+<head>
+    <style type="text/css">
+        div {
+            border: solid 1px #000;
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="messageWindow"></div>
+    <button id="nextButton">Next</button>
+    <script src="../../it-sounds-novel.js"></script>
+    <script type="text/javascript">
+        var ItSoundsNovel = require('it-sounds-novel');
+        var scenario = new ItSoundsNovel.Scenario();
+        scenario.load('load_another_scenario_1.yml');
+    </script>
+</body>
+
+</html>

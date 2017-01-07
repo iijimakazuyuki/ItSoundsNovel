@@ -65,6 +65,7 @@ describe('Scenario', function () {
                     '- image:',
                     '    name: abc',
                     '    control: remove',
+                    '- load: abc.yml',
                 ].join('\n')
             );
             let url = '';
@@ -173,6 +174,9 @@ describe('Scenario', function () {
                             x: 0,
                             y: 0,
                         }
+                    },
+                    {
+                        load: 'abc.yml',
                     },
                 ]
             );
