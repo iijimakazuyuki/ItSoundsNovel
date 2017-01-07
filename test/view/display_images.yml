@@ -1,0 +1,22 @@
+- background:
+    image: image/background_1.jpg
+- image:
+    name: cat1
+    source: image/cat.png
+    x: 10
+    y: 10
+- image:
+    name: cat2
+    source: image/cat.png
+    x: 100
+    y: 200
+- I am a cat. I don't have my name yet.
+- image:
+    name: cat1
+    x: 100
+    y: 10
+- I don't know where I was born.
+- image:
+    name: cat1
+    control: remove
+- I only remember that I was meowing in dim and wet place.
