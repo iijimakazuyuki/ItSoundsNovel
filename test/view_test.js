@@ -381,10 +381,8 @@ describe('ItSoundsNovel View', function () {
             let driver = browserDrivers.get(browserDriverName);
             return driver.get(BASE_URL + PATH)
                 .then(() =>
-                    driver.findElement({ className: 'backgroundImage' })
-                ).then(element =>
                     driver.wait(
-                        until.elementIsVisible(element),
+                        until.elementLocated({ className: 'backgroundImage' }),
                         TIMEOUT_FOR_DISPLAYING_IMAGE
                     )
                 ).then(() =>
@@ -398,13 +396,6 @@ describe('ItSoundsNovel View', function () {
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
                     element.click()
-                ).then(() =>
-                    driver.findElement({ className: 'backgroundImage' })
-                ).then(element =>
-                    driver.wait(
-                        until.elementIsVisible(element),
-                        TIMEOUT_FOR_DISPLAYING_IMAGE
-                    )
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
