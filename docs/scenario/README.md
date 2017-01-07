@@ -9,3 +9,9 @@ How to write scenarios
 
 [Play sounds](play_sounds.md)
 --------------------------------------------------------------------------------
+
+[Play background music](play_background_music.md)
+--------------------------------------------------------------------------------
+
+[Display a background image](display_a_background_image.md)
+--------------------------------------------------------------------------------
