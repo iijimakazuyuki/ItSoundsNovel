@@ -272,7 +272,7 @@ describe('Scenario', function () {
             // arrange
             let audioStub = {
                 append: sinon.spy(),
-                bind: sinon.spy(),
+                on: sinon.spy(),
             };
             audioStub[0] = {
                 play: sinon.spy(),
@@ -300,13 +300,13 @@ describe('Scenario', function () {
                 mp3Stub,
             ]).called);
             assert(audioStub[0].play.called);
-            assert(audioStub.bind.called);
+            assert(audioStub.on.called);
         });
         it('should create an audio element which does not repeat', function () {
             // arrange
             let audioStub = {
                 append: sinon.spy(),
-                bind: sinon.spy(),
+                on: sinon.spy(),
             };
             audioStub[0] = {
                 play: sinon.spy(),
@@ -334,7 +334,7 @@ describe('Scenario', function () {
                 mp3Stub,
             ]).called);
             assert(audioStub[0].play.called);
-            assert(audioStub.bind.notCalled);
+            assert(audioStub.on.notCalled);
         });
     });
 

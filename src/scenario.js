@@ -299,7 +299,7 @@ class Scenario {
             })
         );
         if (config.loop) {
-            audio.bind('ended', () => {
+            audio.on('ended', () => {
                 audio[0].currentTime = config.head;
                 audio[0].play();
             });
