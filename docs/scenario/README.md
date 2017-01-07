@@ -18,3 +18,6 @@ How to write scenarios
 
 [Display images](display_images.md)
 --------------------------------------------------------------------------------
+
+[Load another scenario](load_another_scenario.md)
+--------------------------------------------------------------------------------

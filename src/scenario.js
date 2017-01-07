@@ -155,6 +155,9 @@ class Direction {
         if (direction.image) {
             this.image = new Image(direction.image);
         }
+        if (direction.load) {
+            this.load = direction.load;
+        }
     }
 }
 
@@ -220,6 +223,11 @@ class Scenario {
      */
     display(n) {
         let direction = this.directions[n];
+        if (direction.load) {
+            this.$(this.config.ui.next).off('click');
+            this.load(direction.load);
+            return;
+        }
         if (direction.image) {
             this.displayImage(direction.image);
             this.display(++this.pos);
