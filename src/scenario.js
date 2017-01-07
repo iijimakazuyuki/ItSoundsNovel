@@ -238,12 +238,17 @@ class Scenario {
             src: url,
             class: 'backgroundImage',
         }).css({
-            display: 'none',
             position: 'absolute',
             top: 0,
             left: 0,
             zIndex: -1,
-        }).fadeIn(config.background.duration, () => {
+            transition: config.background.duration / 1000 + 's',
+            opacity: 0,
+        }).on('load', () => {
+            image.css({
+                opacity: 1,
+            });
+        }).on('transitionend', () => {
             previousImage.remove();
         });
         this.$(config.background.target).append(image);
@@ -265,16 +270,17 @@ class Scenario {
     appendLetterElement(letter, index, config = this.config) {
         let elementLetter = this.$('<span>' + letter + '</span>')
             .css({
-                display: 'none',
+                visibility: 'hidden',
+                display: 'inline',
+                transition: config.message.duration / 1000 + 's',
+                opacity: 0,
             })
             .delay(index * config.message.delay)
-            .animate({
-                opacity: 'toggle',
-            }, {
-                duration: config.message.duration,
-                start: () => {
-                    elementLetter.css('display', 'inline');
-                },
+            .queue(() => {
+                elementLetter.css({
+                    visibility: 'visible',
+                    opacity: 1,
+                });
             });
         this.$(config.message.target).append(elementLetter);
     }

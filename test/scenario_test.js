@@ -9,10 +9,10 @@ describe('Scenario', function () {
         scenario.$ = sinon.stub();
         scenario.$ = scenario.$.returns(scenario.$);
         scenario.$.delay = sinon.stub().returnsThis();
-        scenario.$.animate = sinon.stub().returnsThis();
         scenario.$.append = sinon.stub().returnsThis();
         scenario.$.click = sinon.stub().returnsThis();
         scenario.$.css = sinon.stub().returnsThis();
+        scenario.$.queue = sinon.stub().returnsThis();
     });
 
     describe('#load()', function () {
@@ -176,12 +176,12 @@ describe('Scenario', function () {
             let bStub = {
                 css: sinon.stub().returnsThis(),
                 delay: sinon.stub().returnsThis(),
-                animate: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
             }
             let cStub = {
                 css: sinon.stub().returnsThis(),
                 delay: sinon.stub().returnsThis(),
-                animate: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
             }
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
@@ -210,7 +210,7 @@ describe('Scenario', function () {
             // arrange
             let stub = {
                 css: sinon.stub().returnsThis(),
-                fadeIn: sinon.stub().returnsThis(),
+                on: sinon.stub().returnsThis(),
             };
             let backgroundMock = {
                 append: sinon.spy()
@@ -251,7 +251,7 @@ describe('Scenario', function () {
             let letterStub = {
                 css: sinon.stub().returnsThis(),
                 delay: sinon.stub().returnsThis(),
-                animate: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
             }
             scenario.$.withArgs('<span>s</span>').returns(letterStub);
             let displayMock = {
