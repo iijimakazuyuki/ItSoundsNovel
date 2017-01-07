@@ -15,6 +15,7 @@ class DisplayConfig {
         if (config.duration) this.message.duration = config.duration;
         if (config.message) this.message = config.message;
         if (config.background) this.background = config.background;
+        if (config.image) this.image = config.image;
         if (config.ui) this.ui = config.ui;
     }
     update(config) {
@@ -29,6 +30,7 @@ class DisplayConfig {
             }
         }
         if (config.background) this.background = config.background;
+        if (config.image) this.image = config.image;
         if (config.ui) this.ui = config.ui;
     }
     copy() {
@@ -42,6 +44,9 @@ class DisplayConfig {
                 target: this.background.target,
                 delay: this.background.delay,
                 duration: this.background.duration,
+            },
+            image: {
+                duration: this.image.duration,
             },
             ui: {
                 next: this.ui.next,
@@ -87,6 +92,22 @@ class BgmConfig {
     }
 }
 
+class Image {
+    constructor(image) {
+        this.name = '';
+        if (image.source) {
+            this.source = image.source;
+            this.name = image.source;
+        }
+        if (image.name) this.name = image.name;
+        if (image.control) this.control = image.control;
+        this.x = 0;
+        if (image.x) this.x = image.x;
+        this.y = 0;
+        if (image.y) this.y = image.y;
+    }
+}
+
 /**
  * Default display configuration.
  */
@@ -98,6 +119,9 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
     },
     background: {
         target: '#backgroundWindow',
+        duration: 1000,
+    },
+    image: {
         duration: 1000,
     },
     ui: {
@@ -127,6 +151,9 @@ class Direction {
         if (direction.bgm) {
             if (direction.loop) this.bgm = new BgmConfig(direction.bgm, direction.loop)
             else this.bgm = new BgmConfig(direction.bgm);
+        }
+        if (direction.image) {
+            this.image = new Image(direction.image);
         }
     }
 }
@@ -193,6 +220,11 @@ class Scenario {
      */
     display(n) {
         let direction = this.directions[n];
+        if (direction.image) {
+            this.displayImage(direction.image);
+            this.display(++this.pos);
+            return;
+        }
         if (direction.bgm) {
             this.playBgm(direction.bgm);
             this.display(++this.pos);
@@ -252,6 +284,46 @@ class Scenario {
             previousImage.remove();
         });
         this.$(config.background.target).append(image);
+    }
+
+    /**
+     * Display an image.
+     * @param {Image} image The image.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    displayImage(image, config = this.config) {
+        let existingImage = this.$('#' + image.name);
+        let transform = 'translate(' + image.x + 'px,' + image.y + 'px)';
+        if (existingImage.length === 0) {
+            let imageElement = this.$('<img>', {
+                id: image.name,
+                src: image.source,
+            }).css({
+                position: 'absolute',
+                transform: transform,
+                transition: config.image.duration / 1000 + 's',
+                zIndex: -1,
+                opacity: 0,
+            }).on('load', () => {
+                imageElement.css({
+                    opacity: 1,
+                });
+            });
+            this.$(config.background.target).append(imageElement);
+        } else {
+            if (image.control === 'remove') {
+                existingImage.css({
+                    opacity: 0,
+                });
+                existingImage.on('transitionend', () => {
+                    existingImage.remove();
+                });
+                return;
+            }
+            existingImage.css({
+                transform: transform,
+            });
+        }
     }
 
     /**

@@ -15,3 +15,6 @@ How to write scenarios
 
 [Display a background image](display_a_background_image.md)
 --------------------------------------------------------------------------------
+
+[Display images](display_images.md)
+--------------------------------------------------------------------------------

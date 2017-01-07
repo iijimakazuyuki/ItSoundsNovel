@@ -53,6 +53,18 @@ describe('Scenario', function () {
                     '- bgm: abc.mp3',
                     '  loop:',
                     '    head: 2.5',
+                    '- image:',
+                    '    name: abc',
+                    '    source: abc.jpg',
+                    '    x: 10',
+                    '    y: 10',
+                    '- image:',
+                    '    name: abc',
+                    '    x: 10',
+                    '    y: 10',
+                    '- image:',
+                    '    name: abc',
+                    '    control: remove',
                 ].join('\n')
             );
             let url = '';
@@ -138,6 +150,29 @@ describe('Scenario', function () {
                                 'abc.mp3',
                             ],
                         },
+                    },
+                    {
+                        image: {
+                            name: 'abc',
+                            source: 'abc.jpg',
+                            x: 10,
+                            y: 10,
+                        }
+                    },
+                    {
+                        image: {
+                            name: 'abc',
+                            x: 10,
+                            y: 10,
+                        }
+                    },
+                    {
+                        image: {
+                            name: 'abc',
+                            control: 'remove',
+                            x: 0,
+                            y: 0,
+                        }
                     },
                 ]
             );
@@ -228,6 +263,37 @@ describe('Scenario', function () {
             assert(backgroundMock.append.withArgs(stub).called);
         });
     });
+
+    describe('#displayImage()', function () {
+        it('should display an image in the background window', function () {
+            // arrange
+            let stub = {
+                css: sinon.stub().returnsThis(),
+                on: sinon.stub().returnsThis(),
+            };
+            let backgroundMock = {
+                append: sinon.spy()
+            };
+            let image = {
+                name: 'a',
+                source: 'a.jpg',
+                x: 10,
+                y: 20,
+            };
+            scenario.$.withArgs('<img>', {
+                id: 'a',
+                src: 'a.jpg',
+            }).returns(stub);
+            scenario.$.withArgs(scenario.config.background.target).returns(backgroundMock);
+
+            // act
+            scenario.displayImage(image);
+
+            // assert
+            assert(backgroundMock.append.withArgs(stub).called);
+        });
+    });
+
 
     describe('#flush()', function () {
         it('should flush display', function () {
