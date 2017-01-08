@@ -15,7 +15,7 @@ To display an image, name it and specify the path to an image file.
 - image:
     name: cat2
     source: image/cat2.png
-    x: 10o
+    x: 100
     y: 10
 ```
 
