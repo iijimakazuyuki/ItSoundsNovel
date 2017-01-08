@@ -85,7 +85,7 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
-         * @param browserDriverName {string} The browser name ofWebDriver.
+         * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
         const TEST_SEQUENCE_OF = browserDriverName => {
@@ -144,13 +144,13 @@ describe('ItSoundsNovel View', function () {
         const SECOND_SENTENCE = "I don't know where I was born.";
 
         /**
-         * The second sentence in the sequence.
+         * The third sentence in the sequence.
          */
         const THIRD_SENTENCE =
             "I only remember that I was meowing in dim and wet place.";
 
         /**
-         * The second sentence in the sequence.
+         * The fourth sentence in the sequence.
          */
         const FOURTH_SENTENCE =
             "I saw something called human beings for the first time there.";
@@ -174,7 +174,7 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 1000;
 
         /**
-         * @param browserDriverName {string} The browser name ofWebDriver.
+         * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
         const TEST_SEQUENCE_OF = browserDriverName => {
@@ -290,7 +290,7 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
-         * @param browserDriverName {string} The browser name ofWebDriver.
+         * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
         const TEST_SEQUENCE_OF = browserDriverName => {
@@ -374,7 +374,7 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
-         * @param browserDriverName {string} The browser name ofWebDriver.
+         * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
         const TEST_SEQUENCE_OF = browserDriverName => {
@@ -453,7 +453,7 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
-         * @param browserDriverName {string} The browser name ofWebDriver.
+         * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
         const TEST_SEQUENCE_OF = browserDriverName => {
@@ -543,7 +543,7 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
-         * @param browserDriverName {string} The browser name ofWebDriver.
+         * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
         const TEST_SEQUENCE_OF = browserDriverName => {
@@ -636,7 +636,7 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
-         * @param browserDriverName {string} The browser name ofWebDriver.
+         * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
         const TEST_SEQUENCE_OF = browserDriverName => {
