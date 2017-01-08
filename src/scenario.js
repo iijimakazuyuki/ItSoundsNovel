@@ -281,7 +281,7 @@ class Scenario {
             position: 'absolute',
             top: 0,
             left: 0,
-            zIndex: -1,
+            zIndex: -2,
             transition: config.background.duration / 1000 + 's',
             opacity: 0,
         }).on('load', () => {

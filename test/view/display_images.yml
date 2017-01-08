@@ -11,6 +11,8 @@
     x: 100
     y: 200
 - I am a cat. I don't have my name yet.
+- background:
+    image: image/background_2.jpg
 - image:
     name: cat1
     x: 100
