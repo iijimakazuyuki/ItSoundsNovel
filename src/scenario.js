@@ -155,8 +155,10 @@ class Direction {
             return;
         }
         if (direction.message) this.message = direction.message;
-        if (direction.background) this.background = direction.background;
-        if (direction.image) {
+        if (direction.background) {
+            this.background = direction.background;
+            if (direction.config) this.config = new DisplayConfig({ background: direction.config });
+        } else if (direction.image) {
             this.image = new Image(direction.image);
             if (direction.config) this.config = new DisplayConfig({ image: direction.config });
         } else {
@@ -264,7 +266,7 @@ class Scenario {
             return;
         }
         if (direction.background) {
-            this.displayBackground(direction.background.image);
+            this.displayBackground(direction.background.image, config);
             this.display(++this.pos);
             return;
         }
