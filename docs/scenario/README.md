@@ -4,7 +4,7 @@ How to write scenarios
 [Display a sequence of sentences](display_a_sequence_of_sentences.md)
 --------------------------------------------------------------------------------
 
-[Change the display speed](change_the_display_speed.md)
+[Change the display speed of sentences](change_the_display_speed_of_sentences.md)
 --------------------------------------------------------------------------------
 
 [Play sounds](play_sounds.md)
