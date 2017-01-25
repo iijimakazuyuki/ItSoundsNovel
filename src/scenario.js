@@ -35,9 +35,6 @@ class DisplayConfig {
             if (config.background.target) {
                 this.background.target = config.background.target;
             }
-            if (config.background.delay) {
-                this.background.delay = config.background.delay;
-            }
             if (config.background.duration) {
                 this.background.duration = config.background.duration;
             }
@@ -58,7 +55,6 @@ class DisplayConfig {
             },
             background: {
                 target: this.background.target,
-                delay: this.background.delay,
                 duration: this.background.duration,
             },
             image: {
