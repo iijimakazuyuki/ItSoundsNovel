@@ -12,3 +12,6 @@ How to make HTML using it-sounds-novel
 
 [Put a background window](put_a_background_window.md)
 --------------------------------------------------------------------------------
+
+[Put buttons for saving and loading progress](put_buttons_for_saving_and_loading_progress.md)
+--------------------------------------------------------------------------------
