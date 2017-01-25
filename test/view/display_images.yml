@@ -17,7 +17,12 @@
     name: cat1
     x: 100
     y: 10
+  config:
+    duration: 2000
 - I don't know where I was born.
+- config:
+    image:
+      duration: 100
 - image:
     name: cat1
     control: remove

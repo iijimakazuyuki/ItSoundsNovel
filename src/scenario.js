@@ -14,7 +14,9 @@ class DisplayConfig {
         if (config.delay) this.message.delay = config.delay;
         if (config.duration) this.message.duration = config.duration;
         if (config.message) this.message = config.message;
+        this.background = {};
         if (config.background) this.background = config.background;
+        this.image = {};
         if (config.image) this.image = config.image;
         if (config.ui) this.ui = config.ui;
     }
@@ -29,8 +31,22 @@ class DisplayConfig {
                 this.message.duration = config.message.duration;
             }
         }
-        if (config.background) this.background = config.background;
-        if (config.image) this.image = config.image;
+        if (config.background) {
+            if (config.background.target) {
+                this.background.target = config.background.target;
+            }
+            if (config.background.delay) {
+                this.background.delay = config.background.delay;
+            }
+            if (config.background.duration) {
+                this.background.duration = config.background.duration;
+            }
+        }
+        if (config.image) {
+            if (config.image.duration) {
+                this.image.duration = config.image.duration;
+            }
+        }
         if (config.ui) this.ui = config.ui;
     }
     copy() {
@@ -140,7 +156,12 @@ class Direction {
         }
         if (direction.message) this.message = direction.message;
         if (direction.background) this.background = direction.background;
-        if (direction.config) this.config = new DisplayConfig(direction.config);
+        if (direction.image) {
+            this.image = new Image(direction.image);
+            if (direction.config) this.config = new DisplayConfig({ image: direction.config });
+        } else {
+            if (direction.config) this.config = new DisplayConfig(direction.config);
+        }
         if (direction.sound) {
             if (typeof direction.sound === 'string') {
                 this.sound = [direction.sound];
@@ -151,9 +172,6 @@ class Direction {
         if (direction.bgm) {
             if (direction.loop) this.bgm = new BgmConfig(direction.bgm, direction.loop)
             else this.bgm = new BgmConfig(direction.bgm);
-        }
-        if (direction.image) {
-            this.image = new Image(direction.image);
         }
         if (direction.load) {
             this.load = direction.load;
@@ -223,13 +241,20 @@ class Scenario {
      */
     display(n) {
         let direction = this.directions[n];
+        let config;
+        if (direction.config) {
+            config = this.config.copy();
+            config.update(direction.config);
+        } else {
+            config = this.config;
+        }
         if (direction.load) {
             this.$(this.config.ui.next).off('click');
             this.load(direction.load);
             return;
         }
         if (direction.image) {
-            this.displayImage(direction.image);
+            this.displayImage(direction.image, config);
             this.display(++this.pos);
             return;
         }
@@ -254,13 +279,6 @@ class Scenario {
             return;
         }
         let sentence = direction.message.split('');
-        let config;
-        if (direction.config) {
-            config = this.config.copy();
-            config.update(direction.config);
-        } else {
-            config = this.config;
-        }
         sentence.forEach(
             (v, i) => this.appendLetterElement(v, i, config)
         );
@@ -321,6 +339,7 @@ class Scenario {
         } else {
             if (image.control === 'remove') {
                 existingImage.css({
+                    transition: config.image.duration / 1000 + 's',
                     opacity: 0,
                 });
                 existingImage.on('transitionend', () => {
@@ -330,6 +349,7 @@ class Scenario {
             }
             existingImage.css({
                 transform: transform,
+                transition: config.image.duration / 1000 + 's',
             });
         }
     }

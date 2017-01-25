@@ -64,6 +64,12 @@ describe('Scenario', function () {
                     '    y: 10',
                     '- image:',
                     '    name: abc',
+                    '    x: 10',
+                    '    y: 10',
+                    '  config:',
+                    '    duration: 100',
+                    '- image:',
+                    '    name: abc',
                     '    control: remove',
                     '- load: abc.yml',
                 ].join('\n')
@@ -83,14 +89,26 @@ describe('Scenario', function () {
                     { message: 1 },
                     { message: 'jkl' },
                     {
-                        config: { message: { delay: 10, duration: 100 } }
+                        config: {
+                            message: { delay: 10, duration: 100 },
+                            background: {},
+                            image: {},
+                        }
                     },
                     {
-                        config: { message: { delay: 10, duration: 100 } }
+                        config: {
+                            message: { delay: 10, duration: 100 },
+                            background: {},
+                            image: {},
+                        }
                     },
                     {
                         message: 'mno',
-                        config: { message: { delay: 10, duration: 100 } }
+                        config: {
+                            message: { delay: 10, duration: 100 },
+                            background: {},
+                            image: {},
+                        }
                     },
                     {
                         sound: [
@@ -165,6 +183,20 @@ describe('Scenario', function () {
                             name: 'abc',
                             x: 10,
                             y: 10,
+                        }
+                    },
+                    {
+                        image: {
+                            name: 'abc',
+                            x: 10,
+                            y: 10,
+                        },
+                        config: {
+                            image: {
+                                duration: 100,
+                            },
+                            background: {},
+                            message: {},
                         }
                     },
                     {

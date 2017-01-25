@@ -1,4 +1,4 @@
-Change the display speed
+Change the display speed of sentences
 ================================================================================
 
 Example
