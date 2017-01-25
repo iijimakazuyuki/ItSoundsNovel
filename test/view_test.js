@@ -609,7 +609,7 @@ describe('ItSoundsNovel View', function () {
         })
     });
 
-    describe('Display a sequence of sentences', function () {
+    describe('Load another scenario', function () {
 
         /**
          * The path to the tested view.
