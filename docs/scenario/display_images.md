@@ -5,6 +5,9 @@ Example
 --------------------------------------------------------------------------------
 
 To display an image, name it and specify the path to an image file.
+`z` means display order (`z-index`). The larger covers the smaller.
+The default value of `z` is `-1`.
+The value of `z` of background image is `-1000`.
 
 ```yaml
 - image:
@@ -17,6 +20,7 @@ To display an image, name it and specify the path to an image file.
     source: image/cat2.png
     x: 100
     y: 10
+    z: -2
 ```
 
 The displayed image can be moved.

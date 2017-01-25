@@ -121,9 +121,11 @@ class Image {
         if (image.x) this.x = image.x;
         this.y = 0;
         if (image.y) this.y = image.y;
+        if (image.z) this.z = image.z;
     }
 }
 
+const IMAGE_DEFAULT_Z = -1;
 const BACKGROUND_IMAGE_DEFAULT_Z = -1000;
 
 /**
@@ -325,6 +327,7 @@ class Scenario {
         let existingImage = this.$('#' + image.name);
         let transform = 'translate(' + image.x + 'px,' + image.y + 'px)';
         if (existingImage.length === 0) {
+            if (!image.z) image.z = IMAGE_DEFAULT_Z;
             let imageElement = this.$('<img>', {
                 id: image.name,
                 src: image.source,
@@ -332,7 +335,7 @@ class Scenario {
                 position: 'absolute',
                 transform: transform,
                 transition: config.image.duration / 1000 + 's',
-                zIndex: -1,
+                zIndex: image.z,
                 opacity: 0,
             }).on('load', () => {
                 imageElement.css({
@@ -341,20 +344,19 @@ class Scenario {
             });
             this.$(config.background.target).append(imageElement);
         } else {
+            let newCss = {
+                transition: config.image.duration / 1000 + 's',
+            };
             if (image.control === 'remove') {
-                existingImage.css({
-                    transition: config.image.duration / 1000 + 's',
-                    opacity: 0,
-                });
+                newCss.opacity = 0;
                 existingImage.on('transitionend', () => {
                     existingImage.remove();
                 });
-                return;
+            } else {
+                newCss.transform = transform;
+                if (image.z) newCss.zIndex = image.z;
             }
-            existingImage.css({
-                transform: transform,
-                transition: config.image.duration / 1000 + 's',
-            });
+            existingImage.css(newCss);
         }
     }
 
