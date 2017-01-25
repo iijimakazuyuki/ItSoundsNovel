@@ -182,15 +182,31 @@ class Direction {
 }
 
 /**
- * Scenario for a sound novel.
+ * The progress of the scenario.
  */
-class Scenario {
+class ScenarioProgress {
     constructor() {
         /**
-         * Position of the loading scenario.
+         * The position of the loading scenario.
          */
         this.pos = 0;
 
+        /**
+         * The display configuration of the loading scenario.
+         * @type {DisplayConfig}
+         */
+        this.displayConfig = DEFAULT_DISPLAY_CONFIG.copy();
+    }
+}
+
+/**
+ * Scenario for a sound novel.
+ */
+class Scenario {
+    /**
+     * @param {Window} window The window of the web browser.
+     */
+    constructor(window = null) {
         /**
          * The directions of the loading scenario.
          * @type {Direction[]}
@@ -198,14 +214,14 @@ class Scenario {
         this.directions = [];
 
         /**
-         * The display configuration of the loading scenario.
-         */
-        this.config = DEFAULT_DISPLAY_CONFIG.copy();
-
-        /**
          * JQuery.
          */
         this.$ = $;
+
+        /**
+         * The progress of the loading scenario.
+         */
+        this.progress = new ScenarioProgress();
     }
 
     /**
@@ -229,11 +245,11 @@ class Scenario {
      * Initialize the scenario view.
      */
     init() {
-        this.pos = 0;
         this.display(0);
-        this.$(this.config.ui.next).click(() => {
+        this.progress.pos = 0;
+        this.$(this.progress.displayConfig.ui.next).click(() => {
             this.flush();
-            this.display(++this.pos);
+            this.display(++this.progress.pos);
         });
     }
 
@@ -245,39 +261,39 @@ class Scenario {
         let direction = this.directions[n];
         let config;
         if (direction.config) {
-            config = this.config.copy();
+            config = this.progress.displayConfig.copy();
             config.update(direction.config);
         } else {
-            config = this.config;
+            config = this.progress.displayConfig;
         }
         if (direction.load) {
-            this.$(this.config.ui.next).off('click');
+            this.$(this.progress.displayConfig.ui.next).off('click');
             this.load(direction.load);
             return;
         }
         if (direction.image) {
             this.displayImage(direction.image, config);
-            this.display(++this.pos);
+            this.display(++this.progress.pos);
             return;
         }
         if (direction.bgm) {
             this.playBgm(direction.bgm);
-            this.display(++this.pos);
+            this.display(++this.progress.pos);
             return;
         }
         if (direction.background) {
             this.displayBackground(direction.background.image, config);
-            this.display(++this.pos);
+            this.display(++this.progress.pos);
             return;
         }
         if (direction.sound) {
             this.play(direction.sound);
-            this.display(++this.pos);
+            this.display(++this.progress.pos);
             return;
         }
         if (!direction.message) {
-            this.config.update(direction.config);
-            this.display(++this.pos);
+            this.progress.displayConfig.update(direction.config);
+            this.display(++this.progress.pos);
             return;
         }
         let sentence = direction.message.split('');
@@ -291,7 +307,7 @@ class Scenario {
      * @param {string} url The url of the background image.
      * @param {DisplayConfig} config The display configuration.
      */
-    displayBackground(url, config = this.config) {
+    displayBackground(url, config = this.progress.displayConfig) {
         let previousImage =
             this.$(config.background.target + ' .backgroundImage');
         let image = this.$('<img>', {
@@ -319,7 +335,7 @@ class Scenario {
      * @param {Image} image The image.
      * @param {DisplayConfig} config The display configuration.
      */
-    displayImage(image, config = this.config) {
+    displayImage(image, config = this.progress.displayConfig) {
         let existingImage = this.$('#' + image.name);
         let transform = 'translate(' + image.x + 'px,' + image.y + 'px)';
         if (existingImage.length === 0) {
@@ -360,7 +376,7 @@ class Scenario {
      * Flush the displayed sentence.
      */
     flush() {
-        this.$(this.config.message.target).text('');
+        this.$(this.progress.displayConfig.message.target).text('');
     }
 
     /**
@@ -369,7 +385,7 @@ class Scenario {
      * @param {number} index The index of the letter in the sentence.
      * @param {DisplayConfig} config The display configuration.
      */
-    appendLetterElement(letter, index, config = this.config) {
+    appendLetterElement(letter, index, config = this.progress.displayConfig) {
         let elementLetter = this.$('<span>' + letter + '</span>')
             .css({
                 visibility: 'hidden',

@@ -253,14 +253,16 @@ describe('Scenario', function () {
             scenario.init();
 
             // assert
-            assert.equal(scenario.pos, 0);
+            assert.equal(scenario.progress.pos, 0);
         });
         it('should bind click on next button', function () {
             // arrange
             let nextButtonMock = {
                 click: sinon.spy()
             };
-            scenario.$.withArgs(scenario.config.ui.next).returns(nextButtonMock);
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.next
+            ).returns(nextButtonMock);
 
             // act
             scenario.init();
@@ -288,7 +290,9 @@ describe('Scenario', function () {
             let displayMock = {
                 append: sinon.spy()
             };
-            scenario.$.withArgs(scenario.config.message.target).returns(displayMock);
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock);
             scenario.directions = [
                 { message: 'a' },
                 { message: 'bc' },
@@ -319,7 +323,9 @@ describe('Scenario', function () {
                 src: 'a.jpg',
                 class: 'backgroundImage',
             }).returns(stub);
-            scenario.$.withArgs(scenario.config.background.target).returns(backgroundMock);
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.background.target
+            ).returns(backgroundMock);
 
             // act
             scenario.displayBackground('a.jpg');
@@ -349,7 +355,9 @@ describe('Scenario', function () {
                 id: 'a',
                 src: 'a.jpg',
             }).returns(stub);
-            scenario.$.withArgs(scenario.config.background.target).returns(backgroundMock);
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.background.target
+            ).returns(backgroundMock);
 
             // act
             scenario.displayImage(image);
@@ -366,7 +374,9 @@ describe('Scenario', function () {
             let displayMock = {
                 text: sinon.spy()
             }
-            scenario.$.withArgs(scenario.config.message.target).returns(displayMock);
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock);
 
             // act
             scenario.flush();
@@ -388,7 +398,9 @@ describe('Scenario', function () {
             let displayMock = {
                 append: sinon.spy()
             };
-            scenario.$.withArgs(scenario.config.message.target).returns(displayMock)
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock)
 
             // act
             scenario.appendLetterElement('s', 10);
