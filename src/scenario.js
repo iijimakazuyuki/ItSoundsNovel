@@ -124,6 +124,8 @@ class Image {
     }
 }
 
+const BACKGROUND_IMAGE_DEFAULT_Z = -1000;
+
 /**
  * Default display configuration.
  */
@@ -301,7 +303,7 @@ class Scenario {
             position: 'absolute',
             top: 0,
             left: 0,
-            zIndex: -2,
+            zIndex: BACKGROUND_IMAGE_DEFAULT_Z,
             transition: config.background.duration / 1000 + 's',
             opacity: 0,
         }).on('load', () => {
