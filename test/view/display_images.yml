@@ -10,6 +10,7 @@
     source: image/cat.png
     x: 100
     y: 200
+    z: -2
 - I am a cat. I don't have my name yet.
 - background:
     image: image/background_2.jpg
@@ -19,6 +20,10 @@
     y: 10
   config:
     duration: 2000
+- image:
+    name: cat2
+    x: 10
+    y: 200
 - I don't know where I was born.
 - config:
     image:

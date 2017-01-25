@@ -64,6 +64,12 @@ describe('Scenario', function () {
                     '    y: 10',
                     '- image:',
                     '    name: abc',
+                    '    source: abc.jpg',
+                    '    x: 10',
+                    '    y: 10',
+                    '    z: -5',
+                    '- image:',
+                    '    name: abc',
                     '    x: 10',
                     '    y: 10',
                     '- image:',
@@ -190,6 +196,15 @@ describe('Scenario', function () {
                             source: 'abc.jpg',
                             x: 10,
                             y: 10,
+                        }
+                    },
+                    {
+                        image: {
+                            name: 'abc',
+                            source: 'abc.jpg',
+                            x: 10,
+                            y: 10,
+                            z: -5,
                         }
                     },
                     {
