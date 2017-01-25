@@ -5,7 +5,7 @@ const sinon = require('sinon');
 describe('Scenario', function () {
     const scenario = new Scenario();
 
-    before(function () {
+    beforeEach(function () {
         scenario.$ = sinon.stub();
         scenario.$ = scenario.$.returns(scenario.$);
         scenario.$.delay = sinon.stub().returnsThis();
@@ -13,6 +13,10 @@ describe('Scenario', function () {
         scenario.$.click = sinon.stub().returnsThis();
         scenario.$.css = sinon.stub().returnsThis();
         scenario.$.queue = sinon.stub().returnsThis();
+        scenario.$.remove = sinon.stub().returnsThis();
+        scenario.$.off = sinon.stub().returnsThis();
+        scenario.$.text = sinon.stub().returnsThis();
+        scenario.$.get = sinon.stub().returnsThis();
     });
 
     describe('#load()', function () {
@@ -250,7 +254,7 @@ describe('Scenario', function () {
             scenario.pos = 20;
 
             // act
-            scenario.init();
+            scenario.init(0);
 
             // assert
             assert.equal(scenario.progress.pos, 0);
@@ -509,6 +513,155 @@ describe('Scenario', function () {
                 mp3Stub,
             ]).called);
             assert(audioStub[0].play.called);
+        });
+    });
+
+    describe('#disableUI()', function () {
+        it('should off bindings', function () {
+            // arrange
+            let nextButtonStub = {
+                off: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.next
+            ).returns(nextButtonStub);
+            let saveButtonStub = {
+                off: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.save
+            ).returns(saveButtonStub);
+            let loadButtonStub = {
+                off: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.load
+            ).returns(loadButtonStub);
+
+            // act
+            scenario.disableUI();
+
+            // assert
+            assert(nextButtonStub.off.called);
+            assert(saveButtonStub.off.called);
+            assert(loadButtonStub.off.called);
+        });
+    });
+
+    describe('#removeImages()', function () {
+        it('should remove images', function () {
+            // arrange
+            scenario.progress.images = {
+                abc: {
+                    name: 'abc',
+                    source: 'abc.jpg',
+                },
+                def: {
+                    name: 'def',
+                    source: 'def.jpg',
+                },
+            };
+            let imageStubFirst = {
+                remove: sinon.spy(),
+            };
+            scenario.$.withArgs('#abc').returns(imageStubFirst);
+            let imageStubSecond = {
+                remove: sinon.spy(),
+            };
+            scenario.$.withArgs('#def').returns(imageStubSecond);
+
+            // act
+            scenario.removeImages();
+
+            // assert
+            assert(imageStubFirst.remove.called);
+            assert(imageStubSecond.remove.called);
+        });
+    });
+
+    describe('#removeBackgroundImage()', function () {
+        it('should remove a background image', function () {
+            // arrange
+            let backgroundImageStub = {
+                remove: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.background.target + ' .backgroundImage'
+            ).returns(backgroundImageStub);
+
+            // act
+            scenario.removeBackgroundImage();
+
+            // assert
+            assert(backgroundImageStub.remove.called);
+        });
+    });
+
+    describe('#saveProgress()', function () {
+        it('should save progress to localStorage', function () {
+            // arrange
+            let localStorage = {};
+            scenario.window = {
+                localStorage: localStorage,
+            };
+
+            // act
+            scenario.saveProgress();
+
+            // assert
+            assert(localStorage.progress);
+        });
+    });
+
+    describe('#loadProgress()', function () {
+        it('should load progress from localStorage', function () {
+            // arrange
+            let progress = {
+                pos: 1,
+                displayConfig: {
+                    message: {
+                        target: '#messageWindow',
+                        delay: 50,
+                        duration: 500
+                    },
+                    background: {
+                        target: '#backgroundWindow',
+                        duration: 1000
+                    },
+                    image: {
+                        duration: 1000
+                    },
+                    ui: {
+                        next: '#nextButton',
+                        save: '#saveButton',
+                        load: '#loadButton',
+                    }
+                }, images: {
+                    abc: {
+                        name: 'abc',
+                        source: 'abc.png',
+                        x: 10,
+                        y: 10,
+                        z: -2,
+                    }
+                },
+                bgmConfig: {
+                    sources: ['abc.mp3'],
+                    loop: true,
+                    head: 0,
+                },
+                backgroundUrl: 'abc.jpg',
+                scenarioUrl: 'abc.yml',
+            };
+            scenario.window = {
+                localStorage: { progress: JSON.stringify(progress) },
+            };
+
+            // act
+            scenario.loadProgress();
+
+            // assert
+            assert.deepEqual(scenario.progress, progress);
         });
     });
 });

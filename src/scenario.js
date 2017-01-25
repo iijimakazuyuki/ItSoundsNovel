@@ -62,6 +62,8 @@ class DisplayConfig {
             },
             ui: {
                 next: this.ui.next,
+                save: this.ui.save,
+                load: this.ui.load,
             },
         });
     }
@@ -119,6 +121,14 @@ class Image {
         if (image.y) this.y = image.y;
         if (image.z) this.z = image.z;
     }
+    /**
+     * @param {Image} image
+     */
+    update(image) {
+        if (image.x) this.x = image.x;
+        if (image.y) this.y = image.y;
+        if (image.z) this.z = image.z;
+    }
 }
 
 const IMAGE_DEFAULT_Z = -1;
@@ -142,6 +152,8 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
     },
     ui: {
         next: '#nextButton',
+        save: '#saveButton',
+        load: '#loadButton',
     },
 });
 
@@ -192,10 +204,51 @@ class ScenarioProgress {
         this.pos = 0;
 
         /**
+         * The url of the loading scenario.
+         * @type {string}
+         */
+        this.scenarioUrl;
+
+        /**
          * The display configuration of the loading scenario.
          * @type {DisplayConfig}
          */
         this.displayConfig = DEFAULT_DISPLAY_CONFIG.copy();
+
+        /**
+         * The displaying images.
+         */
+        this.images = {};
+
+        /**
+         * The configuration for background music.
+         * @type {BgmConfig}
+         */
+        this.bgmConfig = null;
+
+        /**
+         * The url of the background image.
+         * @type {string}
+         */
+        this.backgroundUrl = null;
+    }
+    update(progress) {
+        if (progress.pos) this.pos = progress.pos;
+        if (progress.scenarioUrl) this.scenarioUrl = progress.scenarioUrl;
+        if (progress.displayConfig) this.displayConfig.update(progress.displayConfig);
+        for (let key in progress.images) {
+            this.images[key] = new Image(progress.images[key]);
+        }
+        if (progress.bgmConfig) {
+            this.bgmConfig = new BgmConfig(
+                progress.bgmConfig.sources,
+                {
+                    loop: progress.bgmConfig.loop,
+                    head: progress.bgmConfig.head,
+                }
+            );
+        }
+        if (progress.backgroundUrl) this.backgroundUrl = progress.backgroundUrl;
     }
 }
 
@@ -222,6 +275,14 @@ class Scenario {
          * The progress of the loading scenario.
          */
         this.progress = new ScenarioProgress();
+
+        if (window) {
+            /**
+             * The window of the web browser.
+             * @type {Window}
+             */
+            this.window = window;
+        }
     }
 
     /**
@@ -229,13 +290,14 @@ class Scenario {
      * @param {string} url The url of the scenario.
      */
     load(url) {
+        this.progress.scenarioUrl = url;
         this.$.get({
             url: url,
             success: data => {
                 this.directions = yaml
                     .safeLoad(data)
                     .map(direction => new Direction(direction));
-                this.init();
+                this.init(0);
             },
             dataType: 'text',
         });
@@ -244,12 +306,18 @@ class Scenario {
     /**
      * Initialize the scenario view.
      */
-    init() {
-        this.display(0);
-        this.progress.pos = 0;
+    init(pos) {
+        this.progress.pos = pos;
+        this.display(pos);
         this.$(this.progress.displayConfig.ui.next).click(() => {
             this.flush();
             this.display(++this.progress.pos);
+        });
+        this.$(this.progress.displayConfig.ui.save).click(() => {
+            this.saveProgress();
+        });
+        this.$(this.progress.displayConfig.ui.load).click(() => {
+            this.loadProgress();
         });
     }
 
@@ -259,6 +327,7 @@ class Scenario {
      */
     display(n) {
         let direction = this.directions[n];
+        if (!direction) return;
         let config;
         if (direction.config) {
             config = this.progress.displayConfig.copy();
@@ -267,7 +336,7 @@ class Scenario {
             config = this.progress.displayConfig;
         }
         if (direction.load) {
-            this.$(this.progress.displayConfig.ui.next).off('click');
+            this.disableUI();
             this.load(direction.load);
             return;
         }
@@ -328,6 +397,7 @@ class Scenario {
             previousImage.remove();
         });
         this.$(config.background.target).append(image);
+        this.progress.backgroundUrl = url;
     }
 
     /**
@@ -355,11 +425,13 @@ class Scenario {
                 });
             });
             this.$(config.background.target).append(imageElement);
+            this.progress.images[image.name] = image;
         } else {
             let newCss = {
                 transition: config.image.duration / 1000 + 's',
             };
             if (image.control === 'remove') {
+                delete this.progress.images[image.name];
                 newCss.opacity = 0;
                 existingImage.on('transitionend', () => {
                     existingImage.remove();
@@ -367,6 +439,7 @@ class Scenario {
             } else {
                 newCss.transform = transform;
                 if (image.z) newCss.zIndex = image.z;
+                this.progress.images[image.name].update(image);
             }
             existingImage.css(newCss);
         }
@@ -410,6 +483,7 @@ class Scenario {
     playBgm(config) {
         let previousBgm = this.$('#backgroundMusic');
         if (previousBgm.length > 0) {
+            this.progress.bgmConfig = null;
             previousBgm[0].pause();
             previousBgm.remove();
         }
@@ -427,6 +501,7 @@ class Scenario {
                 audio[0].currentTime = config.head;
                 audio[0].play();
             });
+            this.progress.bgmConfig = config;
         }
         audio.append(sources);
         this.$('body').append(audio);
@@ -447,6 +522,64 @@ class Scenario {
         );
         audio.append(sources);
         audio[0].play();
+    }
+
+    /**
+     * Disable the user interface.
+     */
+    disableUI() {
+        this.$(this.progress.displayConfig.ui.next).off('click');
+        this.$(this.progress.displayConfig.ui.load).off('click');
+        this.$(this.progress.displayConfig.ui.save).off('click');
+    }
+
+    /**
+     * Save the progress to the local storage of the web browser.
+     */
+    saveProgress() {
+        this.window.localStorage.progress = JSON.stringify(this.progress);
+    }
+
+    removeImages() {
+        for (let key in this.progress.images) {
+            this.$('#' + this.progress.images[key].name).remove();
+        }
+    }
+
+    removeBackgroundImage() {
+        this.$(this.progress.displayConfig.background.target + ' .backgroundImage').remove();
+    }
+
+    /**
+     * Load the progress from the local storage of the web browser.
+     */
+    loadProgress() {
+        this.disableUI();
+        this.flush();
+        this.playBgm(new BgmConfig('stop'));
+        this.removeImages();
+        this.removeBackgroundImage();
+        this.progress = new ScenarioProgress();
+        this.progress.update(JSON.parse(this.window.localStorage.progress));
+        this.$.get({
+            url: this.progress.scenarioUrl,
+            success: data => {
+                this.directions = yaml
+                    .safeLoad(data)
+                    .map(direction => new Direction(direction));
+                for (let key in this.progress.images) {
+                    this.displayImage(this.progress.images[key]);
+                }
+                if (this.progress.backgroundUrl) {
+                    this.displayBackground(this.progress.backgroundUrl);
+                }
+                if (this.progress.bgmConfig) {
+                    this.playBgm(this.progress.bgmConfig);
+                }
+                this.init(this.progress.pos);
+            },
+            dataType: 'text',
+        });
     }
 }
 
