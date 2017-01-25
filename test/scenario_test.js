@@ -43,6 +43,10 @@ describe('Scenario', function () {
                     '  - def.mp3',
                     '- background:',
                     '    image: abc.jpg',
+                    '- background:',
+                    '    image: abc.jpg',
+                    '  config:',
+                    '    duration: 100',
                     '- bgm: stop',
                     '- bgm: abc.mp3',
                     '- bgm:',
@@ -125,6 +129,16 @@ describe('Scenario', function () {
                         background: {
                             image: 'abc.jpg',
                         },
+                    },
+                    {
+                        background: {
+                            image: 'abc.jpg',
+                        },
+                        config: {
+                            background: { duration: 100 },
+                            message: {},
+                            image: {},
+                        }
                     },
                     {
                         bgm: {
