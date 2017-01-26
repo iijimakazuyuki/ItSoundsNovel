@@ -190,6 +190,9 @@ class Direction {
         if (direction.load) {
             this.load = direction.load;
         }
+        if (direction.next) {
+            this.next = direction.next;
+        }
     }
 }
 
@@ -308,17 +311,8 @@ class Scenario {
      */
     init(pos) {
         this.progress.pos = pos;
+        this.enableUI();
         this.display(pos);
-        this.$(this.progress.displayConfig.ui.next).click(() => {
-            this.flush();
-            this.display(++this.progress.pos);
-        });
-        this.$(this.progress.displayConfig.ui.save).click(() => {
-            this.saveProgress();
-        });
-        this.$(this.progress.displayConfig.ui.load).click(() => {
-            this.loadProgress();
-        });
     }
 
     /**
@@ -342,7 +336,12 @@ class Scenario {
         }
         if (direction.image) {
             this.displayImage(direction.image, config);
-            this.display(++this.progress.pos);
+            if (direction.next === 'wait') {
+                this.disableUI();
+                this.waitForImage(direction.image);
+            } else {
+                this.display(++this.progress.pos);
+            }
             return;
         }
         if (direction.bgm) {
@@ -444,6 +443,17 @@ class Scenario {
             existingImage.css(newCss);
         }
     }
+    /**
+     * Wait for displaying or moving image.
+     * @param {Image} image The image.
+     */
+    waitForImage(image) {
+        let imageElement = this.$('#' + image.name);
+        imageElement.one('transitionend', () => {
+            this.enableUI();
+            this.display(++this.progress.pos);
+        });
+    }
 
     /**
      * Flush the displayed sentence.
@@ -531,6 +541,22 @@ class Scenario {
         this.$(this.progress.displayConfig.ui.next).off('click');
         this.$(this.progress.displayConfig.ui.load).off('click');
         this.$(this.progress.displayConfig.ui.save).off('click');
+    }
+
+    /**
+     * Enable the user interface.
+     */
+    enableUI() {
+        this.$(this.progress.displayConfig.ui.next).click(() => {
+            this.flush();
+            this.display(++this.progress.pos);
+        });
+        this.$(this.progress.displayConfig.ui.save).click(() => {
+            this.saveProgress();
+        });
+        this.$(this.progress.displayConfig.ui.load).click(() => {
+            this.loadProgress();
+        });
     }
 
     /**
