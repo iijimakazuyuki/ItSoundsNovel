@@ -11,6 +11,7 @@
     x: 100
     y: 200
     z: -2
+  next: wait
 - I am a cat. I don't have my name yet.
 - background:
     image: image/background_2.jpg
@@ -31,4 +32,5 @@
 - image:
     name: cat1
     control: remove
+  next: wait
 - I only remember that I was meowing in dim and wet place.

@@ -8,6 +8,8 @@ To display an image, name it and specify the path to an image file.
 `z` means display order (`z-index`). The larger covers the smaller.
 The default value of `z` is `-1`.
 The value of `z` of background image is `-1000`.
+The image will be displayed and the next direction will be executed
+simultaneously unless `next: wait` is specified.
 
 ```yaml
 - image:
@@ -21,6 +23,7 @@ The value of `z` of background image is `-1000`.
     x: 100
     y: 10
     z: -2
+  next: wait
 ```
 
 The displayed image can be moved.

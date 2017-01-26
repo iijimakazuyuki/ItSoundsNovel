@@ -85,6 +85,11 @@ describe('Scenario', function () {
                     '- image:',
                     '    name: abc',
                     '    control: remove',
+                    '- image:',
+                    '    name: abc',
+                    '    x: 10',
+                    '    y: 10',
+                    '  next: wait',
                     '- load: abc.yml',
                 ].join('\n')
             );
@@ -241,6 +246,14 @@ describe('Scenario', function () {
                         }
                     },
                     {
+                        image: {
+                            name: 'abc',
+                            x: 10,
+                            y: 10,
+                        },
+                        next: 'wait',
+                    },
+                    {
                         load: 'abc.yml',
                     },
                 ]
@@ -371,6 +384,27 @@ describe('Scenario', function () {
         });
     });
 
+    describe('#waitForImage()', function () {
+        it('should bind transitionend on an image', function () {
+            // arrange
+            let imageElementMock = {
+                one: sinon.spy(),
+            };
+            let image = {
+                name: 'abc',
+                source: 'abc.jpg',
+                x: 10,
+                y: 20,
+            };
+            scenario.$.withArgs('#abc').returns(imageElementMock);
+
+            // act
+            scenario.waitForImage(image);
+
+            // assert
+            assert(imageElementMock.one.called);
+        });
+    });
 
     describe('#flush()', function () {
         it('should flush display', function () {
@@ -545,6 +579,38 @@ describe('Scenario', function () {
             assert(nextButtonStub.off.called);
             assert(saveButtonStub.off.called);
             assert(loadButtonStub.off.called);
+        });
+    });
+
+    describe('#enableUI()', function () {
+        it('should bind click on buttons', function () {
+            // arrange
+            let nextButtonMock = {
+                click: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.next
+            ).returns(nextButtonMock);
+            let saveButtonMock = {
+                click: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.save
+            ).returns(saveButtonMock);
+            let loadButtonMock = {
+                click: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.load
+            ).returns(loadButtonMock);
+
+            // act
+            scenario.enableUI();
+
+            // assert
+            assert(nextButtonMock.click.called);
+            assert(saveButtonMock.click.called);
+            assert(loadButtonMock.click.called);
         });
     });
 
