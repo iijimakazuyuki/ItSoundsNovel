@@ -351,7 +351,12 @@ class Scenario {
         }
         if (direction.background) {
             this.displayBackground(direction.background.image, config);
-            this.display(++this.progress.pos);
+            if (direction.next === 'wait') {
+                this.disableUI();
+                this.waitForBackground(config);
+            } else {
+                this.display(++this.progress.pos);
+            }
             return;
         }
         if (direction.sound) {
@@ -378,9 +383,10 @@ class Scenario {
     displayBackground(url, config = this.progress.displayConfig) {
         let previousImage =
             this.$(config.background.target + ' .backgroundImage');
+        previousImage.removeClass('active');
         let image = this.$('<img>', {
             src: url,
-            class: 'backgroundImage',
+            class: 'backgroundImage active',
         }).css({
             position: 'absolute',
             top: 0,
@@ -449,6 +455,19 @@ class Scenario {
      */
     waitForImage(image) {
         let imageElement = this.$('#' + image.name);
+        imageElement.one('transitionend', () => {
+            this.enableUI();
+            this.display(++this.progress.pos);
+        });
+    }
+
+    /**
+     * Wait for displaying background image.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    waitForBackground(config = this.progress.displayConfig) {
+        let imageElement =
+            this.$(config.background.target + ' .backgroundImage.active');
         imageElement.one('transitionend', () => {
             this.enableUI();
             this.display(++this.progress.pos);

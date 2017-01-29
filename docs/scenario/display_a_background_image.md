@@ -10,6 +10,16 @@ Example
 - I am a cat. I don't have my name yet.
 ```
 
+The background image will be displayed and the next direction will be executed
+simultaneously unless `next: wait` is specified.
+
+```yaml
+- background:
+    image: path/to/image.jpg
+  next: wait
+- I am a cat. I don't have my name yet.
+```
+
 To change the display speed, specify the duration.
 
 ```yaml
