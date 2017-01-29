@@ -18,6 +18,7 @@ describe('Scenario', function () {
         scenario.$.text = sinon.stub().returnsThis();
         scenario.$.get = sinon.stub().returnsThis();
         scenario.$.removeClass = sinon.stub().returnsThis();
+        scenario.$.one = sinon.stub().returnsThis();
     });
 
     describe('#load()', function () {
@@ -645,6 +646,51 @@ describe('Scenario', function () {
             assert(nextButtonMock.click.called);
             assert(saveButtonMock.click.called);
             assert(loadButtonMock.click.called);
+        });
+    });
+
+    describe('#enableNextDirectionButton()', function () {
+        it('should bind click on next button', function () {
+            // arrange
+            let nextButtonMock = {
+                click: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.next
+            ).returns(nextButtonMock);
+
+            // act
+            scenario.enableNextDirectionButton();
+
+            // assert
+            assert(nextButtonMock.click.called);
+        });
+    });
+
+    describe('#changeButtonDuringDisplaying()', function () {
+        it('should off and bind click on next button and the last letter element', function () {
+            // arrange
+            let nextButtonMock = {
+                off: sinon.spy(),
+                click: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.next
+            ).returns(nextButtonMock);
+            let letterElementMock = {
+                one: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target + ' :last-child'
+            ).returns(letterElementMock);
+
+            // act
+            scenario.changeButtonDuringDisplaying();
+
+            // assert
+            assert(nextButtonMock.off.called);
+            assert(nextButtonMock.click.called);
+            assert(letterElementMock.one.called);
         });
     });
 

@@ -373,6 +373,7 @@ class Scenario {
         sentence.forEach(
             (v, i) => this.appendLetterElement(v, i, config)
         );
+        this.changeButtonDuringDisplaying();
     }
 
     /**
@@ -566,16 +567,60 @@ class Scenario {
      * Enable the user interface.
      */
     enableUI() {
-        this.$(this.progress.displayConfig.ui.next).click(() => {
-            this.flush();
-            this.display(++this.progress.pos);
-        });
+        this.enableNextDirectionButton();
         this.$(this.progress.displayConfig.ui.save).click(() => {
             this.saveProgress();
         });
         this.$(this.progress.displayConfig.ui.load).click(() => {
             this.loadProgress();
         });
+    }
+
+    /**
+     * Enable the next button to execute next direction.
+     */
+    enableNextDirectionButton() {
+        this.$(this.progress.displayConfig.ui.next).click(() => {
+            this.flush();
+            this.display(++this.progress.pos);
+        });
+    }
+
+    /**
+     * Enable the next button to skip displaying.
+     */
+    changeButtonDuringDisplaying() {
+        this.$(this.progress.displayConfig.ui.next).off('click');
+        this.$(this.progress.displayConfig.ui.next).click(() => {
+            this.skipDisplayingLetters();
+            this.enableNextDirectionButton();
+        });
+        this.$(this.progress.displayConfig.message.target + ' :last-child')
+            .one('transitionend', () => {
+                this.$(this.progress.displayConfig.ui.next).off('click');
+                this.enableNextDirectionButton();
+            });
+    }
+
+    /**
+     * Skip displaying letters.
+     */
+    skipDisplayingLetters() {
+        let elementLetters = this.$(this.progress.displayConfig.message.target + ' span');
+        elementLetters
+            .clearQueue()
+            .css({
+                transition: '60s',
+                opacity: 0,
+            })
+            .delay(100)
+            .queue(function () {
+                $(this).css({
+                    transition: '0s',
+                    visibility: 'visible',
+                    opacity: 1,
+                });
+            });
     }
 
     /**
