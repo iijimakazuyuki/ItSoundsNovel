@@ -17,6 +17,7 @@ describe('Scenario', function () {
         scenario.$.off = sinon.stub().returnsThis();
         scenario.$.text = sinon.stub().returnsThis();
         scenario.$.get = sinon.stub().returnsThis();
+        scenario.$.removeClass = sinon.stub().returnsThis();
     });
 
     describe('#load()', function () {
@@ -47,6 +48,9 @@ describe('Scenario', function () {
                     '  - def.mp3',
                     '- background:',
                     '    image: abc.jpg',
+                    '- background:',
+                    '    image: abc.jpg',
+                    '  next: wait',
                     '- background:',
                     '    image: abc.jpg',
                     '  config:',
@@ -144,6 +148,12 @@ describe('Scenario', function () {
                         background: {
                             image: 'abc.jpg',
                         },
+                    },
+                    {
+                        background: {
+                            image: 'abc.jpg',
+                        },
+                        next: 'wait',
                     },
                     {
                         background: {
@@ -338,7 +348,7 @@ describe('Scenario', function () {
             };
             scenario.$.withArgs('<img>', {
                 src: 'a.jpg',
-                class: 'backgroundImage',
+                class: 'backgroundImage active',
             }).returns(stub);
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target
@@ -400,6 +410,30 @@ describe('Scenario', function () {
 
             // act
             scenario.waitForImage(image);
+
+            // assert
+            assert(imageElementMock.one.called);
+        });
+    });
+
+    describe('#waitForBackground()', function () {
+        it('should bind transitionend on a background image', function () {
+            // arrange
+            let imageElementMock = {
+                one: sinon.spy(),
+            };
+            let image = {
+                name: 'abc',
+                source: 'abc.jpg',
+                x: 10,
+                y: 20,
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.background.target + ' .backgroundImage.active'
+            ).returns(imageElementMock);
+
+            // act
+            scenario.waitForBackground();
 
             // assert
             assert(imageElementMock.one.called);

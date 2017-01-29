@@ -11,4 +11,5 @@
       duration: 5000
 - background:
     image: image/background_1.jpg
+  next: wait
 - I only remember that I was meowing in dim and wet place.
