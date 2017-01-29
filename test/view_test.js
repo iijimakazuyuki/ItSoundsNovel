@@ -85,6 +85,12 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
          * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
@@ -98,6 +104,8 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, FIRST_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -174,6 +182,12 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 1000;
 
         /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
          * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
@@ -198,8 +212,10 @@ describe('ItSoundsNovel View', function () {
                         endTime - startTime,
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     );
-                    return driver.findElement({ id: 'nextButton' });
-                }).then(element =>
+                    return driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON);
+                }).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
                     element.click()
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
@@ -208,6 +224,8 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, SECOND_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -229,8 +247,10 @@ describe('ItSoundsNovel View', function () {
                         endTime - startTime,
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
-                    return driver.findElement({ id: 'nextButton' });
-                }).then(element =>
+                    return driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON);
+                }).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
                     element.click()
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
@@ -290,6 +310,12 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
          * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
@@ -304,6 +330,8 @@ describe('ItSoundsNovel View', function () {
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
                 ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
                     element.click()
@@ -314,6 +342,8 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, SECOND_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -374,6 +404,12 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
          * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
@@ -392,6 +428,8 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, FIRST_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -444,6 +482,12 @@ describe('ItSoundsNovel View', function () {
             "I only remember that I was meowing in dim and wet place.";
 
         /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
          * The timeout for displaying the first or second or third sentence.
          * The last letter of the longest sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
@@ -467,6 +511,8 @@ describe('ItSoundsNovel View', function () {
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
                 ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
                     element.click()
@@ -477,6 +523,8 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, SECOND_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -543,6 +591,12 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
          * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
@@ -567,6 +621,8 @@ describe('ItSoundsNovel View', function () {
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
                 ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
                     element.click()
@@ -577,6 +633,8 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, SECOND_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -636,6 +694,12 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
          * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
@@ -649,6 +713,8 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, FIRST_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -710,6 +776,12 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
          * @param browserDriverName {string} The browser name of WebDriver.
          * @returns {Thenable} The WebDriver test sequence.
          */
@@ -723,6 +795,8 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, FIRST_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -751,6 +825,8 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, SECOND_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
