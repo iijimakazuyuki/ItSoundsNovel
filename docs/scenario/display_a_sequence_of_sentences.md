@@ -19,3 +19,18 @@ or simply,
 - I only remember that I was meowing in dim and wet place.
 - I saw something called human beings for the first time there.
 ```
+
+Each letters of the sentence will be displayed in order.
+When the next button is clicked, all letters will be displayed immediately.
+If `next: wait` is specified, the next button won't work.
+
+```yaml
+- message: I am a cat. I don't have my name yet.
+  next: wait
+- message: I don't know where I was born.
+  next: wait
+- message: I only remember that I was meowing in dim and wet place.
+  next: wait
+- message: I saw something called human beings for the first time there.
+  next: wait
+```
