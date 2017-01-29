@@ -32,6 +32,8 @@ describe('Scenario', function () {
                     '- ghi',
                     '- 1',
                     '- message: jkl',
+                    '- message: mno',
+                    '  next: wait',
                     '- config:',
                     '    delay: 10',
                     '    duration: 100',
@@ -112,6 +114,10 @@ describe('Scenario', function () {
                     { message: 'ghi' },
                     { message: 1 },
                     { message: 'jkl' },
+                    {
+                        message: 'mno',
+                        next: 'wait',
+                    },
                     {
                         config: {
                             message: { delay: 10, duration: 100 },
@@ -685,11 +691,35 @@ describe('Scenario', function () {
             ).returns(letterElementMock);
 
             // act
-            scenario.changeButtonDuringDisplaying();
+            scenario.changeButtonDuringDisplaying(false);
 
             // assert
             assert(nextButtonMock.off.called);
             assert(nextButtonMock.click.called);
+            assert(letterElementMock.one.called);
+        });
+        it('should off click on next button and bind function on the last letter element', function () {
+            // arrange
+            let nextButtonMock = {
+                off: sinon.spy(),
+                click: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.next
+            ).returns(nextButtonMock);
+            let letterElementMock = {
+                one: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target + ' :last-child'
+            ).returns(letterElementMock);
+
+            // act
+            scenario.changeButtonDuringDisplaying(true);
+
+            // assert
+            assert(nextButtonMock.off.called);
+            assert(nextButtonMock.click.notCalled);
             assert(letterElementMock.one.called);
         });
     });

@@ -373,7 +373,7 @@ class Scenario {
         sentence.forEach(
             (v, i) => this.appendLetterElement(v, i, config)
         );
-        this.changeButtonDuringDisplaying();
+        this.changeButtonDuringDisplaying(direction.next === 'wait');
     }
 
     /**
@@ -588,16 +588,21 @@ class Scenario {
 
     /**
      * Enable the next button to skip displaying.
+     * @param {boolean} wait If the next button is disabled to wait for displaying.
      */
-    changeButtonDuringDisplaying() {
+    changeButtonDuringDisplaying(wait) {
         this.$(this.progress.displayConfig.ui.next).off('click');
-        this.$(this.progress.displayConfig.ui.next).click(() => {
-            this.skipDisplayingLetters();
-            this.enableNextDirectionButton();
-        });
+        if (!wait) {
+            this.$(this.progress.displayConfig.ui.next).click(() => {
+                this.skipDisplayingLetters();
+                this.enableNextDirectionButton();
+            });
+        }
         this.$(this.progress.displayConfig.message.target + ' :last-child')
             .one('transitionend', () => {
-                this.$(this.progress.displayConfig.ui.next).off('click');
+                if (!wait) {
+                    this.$(this.progress.displayConfig.ui.next).off('click');
+                }
                 this.enableNextDirectionButton();
             });
     }
