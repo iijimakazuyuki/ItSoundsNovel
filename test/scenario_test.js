@@ -431,12 +431,6 @@ describe('Scenario', function () {
             let imageElementMock = {
                 one: sinon.spy(),
             };
-            let image = {
-                name: 'abc',
-                source: 'abc.jpg',
-                x: 10,
-                y: 20,
-            };
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target + ' .backgroundImage.active'
             ).returns(imageElementMock);
