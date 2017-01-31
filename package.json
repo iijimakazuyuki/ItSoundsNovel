@@ -12,6 +12,7 @@
     "babelify": "^7.3.0",
     "browserify": "^13.1.1",
     "chai": "^3.5.0",
+    "eslint": "^3.14.1",
     "express": "^4.14.0",
     "mocha": "^3.2.0",
     "selenium-webdriver": "^3.0.1",
