@@ -193,6 +193,9 @@ class Direction {
         if (direction.next) {
             this.next = direction.next;
         }
+        if (direction.wait) {
+            this.wait = direction.wait;
+        }
     }
 }
 
@@ -328,6 +331,10 @@ class Scenario {
             config.update(direction.config);
         } else {
             config = this.progress.displayConfig;
+        }
+        if (direction.wait) {
+            this.waitForSeconds(direction.wait);
+            return;
         }
         if (direction.load) {
             this.disableUI();
@@ -473,6 +480,18 @@ class Scenario {
             this.enableUI();
             this.display(++this.progress.pos);
         });
+    }
+
+    /**
+     * Wait for seconds
+     * @param {number} seconds The waiting seconds.
+     */
+    waitForSeconds(seconds) {
+        this.$(this.progress.displayConfig.ui.next).off('click');
+        setTimeout(() => {
+            this.enableNextDirectionButton();
+            this.display(++this.progress.pos);
+        }, seconds);
     }
 
     /**

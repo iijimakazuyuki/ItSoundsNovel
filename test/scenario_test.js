@@ -98,6 +98,7 @@ describe('Scenario', function () {
                     '    y: 10',
                     '  next: wait',
                     '- load: abc.yml',
+                    '- wait: 1000',
                 ].join('\n')
             );
             let url = '';
@@ -273,6 +274,7 @@ describe('Scenario', function () {
                     {
                         load: 'abc.yml',
                     },
+                    { wait: 1000 },
                 ]
             );
         });
@@ -444,6 +446,24 @@ describe('Scenario', function () {
 
             // assert
             assert(imageElementMock.one.called);
+        });
+    });
+
+    describe('#waitForSeconds()', function () {
+        it('should off click on the next button', function () {
+            // arrange
+            let nextButtonStub = {
+                off: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.next
+            ).returns(nextButtonStub);
+
+            // act
+            scenario.waitForSeconds(0);
+
+            // assert
+            assert(nextButtonStub.off.called);
         });
     });
 

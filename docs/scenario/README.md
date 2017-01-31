@@ -21,3 +21,6 @@ How to write scenarios
 
 [Load another scenario](load_another_scenario.md)
 --------------------------------------------------------------------------------
+
+[Wait for seconds](wait_for_seconds.md)
+--------------------------------------------------------------------------------
