@@ -13,3 +13,7 @@
     image: image/background_1.jpg
   next: wait
 - I only remember that I was meowing in dim and wet place.
+- background:
+    control: remove
+  next: wait
+- I saw something called human beings for the first time there.

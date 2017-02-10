@@ -40,3 +40,10 @@ To change the default display speed, specify only `config`.
     image: path/to/image.jpg
 - I am a cat. I don't have my name yet.
 ```
+
+To remove a background image, write `control: remove`.
+
+```yaml
+- background:
+    control: remove
+```

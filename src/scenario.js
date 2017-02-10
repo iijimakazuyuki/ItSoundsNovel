@@ -357,7 +357,11 @@ class Scenario {
             return;
         }
         if (direction.background) {
-            this.displayBackground(direction.background.image, config);
+            if (direction.background.control === 'remove') {
+                this.removeBackground(config);
+            } else {
+                this.displayBackground(direction.background.image, config);
+            }
             if (direction.next === 'wait') {
                 this.disableUI();
                 this.waitForBackground(config);
@@ -411,6 +415,22 @@ class Scenario {
         });
         this.$(config.background.target).append(image);
         this.progress.backgroundUrl = url;
+    }
+
+    /**
+     * Remove a background image.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    removeBackground(config = this.progress.displayConfig) {
+        let previousImage =
+            this.$(config.background.target + ' .backgroundImage.active');
+        previousImage.css({
+            transition: config.background.duration / 1000 + 's',
+            opacity: 0,
+        }).on('transitionend', () => {
+            previousImage.remove();
+        });
+        this.progress.backgroundUrl = null;
     }
 
     /**

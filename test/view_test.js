@@ -390,9 +390,26 @@ describe('ItSoundsNovel View', function () {
         const SECOND_SENTENCE = "I don't know where I was born.";
 
         /**
+         * The third sentence in the sequence.
+         */
+        const THIRD_SENTENCE =
+            "I only remember that I was meowing in dim and wet place.";
+
+        /**
+         * The fourth sentence in the sequence.
+         */
+        const FOURTH_SENTENCE =
+            "I saw something called human beings for the first time there.";
+
+        /**
          * The timeout for displaying the background image.
          */
         const TIMEOUT_FOR_DISPLAYING_IMAGE = 1000;
+
+        /**
+         * The timeout for displaying the background image.
+         */
+        const LONG_TIMEOUT_FOR_DISPLAYING_IMAGE = 5000;
 
         /**
          * The timeout for displaying the first sentence.
@@ -402,6 +419,15 @@ describe('ItSoundsNovel View', function () {
          * so the test should be done before its timeout.
          */
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
+
+        /**
+         * The timeout for displaying the third and fourth sentence.
+         * The last letter of the fourth sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] *  60 + 500 [ms] = 3500 [ms] < 5000 [ms] (+ LONG_TIMEOUT_FOR_DISPLAYING_IMAGE = timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE = 5000 + LONG_TIMEOUT_FOR_DISPLAYING_IMAGE;
 
         /**
          * The sleep time for clicking next button after waiting
@@ -441,7 +467,37 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, SECOND_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
-                );
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, THIRD_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FOURTH_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElements({ className: 'backgroundImage' })
+                ).then(elements => {
+                    assert.lengthOf(elements, 0);
+                });
         }
 
         it('should be performed in Firefox', function () {
