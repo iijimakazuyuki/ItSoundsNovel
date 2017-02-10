@@ -58,6 +58,11 @@ describe('Scenario', function () {
                     '    image: abc.jpg',
                     '  config:',
                     '    duration: 100',
+                    '- background:',
+                    '    control: remove',
+                    '- background:',
+                    '    control: remove',
+                    '  next: wait',
                     '- bgm: stop',
                     '- bgm: abc.mp3',
                     '- bgm:',
@@ -172,6 +177,17 @@ describe('Scenario', function () {
                             message: {},
                             image: {},
                         }
+                    },
+                    {
+                        background: {
+                            control: 'remove',
+                        },
+                    },
+                    {
+                        background: {
+                            control: 'remove',
+                        },
+                        next: 'wait',
                     },
                     {
                         bgm: {
@@ -368,6 +384,26 @@ describe('Scenario', function () {
 
             // assert
             assert(backgroundMock.append.withArgs(stub).called);
+        });
+    });
+
+    describe('#removeBackground()', function () {
+        it('should remove a background image', function () {
+            // arrange
+            let backgroundMock = {
+                css: sinon.stub().returnsThis(),
+                on: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.background.target
+                + ' .backgroundImage.active'
+            ).returns(backgroundMock);
+
+            // act
+            scenario.removeBackground();
+
+            // assert
+            assert(backgroundMock.on.withArgs('transitionend').called);
         });
     });
 
