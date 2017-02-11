@@ -68,7 +68,7 @@ describe('ItSoundsNovel View', function () {
         /**
          * The first sentence in the sequence.
          */
-        const FIRST_SENTENCE = "I am a cat. I don't have my name yet.";
+        const FIRST_SENTENCE = "I am a cat.\nI don't have my name yet.";
 
         /**
          * The second sentence in the sequence.

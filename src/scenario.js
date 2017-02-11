@@ -532,6 +532,10 @@ class Scenario {
      * @param {DisplayConfig} config The display configuration.
      */
     appendLetterElement(letter, index, config = this.progress.displayConfig) {
+        if (letter === '\n') {
+            this.$(config.message.target).append(this.$('<br />'));
+            return;
+        }
         let elementLetter = this.$('<span>' + letter + '</span>')
             .css({
                 visibility: 'hidden',

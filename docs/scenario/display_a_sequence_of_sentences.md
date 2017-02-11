@@ -20,6 +20,14 @@ or simply,
 - I saw something called human beings for the first time there.
 ```
 
+Multiple-line sentences are following:
+
+```yaml
+- |-
+  I am a cat.
+  I don't have my name yet.
+```
+
 Each letters of the sentence will be displayed in order.
 When the next button is clicked, all letters will be displayed immediately.
 If `next: wait` is specified, the next button won't work.
