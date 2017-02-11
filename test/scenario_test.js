@@ -610,6 +610,28 @@ describe('Scenario', function () {
         });
     });
 
+    describe('#stopBgm()', function () {
+        it('should pause and remove an audio element', function () {
+            // arrange
+            let audioStub = {
+                remove: sinon.spy(),
+            };
+            audioStub[0] = {
+                pause: sinon.spy(),
+            }
+            scenario.$.withArgs('#backgroundMusic').returns(audioStub);
+
+            // act
+            scenario.stopBgm({
+                control: 'stop',
+            });
+
+            // assert
+            assert(audioStub.remove.called);
+            assert(audioStub[0].pause.called);
+        });
+    });
+
     describe('#play()', function () {
         it('should create an audio element', function () {
             // arrange

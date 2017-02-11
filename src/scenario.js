@@ -352,7 +352,11 @@ class Scenario {
             return;
         }
         if (direction.bgm) {
-            this.playBgm(direction.bgm);
+            if (direction.bgm.control === 'stop') {
+                this.stopBgm(direction.bgm);
+            } else {
+                this.playBgm(direction.bgm);
+            }
             this.display(++this.progress.pos);
             return;
         }
@@ -550,13 +554,7 @@ class Scenario {
      * @param {BgmConfig} config The background music configuration.
      */
     playBgm(config) {
-        let previousBgm = this.$('#backgroundMusic');
-        if (previousBgm.length > 0) {
-            this.progress.bgmConfig = null;
-            previousBgm[0].pause();
-            previousBgm.remove();
-        }
-        if (config.control === 'stop') return;
+        this.stopBgm(config);
         let audio = this.$('<audio>', {
             id: 'backgroundMusic',
         });
@@ -575,6 +573,18 @@ class Scenario {
         audio.append(sources);
         this.$('body').append(audio);
         audio[0].play();
+    }
+
+    /**
+     * Stop background music.
+     * @param {BgmConfig} config The background music configuration.
+     */
+    stopBgm(config) {
+        this.progress.bgmConfig = null;
+        let previousBgm = this.$('#backgroundMusic');
+        if (previousBgm.length === 0) return;
+        previousBgm[0].pause();
+        previousBgm.remove();
     }
 
     /**
@@ -690,7 +700,7 @@ class Scenario {
     loadProgress() {
         this.disableUI();
         this.flush();
-        this.playBgm(new BgmConfig('stop'));
+        this.stopBgm(new BgmConfig('stop'));
         this.removeImages();
         this.removeBackgroundImage();
         this.progress = new ScenarioProgress();
