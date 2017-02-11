@@ -81,13 +81,15 @@ const DEFAULT_LOOP_CONFIG = {
  * Configuration for background music.
  */
 class BgmConfig {
-    constructor(bgm, loopConfig = DEFAULT_LOOP_CONFIG) {
+    constructor(direction) {
         /**
          * The urls of background music.
          * @type{string[]}
          */
         this.sources = [];
 
+        let loopConfig = direction.loop || DEFAULT_LOOP_CONFIG;
+        let bgm = direction.bgm;
         if (bgm === 'stop') {
             this.control = 'stop';
         } else if (typeof bgm === 'string') {
@@ -184,8 +186,7 @@ class Direction {
             }
         }
         if (direction.bgm) {
-            if (direction.loop) this.bgm = new BgmConfig(direction.bgm, direction.loop)
-            else this.bgm = new BgmConfig(direction.bgm);
+            this.bgm = new BgmConfig(direction);
         }
         if (direction.load) {
             this.load = direction.load;
@@ -246,13 +247,11 @@ class ScenarioProgress {
             this.images[key] = new Image(progress.images[key]);
         }
         if (progress.bgmConfig) {
-            this.bgmConfig = new BgmConfig(
-                progress.bgmConfig.sources,
-                {
-                    loop: progress.bgmConfig.loop,
-                    head: progress.bgmConfig.head,
-                }
-            );
+            this.bgmConfig = new BgmConfig({
+                bgm: progress.bgmConfig.sources,
+                loop: progress.bgmConfig.loop,
+                head: progress.bgmConfig.head,
+            });
         }
         if (progress.backgroundUrl) this.backgroundUrl = progress.backgroundUrl;
     }
@@ -700,7 +699,7 @@ class Scenario {
     loadProgress() {
         this.disableUI();
         this.flush();
-        this.stopBgm(new BgmConfig('stop'));
+        this.stopBgm(new BgmConfig({ bgm: 'stop' }));
         this.removeImages();
         this.removeBackgroundImage();
         this.progress = new ScenarioProgress();
