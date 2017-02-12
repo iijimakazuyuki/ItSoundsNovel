@@ -617,14 +617,20 @@ class Scenario {
      * @param {Sound} sound The sound to play
      */
     playSound(sound) {
-        let audio = this.$('<audio>');
+        let audio = this.$('<audio>', {
+            class: 'sound',
+        });
 
         let sources = sound.source.map(url =>
             this.$('<source>', {
                 src: url,
             })
         );
+        audio.on('ended', () => {
+            audio.remove();
+        });
         audio.append(sources);
+        this.$('body').append(audio);
         audio[0].play();
     }
 

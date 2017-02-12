@@ -675,6 +675,7 @@ describe('Scenario', function () {
             // arrange
             let audioStub = {
                 append: sinon.spy(),
+                on: sinon.spy(),
             };
             audioStub[0] = {
                 play: sinon.spy(),
@@ -697,6 +698,7 @@ describe('Scenario', function () {
                 oggStub,
                 mp3Stub,
             ]).called);
+            assert(audioStub.on.withArgs('ended').called);
             assert(audioStub[0].play.called);
         });
     });
