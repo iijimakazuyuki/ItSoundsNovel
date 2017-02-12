@@ -64,6 +64,8 @@ describe('Scenario', function () {
                     '    control: remove',
                     '  next: wait',
                     '- bgm: stop',
+                    '- bgm: stop',
+                    '  duration: 1000',
                     '- bgm: abc.mp3',
                     '- bgm:',
                     '  - abc.mp3',
@@ -195,6 +197,16 @@ describe('Scenario', function () {
                             head: 0,
                             loop: true,
                             sources: [],
+                            duration: 0,
+                        },
+                    },
+                    {
+                        bgm: {
+                            control: 'stop',
+                            head: 0,
+                            loop: true,
+                            sources: [],
+                            duration: 1000,
                         },
                     },
                     {
@@ -607,6 +619,28 @@ describe('Scenario', function () {
             ]).called);
             assert(audioStub[0].play.called);
             assert(audioStub.on.notCalled);
+        });
+    });
+
+    describe('#stopBgm()', function () {
+        it('should pause and remove an audio element', function () {
+            // arrange
+            let audioStub = {
+                remove: sinon.spy(),
+            };
+            audioStub[0] = {
+                pause: sinon.spy(),
+            }
+            scenario.$.withArgs('.backgroundMusic').returns(audioStub);
+
+            // act
+            scenario.stopBgm({
+                control: 'stop',
+            });
+
+            // assert
+            assert(audioStub.remove.called);
+            assert(audioStub[0].pause.called);
         });
     });
 
