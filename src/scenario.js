@@ -92,6 +92,7 @@ class BgmConfig {
         let bgm = direction.bgm;
         if (bgm === 'stop') {
             this.control = 'stop';
+            this.duration = direction.duration || 0;
         } else if (typeof bgm === 'string') {
             this.sources = [bgm];
         } else {
@@ -555,7 +556,7 @@ class Scenario {
     playBgm(config) {
         this.stopBgm(config);
         let audio = this.$('<audio>', {
-            id: 'backgroundMusic',
+            class: 'backgroundMusic',
         });
         let sources = config.sources.map(url =>
             this.$('<source>', {
@@ -580,10 +581,25 @@ class Scenario {
      */
     stopBgm(config) {
         this.progress.bgmConfig = null;
-        let previousBgm = this.$('#backgroundMusic');
+        let previousBgm = this.$('.backgroundMusic');
         if (previousBgm.length === 0) return;
-        previousBgm[0].pause();
-        previousBgm.remove();
+        if (!config.duration || config.duration === 0) {
+            previousBgm[0].pause();
+            previousBgm.remove();
+        } else {
+            let startTime = new Date();
+            let intervalId = setInterval(() => {
+                let currentTime = new Date();
+                let targetVolume = 1 - (currentTime - startTime) / config.duration;
+                if (targetVolume <= 0) {
+                    previousBgm[0].pause();
+                    previousBgm.remove();
+                    clearInterval(intervalId);
+                } else {
+                    previousBgm[0].volume = targetVolume;
+                }
+            }, 100);
+        }
     }
 
     /**

@@ -7,6 +7,8 @@ Example
 To play background music, write `bgm:`
 and specify the path to a music file or files.
 To stop background music, write `bgm: stop`.
+Background music will fade out in `duration` milliseconds.
+The default value of duration is 0.
 
 ```yaml
 - bgm: path/to/bgm_1.mp3
@@ -16,6 +18,7 @@ To stop background music, write `bgm: stop`.
   - path/to/bgm_2.ogg
 - I don't know where I was born.
 - bgm: stop
+  duration: 1000
 - I only remember that I was meowing in dim and wet place.
 ```
 
