@@ -137,6 +137,16 @@ class Image {
 const IMAGE_DEFAULT_Z = -1;
 const BACKGROUND_IMAGE_DEFAULT_Z = -1000;
 
+class Sound {
+    constructor(sound) {
+        if (typeof sound === 'string') {
+            this.source = [sound];
+        } else {
+            this.source = sound;
+        }
+    }
+}
+
 /**
  * Default display configuration.
  */
@@ -180,11 +190,7 @@ class Direction {
             if (direction.config) this.config = new DisplayConfig(direction.config);
         }
         if (direction.sound) {
-            if (typeof direction.sound === 'string') {
-                this.sound = [direction.sound];
-            } else {
-                this.sound = direction.sound;
-            }
+            this.sound = new Sound(direction.sound);
         }
         if (direction.bgm) {
             this.bgm = new BgmConfig(direction);
@@ -375,7 +381,7 @@ class Scenario {
             return;
         }
         if (direction.sound) {
-            this.play(direction.sound);
+            this.playSound(direction.sound);
             this.display(++this.progress.pos);
             return;
         }
@@ -608,12 +614,12 @@ class Scenario {
 
     /**
      * Play a sound.
-     * @param {string[]} urls The urls of the sound
+     * @param {Sound} sound The sound to play
      */
-    play(urls) {
+    playSound(sound) {
         let audio = this.$('<audio>');
 
-        let sources = urls.map(url =>
+        let sources = sound.source.map(url =>
             this.$('<source>', {
                 src: url,
             })

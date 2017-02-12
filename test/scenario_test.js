@@ -154,15 +154,19 @@ describe('Scenario', function () {
                         }
                     },
                     {
-                        sound: [
-                            'abc.mp3',
-                        ],
+                        sound: {
+                            source: [
+                                'abc.mp3',
+                            ],
+                        }
                     },
                     {
-                        sound: [
-                            'abc.mp3',
-                            'def.mp3',
-                        ],
+                        sound: {
+                            source: [
+                                'abc.mp3',
+                                'def.mp3',
+                            ]
+                        },
                     },
                     {
                         background: {
@@ -666,7 +670,7 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#play()', function () {
+    describe('#playSound()', function () {
         it('should create an audio element', function () {
             // arrange
             let audioStub = {
@@ -683,7 +687,7 @@ describe('Scenario', function () {
             scenario.$.withArgs('<source>', { src: 'sound.mp3' }).returns(mp3Stub);
 
             // act
-            scenario.play(['sound.ogg', 'sound.mp3']);
+            scenario.playSound({ source: ['sound.ogg', 'sound.mp3'] });
 
             // assert
             assert(scenario.$.withArgs('<audio>').called);
