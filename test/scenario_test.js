@@ -154,15 +154,19 @@ describe('Scenario', function () {
                         }
                     },
                     {
-                        sound: [
-                            'abc.mp3',
-                        ],
+                        sound: {
+                            source: [
+                                'abc.mp3',
+                            ],
+                        }
                     },
                     {
-                        sound: [
-                            'abc.mp3',
-                            'def.mp3',
-                        ],
+                        sound: {
+                            source: [
+                                'abc.mp3',
+                                'def.mp3',
+                            ]
+                        },
                     },
                     {
                         background: {
@@ -666,11 +670,12 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#play()', function () {
+    describe('#playSound()', function () {
         it('should create an audio element', function () {
             // arrange
             let audioStub = {
                 append: sinon.spy(),
+                on: sinon.spy(),
             };
             audioStub[0] = {
                 play: sinon.spy(),
@@ -683,7 +688,7 @@ describe('Scenario', function () {
             scenario.$.withArgs('<source>', { src: 'sound.mp3' }).returns(mp3Stub);
 
             // act
-            scenario.play(['sound.ogg', 'sound.mp3']);
+            scenario.playSound({ source: ['sound.ogg', 'sound.mp3'] });
 
             // assert
             assert(scenario.$.withArgs('<audio>').called);
@@ -693,7 +698,29 @@ describe('Scenario', function () {
                 oggStub,
                 mp3Stub,
             ]).called);
+            assert(audioStub.on.withArgs('ended').called);
             assert(audioStub[0].play.called);
+        });
+    });
+
+    describe('#stopSound()', function () {
+        it('should pause and remove an audio element', function () {
+            // arrange
+            let audioStub = {
+                remove: sinon.spy(),
+                length: 1,
+            };
+            audioStub[0] = {
+                pause: sinon.spy(),
+            };
+            scenario.$.withArgs('.sound').returns(audioStub);
+
+            // act
+            scenario.stopSound();
+
+            // assert
+            assert(audioStub.remove.called);
+            assert(audioStub[0].pause.called);
         });
     });
 
