@@ -703,6 +703,27 @@ describe('Scenario', function () {
         });
     });
 
+    describe('#stopSound()', function () {
+        it('should pause and remove an audio element', function () {
+            // arrange
+            let audioStub = {
+                remove: sinon.spy(),
+                length: 1,
+            };
+            audioStub[0] = {
+                pause: sinon.spy(),
+            };
+            scenario.$.withArgs('.sound').returns(audioStub);
+
+            // act
+            scenario.stopSound();
+
+            // assert
+            assert(audioStub.remove.called);
+            assert(audioStub[0].pause.called);
+        });
+    });
+
     describe('#disableUI()', function () {
         it('should off bindings', function () {
             // arrange

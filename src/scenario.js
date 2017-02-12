@@ -139,7 +139,9 @@ const BACKGROUND_IMAGE_DEFAULT_Z = -1000;
 
 class Sound {
     constructor(sound) {
-        if (typeof sound === 'string') {
+        if (sound === 'stop') {
+            this.control = 'stop';
+        } else if (typeof sound === 'string') {
             this.source = [sound];
         } else {
             this.source = sound;
@@ -381,7 +383,11 @@ class Scenario {
             return;
         }
         if (direction.sound) {
-            this.playSound(direction.sound);
+            if (direction.sound.control === 'stop') {
+                this.stopSound();
+            } else {
+                this.playSound(direction.sound);
+            }
             this.display(++this.progress.pos);
             return;
         }
@@ -632,6 +638,17 @@ class Scenario {
         audio.append(sources);
         this.$('body').append(audio);
         audio[0].play();
+    }
+
+    /**
+     * Stop playing a sound.
+     */
+    stopSound() {
+        let audio = this.$('.sound');
+        for (let i = 0; i < audio.length; i++) {
+            audio[i].pause();
+        }
+        audio.remove();
     }
 
     /**
