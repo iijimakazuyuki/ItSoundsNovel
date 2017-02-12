@@ -121,14 +121,14 @@ describe('Scenario', function () {
             assert.deepEqual(
                 scenario.directions,
                 [
-                    { message: 'abc' },
-                    { message: 'def' },
-                    { message: 'ghi' },
-                    { message: 'abc\ndef\nghi' },
-                    { message: 1 },
-                    { message: 'jkl' },
+                    { message: { letters: ['a', 'b', 'c'] } },
+                    { message: { letters: ['d', 'e', 'f'] } },
+                    { message: { letters: ['g', 'h', 'i'] } },
+                    { message: { letters: ['a', 'b', 'c', '\n', 'd', 'e', 'f', '\n', 'g', 'h', 'i'] } },
+                    { message: { letters: ['1'] } },
+                    { message: { letters: ['j', 'k', 'l'] } },
                     {
-                        message: 'mno',
+                        message: { letters: ['m', 'n', 'o'] },
                         next: 'wait',
                     },
                     {
@@ -146,7 +146,7 @@ describe('Scenario', function () {
                         }
                     },
                     {
-                        message: 'mno',
+                        message: { letters: ['m', 'n', 'o'] },
                         config: {
                             message: { delay: 10, duration: 100 },
                             background: {},
@@ -367,9 +367,9 @@ describe('Scenario', function () {
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
             scenario.directions = [
-                { message: 'a' },
-                { message: 'bc' },
-                { message: 'def' },
+                { message: { letters: ['a'] } },
+                { message: { letters: ['b', 'c'] } },
+                { message: { letters: ['d', 'e', 'f'] } },
             ];
 
             // act

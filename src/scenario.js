@@ -141,8 +141,7 @@ class Scenario {
             this.display(++this.progress.pos);
             return;
         }
-        let sentence = direction.message.split('');
-        sentence.forEach(
+        direction.message.letters.forEach(
             (v, i) => this.appendLetterElement(v, i, config)
         );
         this.changeButtonDuringDisplaying(direction.next === 'wait');
