@@ -30,6 +30,10 @@ describe('Scenario', function () {
                     '- abc',
                     '- def',
                     '- ghi',
+                    '- |-',
+                    '  abc',
+                    '  def',
+                    '  ghi',
                     '- 1',
                     '- message: jkl',
                     '- message: mno',
@@ -120,6 +124,7 @@ describe('Scenario', function () {
                     { message: 'abc' },
                     { message: 'def' },
                     { message: 'ghi' },
+                    { message: 'abc\ndef\nghi' },
                     { message: 1 },
                     { message: 'jkl' },
                     {
@@ -545,6 +550,23 @@ describe('Scenario', function () {
 
             // act
             scenario.appendLetterElement('s', 10);
+
+            // assert
+            assert(displayMock.append.withArgs(letterStub).called);
+        });
+        it('should append newline to display', function () {
+            // arrange
+            let letterStub = sinon.stub();
+            scenario.$.withArgs('<br />').returns(letterStub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock)
+
+            // act
+            scenario.appendLetterElement('\n', 10);
 
             // assert
             assert(displayMock.append.withArgs(letterStub).called);

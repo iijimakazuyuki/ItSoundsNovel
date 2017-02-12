@@ -1,4 +1,6 @@
-- I am a cat. I don't have my name yet.
+- |-
+  I am a cat.
+  I don't have my name yet.
 - message: I don't know where I was born.
   next: wait
 - I only remember that I was meowing in dim and wet place.
