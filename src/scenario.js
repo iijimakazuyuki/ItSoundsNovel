@@ -299,6 +299,14 @@ class Scenario {
                     config.message.duration = Number(c.value);
                 } else if (c.key === 'delay') {
                     config.message.delay = Number(c.value);
+                } else if (c.key === 'fontSize') {
+                    config.message.fontSize = c.value;
+                } else if (c.key === 'fontStyle') {
+                    config.message.fontStyle = c.value;
+                } else if (c.key === 'fontFamily') {
+                    config.message.fontFamily = c.value;
+                } else if (c.key === 'fontWeight') {
+                    config.message.fontWeight = c.value;
                 }
             } else {
                 this.appendLetterElement(c.value, delayTime, config)
@@ -324,6 +332,10 @@ class Scenario {
                 display: 'inline',
                 transition: config.message.duration / 1000 + 's',
                 opacity: 0,
+                fontSize: config.message.fontSize,
+                fontStyle: config.message.fontStyle,
+                fontFamily: config.message.fontFamily,
+                fontWeight: config.message.fontWeight,
             })
             .delay(delayTime)
             .queue(() => {

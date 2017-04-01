@@ -8,26 +8,26 @@
 class DisplayConfig {
     constructor(config) {
         this.message = {};
-        if (config.delay) this.message.delay = config.delay;
-        if (config.duration) this.message.duration = config.duration;
-        if (config.message) this.message = config.message;
+        this.updateMessageConfig(config);
+        if (config.message) this.updateMessageConfig(config.message);
         this.background = {};
         if (config.background) this.background = config.background;
         this.image = {};
         if (config.image) this.image = config.image;
         if (config.ui) this.ui = config.ui;
     }
-    update(config) {
+    updateMessageConfig(config) {
+        if (config.target) this.message.target = config.target;
         if (config.delay) this.message.delay = config.delay;
         if (config.duration) this.message.duration = config.duration;
-        if (config.message) {
-            if (config.message.delay) {
-                this.message.delay = config.message.delay;
-            }
-            if (config.message.duration) {
-                this.message.duration = config.message.duration;
-            }
-        }
+        if (config.fontSize) this.message.fontSize = config.fontSize;
+        if (config.fontStyle) this.message.fontStyle = config.fontStyle;
+        if (config.fontWeight) this.message.fontWeight = config.fontWeight;
+        if (config.fontFamily) this.message.fontFamily = config.fontFamily;
+    }
+    update(config) {
+        this.updateMessageConfig(config);
+        if (config.message) this.updateMessageConfig(config.message);
         if (config.background) {
             if (config.background.target) {
                 this.background.target = config.background.target;
@@ -49,6 +49,10 @@ class DisplayConfig {
                 target: this.message.target,
                 delay: this.message.delay,
                 duration: this.message.duration,
+                fontSize: this.message.fontSize,
+                fontStyle: this.message.fontStyle,
+                fontWeight: this.message.fontWeight,
+                fontFamily: this.message.fontFamily,
             },
             background: {
                 target: this.background.target,
@@ -77,6 +81,9 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
         target: '#messageWindow',
         delay: 50,
         duration: 500,
+        fontSize: 'medium',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
     },
     background: {
         target: '#backgroundWindow',

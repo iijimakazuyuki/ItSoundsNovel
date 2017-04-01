@@ -1,0 +1,12 @@
+- I am a cat. I don't have my name yet.
+- config:
+    fontSize: large
+    fontStyle: italic
+    fontWeight: bold
+    fontFamily: cursive
+  message: I don't know where I was born.
+- I only remember that I was meowing in dim and wet place.
+- config:
+    fontSize: small
+    fontFamily: monospace
+- I saw something called${fontSize=large}${fontWeight=bold} human beings ${fontSize=medium}${fontWeight=normal}for the first time there.
