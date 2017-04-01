@@ -6,6 +6,7 @@ const DisplayConfig = require('./display_config.js');
 const BgmConfig = require('./bgm_config.js');
 const Image = require('./image.js');
 const Sound = require('./sound.js');
+const Message = require('./message.js');
 
 /**
  * A direction of a scenario.
@@ -13,10 +14,10 @@ const Sound = require('./sound.js');
 class Direction {
     constructor(direction) {
         if (typeof direction === 'string' || typeof direction === 'number') {
-            this.message = direction;
+            this.message = new Message(String(direction));
             return;
         }
-        if (direction.message) this.message = direction.message;
+        if (direction.message) this.message = new Message(direction.message);
         if (direction.background) {
             this.background = direction.background;
             if (direction.config) this.config = new DisplayConfig({ background: direction.config });

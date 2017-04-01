@@ -7,4 +7,4 @@
 - config:
     delay: 10
     duration: 100
-- I saw something called human beings for the first time there.
+- I saw something called${delay=100}${duration=200} human beings ${delay=10}${duration=200}for the first time there.

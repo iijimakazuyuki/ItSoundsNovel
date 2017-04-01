@@ -141,10 +141,7 @@ class Scenario {
             this.display(++this.progress.pos);
             return;
         }
-        let sentence = direction.message.split('');
-        sentence.forEach(
-            (v, i) => this.appendLetterElement(v, i, config)
-        );
+        this.displayMessage(direction.message, config);
         this.changeButtonDuringDisplaying(direction.next === 'wait');
     }
 
@@ -283,12 +280,33 @@ class Scenario {
     }
 
     /**
-     * Display one letter in the sentence.
-     * @param {string} letter The letter in the sentence.
-     * @param {number} index The index of the letter in the sentence.
+     * Display a sentence.
+     * @param {Message} message The message to display.
      * @param {DisplayConfig} config The display configuration.
      */
-    appendLetterElement(letter, index, config = this.progress.displayConfig) {
+    displayMessage(message, config = this.progress.displayConfig) {
+        let delayTime = 0;
+        message.letters.forEach(c => {
+            if (c.control) {
+                if (c.key === 'duration') {
+                    config.message.duration = Number(c.value);
+                } else if (c.key === 'delay') {
+                    config.message.delay = Number(c.value);
+                }
+            } else {
+                this.appendLetterElement(c.value, delayTime, config)
+                delayTime += config.message.delay;
+            }
+        });
+    }
+
+    /**
+     * Display one letter in the sentence.
+     * @param {string} letter The letter in the sentence.
+     * @param {number} delayTime The delay time (seconds) of displaying the letter.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    appendLetterElement(letter, delayTime, config = this.progress.displayConfig) {
         if (letter === '\n') {
             this.$(config.message.target).append(this.$('<br />'));
             return;
@@ -300,7 +318,7 @@ class Scenario {
                 transition: config.message.duration / 1000 + 's',
                 opacity: 0,
             })
-            .delay(index * config.message.delay)
+            .delay(delayTime)
             .queue(() => {
                 elementLetter.css({
                     visibility: 'visible',

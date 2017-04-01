@@ -31,3 +31,12 @@ is different from than that of the first sentence.
 - I don't know where I was born.
 - I only remember that I was meowing in dim and wet place.
 ```
+
+To change the display speed in the displaying sentence,
+put control sequences into the sentence.
+In the example below, `${delay=10}` and `${duration=100}`
+will not be displayed but change the display speed for the remaining letters.
+
+```yaml
+- I am a cat.${delay=10}${duration=100} I don't have my name yet.
+```

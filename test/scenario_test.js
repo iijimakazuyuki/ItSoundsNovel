@@ -49,6 +49,9 @@ describe('Scenario', function () {
                     '  config:',
                     '    delay: 10',
                     '    duration: 100',
+                    '- ${delay=100}abcdef',
+                    '- abcdef${duration=200}',
+                    '- abc${delay=100}def${duration=200}ghi',
                     '- sound: abc.mp3',
                     '- sound:',
                     '  - abc.mp3',
@@ -121,14 +124,74 @@ describe('Scenario', function () {
             assert.deepEqual(
                 scenario.directions,
                 [
-                    { message: 'abc' },
-                    { message: 'def' },
-                    { message: 'ghi' },
-                    { message: 'abc\ndef\nghi' },
-                    { message: 1 },
-                    { message: 'jkl' },
                     {
-                        message: 'mno',
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'a' },
+                                { control: false, key: null, value: 'b' },
+                                { control: false, key: null, value: 'c' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'd' },
+                                { control: false, key: null, value: 'e' },
+                                { control: false, key: null, value: 'f' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'g' },
+                                { control: false, key: null, value: 'h' },
+                                { control: false, key: null, value: 'i' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'a' },
+                                { control: false, key: null, value: 'b' },
+                                { control: false, key: null, value: 'c' },
+                                { control: false, key: null, value: '\n' },
+                                { control: false, key: null, value: 'd' },
+                                { control: false, key: null, value: 'e' },
+                                { control: false, key: null, value: 'f' },
+                                { control: false, key: null, value: '\n' },
+                                { control: false, key: null, value: 'g' },
+                                { control: false, key: null, value: 'h' },
+                                { control: false, key: null, value: 'i' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: '1' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'j' },
+                                { control: false, key: null, value: 'k' },
+                                { control: false, key: null, value: 'l' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'm' },
+                                { control: false, key: null, value: 'n' },
+                                { control: false, key: null, value: 'o' },
+                            ]
+                        },
                         next: 'wait',
                     },
                     {
@@ -146,12 +209,61 @@ describe('Scenario', function () {
                         }
                     },
                     {
-                        message: 'mno',
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'm' },
+                                { control: false, key: null, value: 'n' },
+                                { control: false, key: null, value: 'o' },
+                            ]
+                        },
                         config: {
                             message: { delay: 10, duration: 100 },
                             background: {},
                             image: {},
                         }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'delay', value: '100' },
+                                { control: false, key: null, value: 'a' },
+                                { control: false, key: null, value: 'b' },
+                                { control: false, key: null, value: 'c' },
+                                { control: false, key: null, value: 'd' },
+                                { control: false, key: null, value: 'e' },
+                                { control: false, key: null, value: 'f' },
+                            ]
+                        },
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'a' },
+                                { control: false, key: null, value: 'b' },
+                                { control: false, key: null, value: 'c' },
+                                { control: false, key: null, value: 'd' },
+                                { control: false, key: null, value: 'e' },
+                                { control: false, key: null, value: 'f' },
+                                { control: true, key: 'duration', value: '200' },
+                            ]
+                        },
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'a' },
+                                { control: false, key: null, value: 'b' },
+                                { control: false, key: null, value: 'c' },
+                                { control: true, key: 'delay', value: '100' },
+                                { control: false, key: null, value: 'd' },
+                                { control: false, key: null, value: 'e' },
+                                { control: false, key: null, value: 'f' },
+                                { control: true, key: 'duration', value: '200' },
+                                { control: false, key: null, value: 'g' },
+                                { control: false, key: null, value: 'h' },
+                                { control: false, key: null, value: 'i' },
+                            ]
+                        },
                     },
                     {
                         sound: {
@@ -367,9 +479,30 @@ describe('Scenario', function () {
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
             scenario.directions = [
-                { message: 'a' },
-                { message: 'bc' },
-                { message: 'def' },
+                {
+                    message: {
+                        letters: [
+                            { control: false, key: null, value: 'a' },
+                        ]
+                    }
+                },
+                {
+                    message: {
+                        letters: [
+                            { control: false, key: null, value: 'b' },
+                            { control: false, key: null, value: 'c' },
+                        ]
+                    }
+                },
+                {
+                    message: {
+                        letters: [
+                            { control: false, key: null, value: 'd' },
+                            { control: false, key: null, value: 'e' },
+                            { control: false, key: null, value: 'f' },
+                        ]
+                    }
+                },
             ];
 
             // act
@@ -534,6 +667,75 @@ describe('Scenario', function () {
             // assert
             assert(displayMock.text.withArgs('').called);
         });
+    });
+
+    describe('#displayMessage()', function () {
+        it('should append letters in the given sentence', function () {
+            // arrange
+            let aStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            }
+            let bStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            }
+            let cStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            }
+            scenario.$.withArgs('<span>a</span>').returns(aStub);
+            scenario.$.withArgs('<span>b</span>').returns(bStub);
+            scenario.$.withArgs('<span>c</span>').returns(cStub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock)
+            let message = {
+                letters: [
+                    { control: false, key: null, value: 'a' },
+                    { control: false, key: null, value: 'b' },
+                    { control: false, key: null, value: 'c' },
+                ]
+            };
+
+            // act
+            scenario.displayMessage(message);
+
+            // assert
+            assert(displayMock.append.withArgs(aStub).called);
+            assert(displayMock.append.withArgs(bStub).called);
+            assert(displayMock.append.withArgs(cStub).called);
+        });
+        it('should change display configuration with a control character', function () {
+            // arrange
+            let config = { message: { duration: 100, delay: 10 } };
+            let message = {
+                letters: [
+                    { control: false, key: null, value: 'a' },
+                    { control: false, key: null, value: 'b' },
+                    { control: false, key: null, value: 'c' },
+                    { control: true, key: 'duration', value: 200 },
+                    { control: true, key: 'delay', value: 20 },
+                    { control: false, key: null, value: 'd' },
+                    { control: false, key: null, value: 'e' },
+                    { control: false, key: null, value: 'f' },
+                ]
+            };
+
+            // act
+            scenario.displayMessage(message, config);
+
+            // assert
+            assert.equal(config.message.duration, 200);
+            assert.equal(config.message.delay, 20);
+        });
+
     });
 
     describe('#appendLetterElement()', function () {
