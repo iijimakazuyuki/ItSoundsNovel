@@ -4,6 +4,9 @@ How to write scenarios
 [Display a sequence of sentences](display_a_sequence_of_sentences.md)
 --------------------------------------------------------------------------------
 
+[Change font sytle](change_font_style.md)
+--------------------------------------------------------------------------------
+
 [Change the display speed of sentences](change_the_display_speed_of_sentences.md)
 --------------------------------------------------------------------------------
 

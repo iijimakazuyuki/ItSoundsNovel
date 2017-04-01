@@ -320,6 +320,16 @@ describe('Scenario', function () {
                     '- ${delay=100}abcdef',
                     '- abcdef${duration=200}',
                     '- abc${delay=100}def${duration=200}ghi',
+                    '- ${fontSize=10px}',
+                    '- ${fontSize=medium}',
+                    '- ${fontSize=small}',
+                    '- ${fontSize=large}',
+                    '- ${fontStyle=normal}',
+                    '- ${fontStyle=italic}',
+                    '- ${fontFamily=sans-serif}',
+                    '- ${fontFamily=}',
+                    '- ${fontWeight=normal}',
+                    '- ${fontWeight=bold}',
                 ].join('\n')
             );
             let url = '';
@@ -373,6 +383,76 @@ describe('Scenario', function () {
                                 { control: false, key: null, value: 'i' },
                             ]
                         },
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontSize', value: '10px' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontSize', value: 'medium' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontSize', value: 'small' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontSize', value: 'large' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontStyle', value: 'normal' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontStyle', value: 'italic' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontFamily', value: 'sans-serif' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontFamily', value: '' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontWeight', value: 'normal' },
+                            ]
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                { control: true, key: 'fontWeight', value: 'bold' },
+                            ]
+                        }
                     },
                 ]
             );
@@ -1228,6 +1308,29 @@ describe('Scenario', function () {
             assert.equal(config.message.duration, 200);
             assert.equal(config.message.delay, 20);
         });
+        it('should change display configuration with a control character', function () {
+            // arrange
+            let config = { message: { duration: 100, delay: 10, fontWeight: 'normal', fontSize: 'medium' } };
+            let message = {
+                letters: [
+                    { control: false, key: null, value: 'a' },
+                    { control: false, key: null, value: 'b' },
+                    { control: false, key: null, value: 'c' },
+                    { control: true, key: 'fontSize', value: 'large' },
+                    { control: true, key: 'fontWeight', value: 'bold' },
+                    { control: false, key: null, value: 'd' },
+                    { control: false, key: null, value: 'e' },
+                    { control: false, key: null, value: 'f' },
+                ]
+            };
+
+            // act
+            scenario.displayMessage(message, config);
+
+            // assert
+            assert.equal(config.message.fontSize, 'large');
+            assert.equal(config.message.fontWeight, 'bold');
+        });
 
     });
 
@@ -1626,7 +1729,10 @@ describe('Scenario', function () {
                     message: {
                         target: '#messageWindow',
                         delay: 50,
-                        duration: 500
+                        duration: 500,
+                        fontSize: 'medium',
+                        fontStyle: 'normal',
+                        fontWeight: 'normal',
                     },
                     background: {
                         target: '#backgroundWindow',
