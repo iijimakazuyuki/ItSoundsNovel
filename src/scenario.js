@@ -47,8 +47,9 @@ class Scenario {
     /**
      * Load a scenario from a url.
      * @param {string} url The url of the scenario.
+     * @param {boolean} autoStart True if scenario starts automatically.
      */
-    load(url) {
+    load(url, autoStart = true) {
         this.progress.scenarioUrl = url;
         this.$.get({
             url: url,
@@ -56,7 +57,13 @@ class Scenario {
                 this.directions = yaml
                     .safeLoad(data)
                     .map(direction => new Direction(direction));
-                this.init(0);
+                if (autoStart) {
+                    this.init(0);
+                } else {
+                    this.progress.pos = -1;
+                    this.enableUI();
+                }
+
             },
             dataType: 'text',
         });
