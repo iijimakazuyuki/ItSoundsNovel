@@ -22,7 +22,7 @@ describe('Scenario', function () {
     });
 
     describe('#load()', function () {
-        it('should get content with $ as yaml and set an object', function () {
+        it('should get content with $ as yaml and start a scenario automatically', function () {
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -30,92 +30,33 @@ describe('Scenario', function () {
                     '- abc',
                     '- def',
                     '- ghi',
-                    '- |-',
-                    '  abc',
-                    '  def',
-                    '  ghi',
-                    '- 1',
-                    '- message: jkl',
-                    '- message: mno',
-                    '  next: wait',
-                    '- config:',
-                    '    delay: 10',
-                    '    duration: 100',
-                    '- config:',
-                    '    message:',
-                    '      delay: 10',
-                    '      duration: 100',
-                    '- message: mno',
-                    '  config:',
-                    '    delay: 10',
-                    '    duration: 100',
-                    '- ${delay=100}abcdef',
-                    '- abcdef${duration=200}',
-                    '- abc${delay=100}def${duration=200}ghi',
-                    '- sound: abc.mp3',
-                    '- sound:',
-                    '  - abc.mp3',
-                    '  - def.mp3',
-                    '- background:',
-                    '    image: abc.jpg',
-                    '- background:',
-                    '    image: abc.jpg',
-                    '  next: wait',
-                    '- background:',
-                    '    image: abc.jpg',
-                    '  config:',
-                    '    duration: 100',
-                    '- background:',
-                    '    control: remove',
-                    '- background:',
-                    '    control: remove',
-                    '  next: wait',
-                    '- bgm: stop',
-                    '- bgm: stop',
-                    '  duration: 1000',
-                    '- bgm: abc.mp3',
-                    '- bgm:',
-                    '  - abc.mp3',
-                    '  - def.mp3',
-                    '- bgm: abc.mp3',
-                    '  loop: none',
-                    '- bgm: abc.mp3',
-                    '  loop:',
-                    '    head: 2.5',
-                    '- image:',
-                    '    name: abc',
-                    '    source: abc.jpg',
-                    '    x: 10',
-                    '    y: 10',
-                    '- image:',
-                    '    name: abc',
-                    '    source: abc.jpg',
-                    '    x: 10',
-                    '    y: 10',
-                    '    z: -5',
-                    '- image:',
-                    '    name: abc',
-                    '    x: 10',
-                    '    y: 10',
-                    '- image:',
-                    '    name: abc',
-                    '    x: 10',
-                    '    y: 10',
-                    '  config:',
-                    '    duration: 100',
-                    '- image:',
-                    '    name: abc',
-                    '    control: remove',
-                    '- image:',
-                    '    name: abc',
-                    '    x: 10',
-                    '    y: 10',
-                    '  next: wait',
-                    '- load: abc.yml',
-                    '- wait: 1000',
                 ].join('\n')
             );
             let url = '';
+            let aStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            }
+            let bStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            }
+            let cStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            }
+            scenario.$.withArgs('<span>a</span>').returns(aStub);
+            scenario.$.withArgs('<span>b</span>').returns(bStub);
+            scenario.$.withArgs('<span>c</span>').returns(cStub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock)
 
             // act
             scenario.load(url);
@@ -151,27 +92,36 @@ describe('Scenario', function () {
                             ]
                         }
                     },
+                ]
+            );
+            assert(displayMock.append.withArgs(aStub).called);
+            assert(displayMock.append.withArgs(bStub).called);
+            assert(displayMock.append.withArgs(cStub).called);
+        });
+        it('should set message objects', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- message: abc',
+                    '- message: jkl',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         message: {
                             letters: [
                                 { control: false, key: null, value: 'a' },
                                 { control: false, key: null, value: 'b' },
                                 { control: false, key: null, value: 'c' },
-                                { control: false, key: null, value: '\n' },
-                                { control: false, key: null, value: 'd' },
-                                { control: false, key: null, value: 'e' },
-                                { control: false, key: null, value: 'f' },
-                                { control: false, key: null, value: '\n' },
-                                { control: false, key: null, value: 'g' },
-                                { control: false, key: null, value: 'h' },
-                                { control: false, key: null, value: 'i' },
-                            ]
-                        }
-                    },
-                    {
-                        message: {
-                            letters: [
-                                { control: false, key: null, value: '1' },
                             ]
                         }
                     },
@@ -184,6 +134,94 @@ describe('Scenario', function () {
                             ]
                         }
                     },
+                ]
+            );
+        });
+        it('should set message objects with newlines', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- |-',
+                    '  abc',
+                    '  def',
+                    '  ghi',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: 'a' },
+                                { control: false, key: null, value: 'b' },
+                                { control: false, key: null, value: 'c' },
+                                { control: false, key: null, value: '\n' },
+                                { control: false, key: null, value: 'd' },
+                                { control: false, key: null, value: 'e' },
+                                { control: false, key: null, value: 'f' },
+                                { control: false, key: null, value: '\n' },
+                                { control: false, key: null, value: 'g' },
+                                { control: false, key: null, value: 'h' },
+                                { control: false, key: null, value: 'i' },
+                            ]
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set message objects with a number', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- 1',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                { control: false, key: null, value: '1' },
+                            ]
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set message objects with wait', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- message: mno',
+                    '  next: wait',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         message: {
                             letters: [
@@ -194,6 +232,32 @@ describe('Scenario', function () {
                         },
                         next: 'wait',
                     },
+                ]
+            );
+        });
+        it('should set a display configuration for messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- config:',
+                    '    delay: 10',
+                    '    duration: 100',
+                    '- config:',
+                    '    message:',
+                    '      delay: 10',
+                    '      duration: 100',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         config: {
                             message: { delay: 10, duration: 100 },
@@ -208,6 +272,29 @@ describe('Scenario', function () {
                             image: {},
                         }
                     },
+                ]
+            );
+        });
+        it('should set message and a display configuration', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- message: mno',
+                    '  config:',
+                    '    delay: 10',
+                    '    duration: 100',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         message: {
                             letters: [
@@ -222,6 +309,28 @@ describe('Scenario', function () {
                             image: {},
                         }
                     },
+                ]
+            );
+        });
+        it('should set control characters in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- ${delay=100}abcdef',
+                    '- abcdef${duration=200}',
+                    '- abc${delay=100}def${duration=200}ghi',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         message: {
                             letters: [
@@ -265,6 +374,29 @@ describe('Scenario', function () {
                             ]
                         },
                     },
+                ]
+            );
+        });
+        it('should set sound', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- sound: abc.mp3',
+                    '- sound:',
+                    '  - abc.mp3',
+                    '  - def.mp3',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         sound: {
                             source: [
@@ -280,17 +412,83 @@ describe('Scenario', function () {
                             ]
                         },
                     },
+                ]
+            );
+        });
+        it('should set a background image', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- background:',
+                    '    image: abc.jpg',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         background: {
                             image: 'abc.jpg',
                         },
                     },
+                ]
+            );
+        });
+        it('should set a background image with wait', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- background:',
+                    '    image: abc.jpg',
+                    '  next: wait',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         background: {
                             image: 'abc.jpg',
                         },
                         next: 'wait',
                     },
+                ]
+            );
+        });
+        it('should set a background image with a display configuration', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- background:',
+                    '    image: abc.jpg',
+                    '  config:',
+                    '    duration: 100',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         background: {
                             image: 'abc.jpg',
@@ -301,17 +499,82 @@ describe('Scenario', function () {
                             image: {},
                         }
                     },
+                ]
+            );
+        });
+        it('should set event to remove background image', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- background:',
+                    '    control: remove',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         background: {
                             control: 'remove',
                         },
                     },
+                ]
+            );
+        });
+        it('should set event to remove a background image with wait', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- background:',
+                    '    control: remove',
+                    '  next: wait',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         background: {
                             control: 'remove',
                         },
                         next: 'wait',
                     },
+                ]
+            );
+        });
+        it('should set an event to stop background music', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- bgm: stop',
+                    '- bgm: stop',
+                    '  duration: 1000',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         bgm: {
                             control: 'stop',
@@ -330,6 +593,29 @@ describe('Scenario', function () {
                             duration: 1000,
                         },
                     },
+                ]
+            );
+        });
+        it('should set background music', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- bgm: abc.mp3',
+                    '- bgm:',
+                    '  - abc.mp3',
+                    '  - def.mp3',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         bgm: {
                             head: 0,
@@ -349,6 +635,27 @@ describe('Scenario', function () {
                             ],
                         },
                     },
+                ]
+            );
+        });
+        it('should set background music without a loop', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- bgm: abc.mp3',
+                    '  loop: none',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         bgm: {
                             loop: false,
@@ -357,6 +664,28 @@ describe('Scenario', function () {
                             ],
                         },
                     },
+                ]
+            );
+        });
+        it('should set background music with a partial loop', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- bgm: abc.mp3',
+                    '  loop:',
+                    '    head: 2.5',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         bgm: {
                             head: 2.5,
@@ -366,6 +695,36 @@ describe('Scenario', function () {
                             ],
                         },
                     },
+                ]
+            );
+        });
+        it('should set an image', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- image:',
+                    '    name: abc',
+                    '    source: abc.jpg',
+                    '    x: 10',
+                    '    y: 10',
+                    '- image:',
+                    '    name: abc',
+                    '    source: abc.jpg',
+                    '    x: 10',
+                    '    y: 10',
+                    '    z: -5',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         image: {
                             name: 'abc',
@@ -383,6 +742,29 @@ describe('Scenario', function () {
                             z: -5,
                         }
                     },
+                ]
+            );
+        });
+        it('should set an event to move an image', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- image:',
+                    '    name: abc',
+                    '    x: 10',
+                    '    y: 10',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         image: {
                             name: 'abc',
@@ -390,6 +772,31 @@ describe('Scenario', function () {
                             y: 10,
                         }
                     },
+                ]
+            );
+        });
+        it('should set an event to move an image with a configuration', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- image:',
+                    '    name: abc',
+                    '    x: 10',
+                    '    y: 10',
+                    '  config:',
+                    '    duration: 100',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         image: {
                             name: 'abc',
@@ -404,6 +811,28 @@ describe('Scenario', function () {
                             message: {},
                         }
                     },
+                ]
+            );
+        });
+        it('should set an event to remove an image', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- image:',
+                    '    name: abc',
+                    '    control: remove',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         image: {
                             name: 'abc',
@@ -412,6 +841,30 @@ describe('Scenario', function () {
                             y: 0,
                         }
                     },
+                ]
+            );
+        });
+        it('should set an event to move an image with wait', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- image:',
+                    '    name: abc',
+                    '    x: 10',
+                    '    y: 10',
+                    '  next: wait',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         image: {
                             name: 'abc',
@@ -420,9 +873,49 @@ describe('Scenario', function () {
                         },
                         next: 'wait',
                     },
+                ]
+            );
+        });
+        it('should set an event to load another scenario', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- load: abc.yml',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     {
                         load: 'abc.yml',
                     },
+                ]
+            );
+        });
+        it('should set an event to wait', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- wait: 1000',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
                     { wait: 1000 },
                 ]
             );
