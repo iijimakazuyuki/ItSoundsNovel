@@ -257,7 +257,7 @@ describe('ItSoundsNovel View', function () {
                 ).then(element =>
                     driver.wait(
                         until.elementTextIs(element, FOURTH_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                        DEFAULT_TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
                 );
         }
