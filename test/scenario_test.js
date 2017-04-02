@@ -207,6 +207,41 @@ describe('Scenario', function () {
                 ]
             );
         });
+        it('should set message objects with auto', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- message: mno',
+                    '  auto: 100',
+                    '- message: abc',
+                    '  auto: 0',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: normalCharacterArrayOf(['m', 'n', 'o']),
+                        },
+                        auto: 100,
+                    },
+                    {
+                        message: {
+                            letters: normalCharacterArrayOf(['a', 'b', 'c']),
+                        },
+                        auto: 0,
+                    },
+                ]
+            );
+        });
         it('should set a display configuration for messages', function () {
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
@@ -1826,7 +1861,7 @@ describe('Scenario', function () {
                 one: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.message.target + ' :last-child'
+                scenario.progress.displayConfig.message.target + ' :last'
             ).returns(letterElementMock);
 
             // act
@@ -1850,11 +1885,59 @@ describe('Scenario', function () {
                 one: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.message.target + ' :last-child'
+                scenario.progress.displayConfig.message.target + ' :last'
             ).returns(letterElementMock);
 
             // act
             scenario.changeButtonDuringDisplaying(true);
+
+            // assert
+            assert(nextButtonMock.off.called);
+            assert(nextButtonMock.click.notCalled);
+            assert(letterElementMock.one.called);
+        });
+        it('should off and bind click on next button and the last letter element with automatic displaying', function () {
+            // arrange
+            let nextButtonMock = {
+                off: sinon.spy(),
+                click: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.next
+            ).returns(nextButtonMock);
+            let letterElementMock = {
+                one: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target + ' :last'
+            ).returns(letterElementMock);
+
+            // act
+            scenario.changeButtonDuringDisplaying(false, 100);
+
+            // assert
+            assert(nextButtonMock.off.called);
+            assert(nextButtonMock.click.called);
+            assert(letterElementMock.one.called);
+        });
+        it('should off click on next button and bind function on the last letter element with automatic displaying', function () {
+            // arrange
+            let nextButtonMock = {
+                off: sinon.spy(),
+                click: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.ui.next
+            ).returns(nextButtonMock);
+            let letterElementMock = {
+                one: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target + ' :last'
+            ).returns(letterElementMock);
+
+            // act
+            scenario.changeButtonDuringDisplaying(true, 100);
 
             // assert
             assert(nextButtonMock.off.called);
