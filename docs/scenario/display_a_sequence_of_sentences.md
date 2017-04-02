@@ -42,3 +42,9 @@ If `next: wait` is specified, the next button won't work.
 - message: I saw something called human beings for the first time there.
   next: wait
 ```
+
+To embed a hyperlink, write `${[label](url or absolute path or relative path)}`.
+
+```yaml
+- I am a ${[cat](http://example.com)}. I don't have my name yet.
+```

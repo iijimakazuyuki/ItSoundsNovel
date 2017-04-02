@@ -2,6 +2,16 @@ const assert = require('chai').assert;
 const Scenario = require('../src/scenario.js');
 const sinon = require('sinon');
 
+const Character = require('../src/character.js');
+
+const normalCharacterOf = v => new Character(null, null, v);
+
+const normalCharacterArrayOf = a => a.map(v => normalCharacterOf(v));
+
+const keyValueControlCharacterOf = (k, v) => new Character('keyValue', k, v);
+
+const hyperlinkControlCharacterOf = (k, v) => new Character('hyperlink', k, v);
+
 describe('Scenario', function () {
     const scenario = new Scenario();
 
@@ -67,29 +77,17 @@ describe('Scenario', function () {
                 [
                     {
                         message: {
-                            letters: [
-                                { control: false, key: null, value: 'a' },
-                                { control: false, key: null, value: 'b' },
-                                { control: false, key: null, value: 'c' },
-                            ]
+                            letters: normalCharacterArrayOf(['a', 'b', 'c']),
                         }
                     },
                     {
                         message: {
-                            letters: [
-                                { control: false, key: null, value: 'd' },
-                                { control: false, key: null, value: 'e' },
-                                { control: false, key: null, value: 'f' },
-                            ]
+                            letters: normalCharacterArrayOf(['d', 'e', 'f']),
                         }
                     },
                     {
                         message: {
-                            letters: [
-                                { control: false, key: null, value: 'g' },
-                                { control: false, key: null, value: 'h' },
-                                { control: false, key: null, value: 'i' },
-                            ]
+                            letters: normalCharacterArrayOf(['g', 'h', 'i']),
                         }
                     },
                 ]
@@ -118,20 +116,12 @@ describe('Scenario', function () {
                 [
                     {
                         message: {
-                            letters: [
-                                { control: false, key: null, value: 'a' },
-                                { control: false, key: null, value: 'b' },
-                                { control: false, key: null, value: 'c' },
-                            ]
+                            letters: normalCharacterArrayOf(['a', 'b', 'c']),
                         }
                     },
                     {
                         message: {
-                            letters: [
-                                { control: false, key: null, value: 'j' },
-                                { control: false, key: null, value: 'k' },
-                                { control: false, key: null, value: 'l' },
-                            ]
+                            letters: normalCharacterArrayOf(['j', 'k', 'l']),
                         }
                     },
                 ]
@@ -159,19 +149,7 @@ describe('Scenario', function () {
                 [
                     {
                         message: {
-                            letters: [
-                                { control: false, key: null, value: 'a' },
-                                { control: false, key: null, value: 'b' },
-                                { control: false, key: null, value: 'c' },
-                                { control: false, key: null, value: '\n' },
-                                { control: false, key: null, value: 'd' },
-                                { control: false, key: null, value: 'e' },
-                                { control: false, key: null, value: 'f' },
-                                { control: false, key: null, value: '\n' },
-                                { control: false, key: null, value: 'g' },
-                                { control: false, key: null, value: 'h' },
-                                { control: false, key: null, value: 'i' },
-                            ]
+                            letters: normalCharacterArrayOf(['a', 'b', 'c', '\n', 'd', 'e', 'f', '\n', 'g', 'h', 'i']),
                         }
                     },
                 ]
@@ -196,9 +174,7 @@ describe('Scenario', function () {
                 [
                     {
                         message: {
-                            letters: [
-                                { control: false, key: null, value: '1' },
-                            ]
+                            letters: normalCharacterArrayOf(['1']),
                         }
                     },
                 ]
@@ -224,11 +200,7 @@ describe('Scenario', function () {
                 [
                     {
                         message: {
-                            letters: [
-                                { control: false, key: null, value: 'm' },
-                                { control: false, key: null, value: 'n' },
-                                { control: false, key: null, value: 'o' },
-                            ]
+                            letters: normalCharacterArrayOf(['m', 'n', 'o']),
                         },
                         next: 'wait',
                     },
@@ -297,11 +269,7 @@ describe('Scenario', function () {
                 [
                     {
                         message: {
-                            letters: [
-                                { control: false, key: null, value: 'm' },
-                                { control: false, key: null, value: 'n' },
-                                { control: false, key: null, value: 'o' },
-                            ]
+                            letters: normalCharacterArrayOf(['m', 'n', 'o']),
                         },
                         config: {
                             message: { delay: 10, duration: 100 },
@@ -319,15 +287,258 @@ describe('Scenario', function () {
                 [
                     '- ${delay=100}abcdef',
                     '- abcdef${duration=200}',
-                    '- abc${delay=100}def${duration=200}ghi',
+                    '- ${[aaa](bbb)}abcdef',
+                    '- abcdef${[aaa](bbb)}',
+                    '- abc${delay=100}def${duration=200}ghi${[jkl](/mno)}pqr',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('delay', '100')
+                            ].concat(normalCharacterArrayOf(
+                                ['a', 'b', 'c', 'd', 'e', 'f']
+                            )),
+                        },
+                    },
+                    {
+                        message: {
+                            letters: normalCharacterArrayOf(
+                                ['a', 'b', 'c', 'd', 'e', 'f']
+                            ).concat([
+                                keyValueControlCharacterOf('duration', '200')
+                            ]),
+                        },
+                    },
+                    {
+                        message: {
+                            letters: [
+                                hyperlinkControlCharacterOf('aaa', 'bbb')
+                            ].concat(normalCharacterArrayOf(
+                                ['a', 'b', 'c', 'd', 'e', 'f']
+                            )),
+                        },
+                    },
+                    {
+                        message: {
+                            letters: normalCharacterArrayOf(
+                                ['a', 'b', 'c', 'd', 'e', 'f']
+                            ).concat([
+                                hyperlinkControlCharacterOf('aaa', 'bbb')
+                            ]),
+                        },
+                    },
+                    {
+                        message: {
+                            letters: normalCharacterArrayOf(
+                                ['a', 'b', 'c']
+                            ).concat([
+                                keyValueControlCharacterOf('delay', '100')
+                            ]).concat(normalCharacterArrayOf(
+                                ['d', 'e', 'f']
+                            )).concat([
+                                keyValueControlCharacterOf('duration', '200')
+                            ]).concat(normalCharacterArrayOf(
+                                ['g', 'h', 'i']
+                            )).concat([
+                                hyperlinkControlCharacterOf('jkl', '/mno')
+                            ]).concat(normalCharacterArrayOf(
+                                ['p', 'q', 'r']
+                            )),
+                        },
+                    },
+                ]
+            );
+        });
+        it('should set a control character to change a delay time in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- ${delay=100}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('delay', '100')
+                            ],
+                        },
+                    },
+                ]
+            );
+        });
+        it('should set a control character to change a display duration in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- ${duration=200}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('duration', '200')
+                            ],
+                        },
+                    },
+                ]
+            );
+        });
+        it('should set a control character to change font size in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
                     '- ${fontSize=10px}',
                     '- ${fontSize=medium}',
                     '- ${fontSize=small}',
                     '- ${fontSize=large}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('fontSize', '10px'),
+                            ],
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('fontSize', 'medium'),
+                            ],
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('fontSize', 'small'),
+                            ],
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('fontSize', 'large'),
+                            ],
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set a control character to change font style in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
                     '- ${fontStyle=normal}',
                     '- ${fontStyle=italic}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('fontStyle', 'normal'),
+                            ],
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('fontStyle', 'italic'),
+                            ],
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set a control character to change a font family in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
                     '- ${fontFamily=sans-serif}',
                     '- ${fontFamily=}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('fontFamily', 'sans-serif'),
+                            ],
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('fontFamily', ''),
+                            ],
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set a control character to change font weight in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
                     '- ${fontWeight=normal}',
                     '- ${fontWeight=bold}',
                 ].join('\n')
@@ -344,114 +555,74 @@ describe('Scenario', function () {
                     {
                         message: {
                             letters: [
-                                { control: true, key: 'delay', value: '100' },
-                                { control: false, key: null, value: 'a' },
-                                { control: false, key: null, value: 'b' },
-                                { control: false, key: null, value: 'c' },
-                                { control: false, key: null, value: 'd' },
-                                { control: false, key: null, value: 'e' },
-                                { control: false, key: null, value: 'f' },
-                            ]
-                        },
-                    },
-                    {
-                        message: {
-                            letters: [
-                                { control: false, key: null, value: 'a' },
-                                { control: false, key: null, value: 'b' },
-                                { control: false, key: null, value: 'c' },
-                                { control: false, key: null, value: 'd' },
-                                { control: false, key: null, value: 'e' },
-                                { control: false, key: null, value: 'f' },
-                                { control: true, key: 'duration', value: '200' },
-                            ]
-                        },
-                    },
-                    {
-                        message: {
-                            letters: [
-                                { control: false, key: null, value: 'a' },
-                                { control: false, key: null, value: 'b' },
-                                { control: false, key: null, value: 'c' },
-                                { control: true, key: 'delay', value: '100' },
-                                { control: false, key: null, value: 'd' },
-                                { control: false, key: null, value: 'e' },
-                                { control: false, key: null, value: 'f' },
-                                { control: true, key: 'duration', value: '200' },
-                                { control: false, key: null, value: 'g' },
-                                { control: false, key: null, value: 'h' },
-                                { control: false, key: null, value: 'i' },
-                            ]
-                        },
-                    },
-                    {
-                        message: {
-                            letters: [
-                                { control: true, key: 'fontSize', value: '10px' },
-                            ]
+                                keyValueControlCharacterOf('fontWeight', 'normal'),
+                            ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                { control: true, key: 'fontSize', value: 'medium' },
-                            ]
+                                keyValueControlCharacterOf('fontWeight', 'bold'),
+                            ],
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set hyperlink control characters in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- ${[aaa](../bbb/)}',
+                    '- ${[aaa](bbb/ccc)}',
+                    '- ${[aaa](/bbb/ccc.html)}',
+                    '- ${[aaa](http://example.com/)}',
+                    '- ${[aaa](https://example.com/bbb/ccc)}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                hyperlinkControlCharacterOf('aaa', '../bbb/'),
+                            ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                { control: true, key: 'fontSize', value: 'small' },
-                            ]
+                                hyperlinkControlCharacterOf('aaa', 'bbb/ccc'),
+                            ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                { control: true, key: 'fontSize', value: 'large' },
-                            ]
+                                hyperlinkControlCharacterOf('aaa', '/bbb/ccc.html'),
+                            ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                { control: true, key: 'fontStyle', value: 'normal' },
-                            ]
+                                hyperlinkControlCharacterOf('aaa', 'http://example.com/'),
+                            ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                { control: true, key: 'fontStyle', value: 'italic' },
-                            ]
-                        }
-                    },
-                    {
-                        message: {
-                            letters: [
-                                { control: true, key: 'fontFamily', value: 'sans-serif' },
-                            ]
-                        }
-                    },
-                    {
-                        message: {
-                            letters: [
-                                { control: true, key: 'fontFamily', value: '' },
-                            ]
-                        }
-                    },
-                    {
-                        message: {
-                            letters: [
-                                { control: true, key: 'fontWeight', value: 'normal' },
-                            ]
-                        }
-                    },
-                    {
-                        message: {
-                            letters: [
-                                { control: true, key: 'fontWeight', value: 'bold' },
-                            ]
+                                hyperlinkControlCharacterOf('aaa', 'https://example.com/bbb/ccc'),
+                            ],
                         }
                     },
                 ]
@@ -1051,28 +1222,51 @@ describe('Scenario', function () {
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
+            let aLetterStub = {
+                value: 'b',
+                isKeyValue: sinon.stub().returns(false),
+                isHyperlink: sinon.stub().returns(false),
+            };
             scenario.directions = [
                 {
                     message: {
+                        letters: [aLetterStub]
+                    }
+                },
+                {
+                    message: {
                         letters: [
-                            { control: false, key: null, value: 'a' },
+                            {
+                                type: null, key: null, value: 'b',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
+                            {
+                                type: null, key: null, value: 'c',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
                         ]
                     }
                 },
                 {
                     message: {
                         letters: [
-                            { control: false, key: null, value: 'b' },
-                            { control: false, key: null, value: 'c' },
-                        ]
-                    }
-                },
-                {
-                    message: {
-                        letters: [
-                            { control: false, key: null, value: 'd' },
-                            { control: false, key: null, value: 'e' },
-                            { control: false, key: null, value: 'f' },
+                            {
+                                type: null, key: null, value: 'd',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
+                            {
+                                type: null, key: null, value: 'e',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
+                            {
+                                type: null, key: null, value: 'f',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
                         ]
                     }
                 },
@@ -1270,11 +1464,7 @@ describe('Scenario', function () {
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock)
             let message = {
-                letters: [
-                    { control: false, key: null, value: 'a' },
-                    { control: false, key: null, value: 'b' },
-                    { control: false, key: null, value: 'c' },
-                ]
+                letters: normalCharacterArrayOf(['a', 'b', 'c']),
             };
 
             // act
@@ -1289,16 +1479,14 @@ describe('Scenario', function () {
             // arrange
             let config = { message: { duration: 100, delay: 10 } };
             let message = {
-                letters: [
-                    { control: false, key: null, value: 'a' },
-                    { control: false, key: null, value: 'b' },
-                    { control: false, key: null, value: 'c' },
-                    { control: true, key: 'duration', value: 200 },
-                    { control: true, key: 'delay', value: 20 },
-                    { control: false, key: null, value: 'd' },
-                    { control: false, key: null, value: 'e' },
-                    { control: false, key: null, value: 'f' },
-                ]
+                letters: normalCharacterArrayOf(
+                    ['a', 'b', 'c']
+                ).concat([
+                    keyValueControlCharacterOf('duration', '200'),
+                    keyValueControlCharacterOf('delay', '20'),
+                ]).concat(normalCharacterArrayOf(
+                    ['d', 'e', 'f']
+                )),
             };
 
             // act
@@ -1312,16 +1500,14 @@ describe('Scenario', function () {
             // arrange
             let config = { message: { duration: 100, delay: 10, fontWeight: 'normal', fontSize: 'medium' } };
             let message = {
-                letters: [
-                    { control: false, key: null, value: 'a' },
-                    { control: false, key: null, value: 'b' },
-                    { control: false, key: null, value: 'c' },
-                    { control: true, key: 'fontSize', value: 'large' },
-                    { control: true, key: 'fontWeight', value: 'bold' },
-                    { control: false, key: null, value: 'd' },
-                    { control: false, key: null, value: 'e' },
-                    { control: false, key: null, value: 'f' },
-                ]
+                letters: normalCharacterArrayOf(
+                    ['a', 'b', 'c']
+                ).concat([
+                    keyValueControlCharacterOf('fontSize', 'large'),
+                    keyValueControlCharacterOf('fontWeight', 'bold'),
+                ]).concat(normalCharacterArrayOf(
+                    ['d', 'e', 'f']
+                )),
             };
 
             // act
@@ -1331,47 +1517,69 @@ describe('Scenario', function () {
             assert.equal(config.message.fontSize, 'large');
             assert.equal(config.message.fontWeight, 'bold');
         });
-
-    });
-
-    describe('#appendLetterElement()', function () {
-        it('should append one letter to display', function () {
+        it('should display a hyperlink', function () {
             // arrange
-            let letterStub = {
+            let message = {
+                letters: normalCharacterArrayOf(
+                    ['a', 'b', 'c']
+                ).concat([
+                    hyperlinkControlCharacterOf('xyz', 'yyy'),
+                ]).concat(normalCharacterArrayOf(
+                    ['d', 'e', 'f']
+                )),
+            };
+            let displayMock = {
+                append: sinon.spy()
+            };
+            let xStub = {
                 css: sinon.stub().returnsThis(),
                 delay: sinon.stub().returnsThis(),
                 queue: sinon.stub().returnsThis(),
-            }
-            scenario.$.withArgs('<span>s</span>').returns(letterStub);
-            let displayMock = {
-                append: sinon.spy()
             };
-            scenario.$.withArgs(
-                scenario.progress.displayConfig.message.target
-            ).returns(displayMock)
+            let yStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            };
+            let zStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            };
+            scenario.$.withArgs('<a>', { href: 'yyy' }).returns(displayMock);
+            scenario.$.withArgs('<span>x</span>').returns(xStub);
+            scenario.$.withArgs('<span>y</span>').returns(yStub);
+            scenario.$.withArgs('<span>z</span>').returns(zStub);
 
             // act
-            scenario.appendLetterElement('s', 10);
+            scenario.displayMessage(message);
 
             // assert
-            assert(displayMock.append.withArgs(letterStub).called);
+            assert(displayMock.append.withArgs(xStub).called);
+            assert(displayMock.append.withArgs(yStub).called);
+            assert(displayMock.append.withArgs(zStub).called);
         });
-        it('should append newline to display', function () {
+
+    });
+
+    describe('#createLetterElement()', function () {
+        it('should create one letter', function () {
             // arrange
-            let letterStub = sinon.stub();
-            scenario.$.withArgs('<br />').returns(letterStub);
-            let displayMock = {
-                append: sinon.spy()
-            };
-            scenario.$.withArgs(
-                scenario.progress.displayConfig.message.target
-            ).returns(displayMock)
 
             // act
-            scenario.appendLetterElement('\n', 10);
+            scenario.createLetterElement('s', 10);
 
             // assert
-            assert(displayMock.append.withArgs(letterStub).called);
+            assert(scenario.$.withArgs('<span>s</span>').called);
+        });
+        it('should create newline', function () {
+            // arrange
+
+            // act
+            scenario.createLetterElement('\n', 10);
+
+            // assert
+            assert(scenario.$.withArgs('<br />').called);
         });
     });
 
