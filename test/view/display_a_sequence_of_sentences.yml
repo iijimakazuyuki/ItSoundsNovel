@@ -1,5 +1,5 @@
 - |-
-  I am a cat.
+  I am a ${[cat](http://en.wikipedia.org/wiki/Cat)}.
   I don't have my name yet.
 - message: I don't know where I was born.
   next: wait

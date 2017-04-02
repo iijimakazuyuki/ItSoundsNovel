@@ -294,7 +294,7 @@ class Scenario {
     displayMessage(message, config = this.progress.displayConfig) {
         let delayTime = 0;
         message.letters.forEach(c => {
-            if (c.control) {
+            if (c.isKeyValue()) {
                 if (c.key === 'duration') {
                     config.message.duration = Number(c.value);
                 } else if (c.key === 'delay') {
@@ -308,23 +308,31 @@ class Scenario {
                 } else if (c.key === 'fontWeight') {
                     config.message.fontWeight = c.value;
                 }
+            } else if (c.isHyperlink()) {
+                let hyperlink = this.$('<a>', { href: c.value });
+                c.key.split('').forEach(letter => {
+                    let elementLetter = this.createLetterElement(letter, delayTime, config);
+                    hyperlink.append(elementLetter);
+                    delayTime += config.message.delay;
+                });
+                this.$(config.message.target).append(hyperlink);
             } else {
-                this.appendLetterElement(c.value, delayTime, config)
+                let elementLetter = this.createLetterElement(c.value, delayTime, config);
+                this.$(config.message.target).append(elementLetter);
                 delayTime += config.message.delay;
             }
         });
     }
 
     /**
-     * Display one letter in the sentence.
+     * Create one letter in the sentence.
      * @param {string} letter The letter in the sentence.
      * @param {number} delayTime The delay time (seconds) of displaying the letter.
      * @param {DisplayConfig} config The display configuration.
      */
-    appendLetterElement(letter, delayTime, config = this.progress.displayConfig) {
+    createLetterElement(letter, delayTime, config = this.progress.displayConfig) {
         if (letter === '\n') {
-            this.$(config.message.target).append(this.$('<br />'));
-            return;
+            return this.$('<br />');
         }
         let elementLetter = this.$('<span>' + letter + '</span>')
             .css({
@@ -344,7 +352,7 @@ class Scenario {
                     opacity: 1,
                 });
             });
-        this.$(config.message.target).append(elementLetter);
+        return elementLetter;
     }
 
     /**
