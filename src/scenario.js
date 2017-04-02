@@ -83,6 +83,7 @@ class Scenario {
      * @param {number} n Position of the sentence.
      */
     display(n) {
+        clearTimeout(this.autoDisplay);
         let direction = this.directions[n];
         if (!direction) return;
         let config;
@@ -149,7 +150,7 @@ class Scenario {
             return;
         }
         this.displayMessage(direction.message, config);
-        this.changeButtonDuringDisplaying(direction.next === 'wait');
+        this.changeButtonDuringDisplaying(direction.next === 'wait', direction.auto);
     }
 
     /**
@@ -476,22 +477,51 @@ class Scenario {
     /**
      * Enable the next button to skip displaying.
      * @param {boolean} wait If the next button is disabled to wait for displaying.
+     * @param {number} auto Time from the last letter displaying to next direction being executed.
      */
-    changeButtonDuringDisplaying(wait) {
+    changeButtonDuringDisplaying(wait, auto = null) {
         this.$(this.progress.displayConfig.ui.next).off('click');
-        if (!wait) {
+        let transitionEnd;
+        if (wait) {
+            if (auto) {
+                transitionEnd = () => {
+                    this.$(this.progress.displayConfig.ui.next).off('click');
+                    this.autoDisplay = setTimeout(() => {
+                        this.enableNextDirectionButton();
+                        this.flush();
+                        this.display(++this.progress.pos);
+                    }, auto);
+                };
+            } else {
+                transitionEnd = () => {
+                    this.$(this.progress.displayConfig.ui.next).off('click');
+                    this.enableNextDirectionButton();
+                };
+            }
+        } else {
             this.$(this.progress.displayConfig.ui.next).click(() => {
                 this.skipDisplayingLetters();
                 this.enableNextDirectionButton();
             });
-        }
-        this.$(this.progress.displayConfig.message.target + ' :last-child')
-            .one('transitionend', () => {
-                if (!wait) {
+            if (auto || auto === 0) {
+                transitionEnd = () => {
                     this.$(this.progress.displayConfig.ui.next).off('click');
-                }
-                this.enableNextDirectionButton();
-            });
+                    this.autoDisplay = setTimeout(() => {
+                        this.enableNextDirectionButton();
+                        this.flush();
+                        this.display(++this.progress.pos);
+                    }, auto);
+                };
+
+            } else {
+                transitionEnd = () => {
+                    this.$(this.progress.displayConfig.ui.next).off('click');
+                    this.enableNextDirectionButton();
+                };
+            }
+        }
+        this.$(this.progress.displayConfig.message.target + ' :last')
+            .one('transitionend', transitionEnd);
     }
 
     /**

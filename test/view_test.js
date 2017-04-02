@@ -76,6 +76,12 @@ describe('ItSoundsNovel View', function () {
         const SECOND_SENTENCE = "I don't know where I was born.";
 
         /**
+         * The fourth sentence in the sequence.
+         */
+        const FOURTH_SENTENCE =
+            "I saw something called human beings for the first time there.";
+
+        /**
          * The timeout for displaying the first or second sentence.
          * The last letter of the first sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
@@ -83,6 +89,19 @@ describe('ItSoundsNovel View', function () {
          * so the test should be done before its timeout.
          */
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
+
+        /**
+         * The timeout for displaying the third sentence and tgfourth sentence.
+         * The last letter of the third sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] *  56 + 500 [ms] = 3300 [ms],
+         * and the last letter of the fourth sentence will be displayed in
+         *   3300 [ms] + auto [ms] + delay [ms] * #letters + duration [ms]
+         *   = 3300 [ms] + 100 [ms] + 50 [ms] *  61 + 500 [ms]
+         *   = 6950 [ms] < 10000 [ms] (= timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_THIRD_AND_FOURTH_SENTENCES = 10000;
 
         /**
          * The sleep time for clicking next button after waiting
@@ -116,6 +135,19 @@ describe('ItSoundsNovel View', function () {
                     driver.wait(
                         until.elementTextIs(element, SECOND_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FOURTH_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_THIRD_AND_FOURTH_SENTENCES
                     )
                 );
         }

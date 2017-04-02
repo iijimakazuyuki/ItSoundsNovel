@@ -42,6 +42,9 @@ class Direction {
         if (direction.wait) {
             this.wait = direction.wait;
         }
+        if (direction.auto || direction.auto === 0) {
+            this.auto = Number(direction.auto);
+        }
     }
 }
 

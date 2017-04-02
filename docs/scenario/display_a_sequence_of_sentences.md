@@ -43,6 +43,21 @@ If `next: wait` is specified, the next button won't work.
   next: wait
 ```
 
+If `auto: {milliseconds}` is specified,
+the next message will be displayed automatically after {milliseconds}
+without clicking the next button.
+
+```yaml
+- message: I am a cat. I don't have my name yet.
+  auto: 1000
+- message: I don't know where I was born.
+  auto: 0
+- message: I only remember that I was meowing in dim and wet place.
+  auto: 1000
+  next: wait
+- message: I saw something called human beings for the first time there.
+```
+
 To embed a hyperlink, write `${[label](url or absolute path or relative path)}`.
 
 ```yaml

@@ -3,5 +3,6 @@
   I don't have my name yet.
 - message: I don't know where I was born.
   next: wait
-- I only remember that I was meowing in dim and wet place.
+- message: I only remember that I was meowing in dim and wet place.
+  auto: 100
 - I saw something called human beings for the first time there.
