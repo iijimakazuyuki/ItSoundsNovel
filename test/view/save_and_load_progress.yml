@@ -20,7 +20,9 @@
     x: 100
     y: 10
 - bgm: stop
-- I don't know where I was born.
+- message: I don't know where I was born.
+  flush: none
+  concat: " "
 - image:
     name: cat1
     control: remove

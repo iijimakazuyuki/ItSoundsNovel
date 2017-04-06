@@ -5,4 +5,6 @@
   next: wait
 - message: I only remember that I was meowing in dim and wet place.
   auto: 100
+  flush: none
+  concat: " "
 - I saw something called human beings for the first time there.

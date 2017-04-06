@@ -2,6 +2,7 @@ const assert = require('chai').assert;
 const Scenario = require('../src/scenario.js');
 const sinon = require('sinon');
 
+const Message = require('../src/message.js');
 const Character = require('../src/character.js');
 
 const normalCharacterOf = v => new Character(null, null, v);
@@ -238,6 +239,60 @@ describe('Scenario', function () {
                             letters: normalCharacterArrayOf(['a', 'b', 'c']),
                         },
                         auto: 0,
+                    },
+                ]
+            );
+        });
+        it('should set message objects with no flush', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- message: abc',
+                    '  flush: none',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: normalCharacterArrayOf(['a', 'b', 'c']),
+                        },
+                        flush: 'none',
+                    },
+                ]
+            );
+        });
+        it('should set message objects with no flush', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- message: abc',
+                    '  flush: none',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: normalCharacterArrayOf(['a', 'b', 'c']),
+                        },
+                        flush: 'none',
                     },
                 ]
             );
@@ -1315,6 +1370,49 @@ describe('Scenario', function () {
             assert(displayMock.append.withArgs(cStub).called);
 
         });
+
+        it('should concatenate sentences if willFlush is false', function () {
+            // arrange
+            scenario.directions = [
+                {
+                    message: {
+                        letters: normalCharacterArrayOf(
+                            ['a', 'b', 'c']
+                        )
+                    },
+                    flush: 'none',
+                    concat: ' ',
+                },
+                {
+                    message: {
+                        letters: normalCharacterArrayOf(
+                            ['d', 'e', 'f']
+                        )
+                    },
+                },
+            ];
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock);
+            let concatStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            };
+            scenario.$.withArgs('<span> </span>').returns(concatStub);
+            scenario.willFlush = false;
+
+            // act
+            scenario.display(0);
+            scenario.flush();
+            scenario.display(1);
+
+            // assert
+            assert(displayMock.append.withArgs(concatStub).called);
+        });
     });
 
     describe('#displayBackground()', function () {
@@ -1468,6 +1566,23 @@ describe('Scenario', function () {
 
             // assert
             assert(displayMock.text.withArgs('').called);
+        });
+        it('should not flush display if willFlush is false', function () {
+            // arrange
+            let displayMock = {
+                text: sinon.spy()
+            }
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock);
+            scenario.willFlush = false;
+
+            // act
+            scenario.flush();
+
+            // assert
+            assert(displayMock.text.withArgs('').notCalled);
+            assert(scenario.willFlush);
         });
     });
 

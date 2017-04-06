@@ -8,6 +8,7 @@ const ScenarioProgress = require('./scenario_progress.js');
 const Direction = require('./direction.js');
 const Image = require('./image.js');
 const BgmConfig = require('./bgm_config.js');
+const Character = require('./character.js');
 
 const BACKGROUND_IMAGE_DEFAULT_Z = -1000;
 
@@ -34,6 +35,17 @@ class Scenario {
          * The progress of the loading scenario.
          */
         this.progress = new ScenarioProgress();
+
+        /**
+         * True if a displayed message is flushed when the next button is clicked.
+         */
+        this.willFlush = true;
+
+        /**
+         * If a displayed message is not flushed,
+         * this string will be appended the head of the next sentence.
+         */
+        this.concat = '';
 
         if (window) {
             /**
@@ -148,6 +160,16 @@ class Scenario {
             this.progress.displayConfig.update(direction.config);
             this.display(++this.progress.pos);
             return;
+        }
+        if (this.concat) {
+            direction.message.letters.unshift(new Character(null, null, this.concat));
+            this.concat = '';
+        }
+        if (direction.concat) {
+            this.concat = direction.concat;
+        }
+        if (direction.flush) {
+            this.willFlush = direction.flush !== 'none';
         }
         this.displayMessage(direction.message, config);
         this.changeButtonDuringDisplaying(direction.next === 'wait', direction.auto);
@@ -284,7 +306,11 @@ class Scenario {
      * Flush the displayed sentence.
      */
     flush() {
-        this.$(this.progress.displayConfig.message.target).text('');
+        if (this.willFlush) {
+            this.$(this.progress.displayConfig.message.target).text('');
+        } else {
+            this.willFlush = true;
+        }
     }
 
     /**
@@ -567,6 +593,7 @@ class Scenario {
      */
     loadProgress() {
         this.disableUI();
+        this.willFlush = true;
         this.flush();
         this.stopBgm(new BgmConfig({ bgm: 'stop' }));
         this.removeImages();
