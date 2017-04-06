@@ -76,10 +76,11 @@ describe('ItSoundsNovel View', function () {
         const SECOND_SENTENCE = "I don't know where I was born.";
 
         /**
-         * The fourth sentence in the sequence.
+         * The third and fourth sentences in the sequence.
          */
-        const FOURTH_SENTENCE =
-            "I saw something called human beings for the first time there.";
+        const THIRD_AND_FOURTH_SENTENCES =
+            "I only remember that I was meowing in dim and wet place."
+            + " I saw something called human beings for the first time there.";
 
         /**
          * The timeout for displaying the first or second sentence.
@@ -146,7 +147,7 @@ describe('ItSoundsNovel View', function () {
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
                     driver.wait(
-                        until.elementTextIs(element, FOURTH_SENTENCE),
+                        until.elementTextIs(element, THIRD_AND_FOURTH_SENTENCES),
                         TIMEOUT_FOR_DISPLAYING_THIRD_AND_FOURTH_SENTENCES
                     )
                 );
@@ -849,6 +850,13 @@ describe('ItSoundsNovel View', function () {
         const SECOND_SENTENCE = "I don't know where I was born.";
 
         /**
+         * The seconds and third sentences in the sequence.
+         */
+        const SECOND_AND_THIRD_SENTENCES =
+            "I don't know where I was born."
+            + " I only remember that I was meowing in dim and wet place.";
+
+        /**
          * The third sentence in the sequence.
          */
         const THIRD_SENTENCE =
@@ -923,7 +931,7 @@ describe('ItSoundsNovel View', function () {
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
                     driver.wait(
-                        until.elementTextIs(element, THIRD_SENTENCE),
+                        until.elementTextIs(element, SECOND_AND_THIRD_SENTENCES),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
                 ).then(() =>

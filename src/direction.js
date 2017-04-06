@@ -45,6 +45,12 @@ class Direction {
         if (direction.auto || direction.auto === 0) {
             this.auto = Number(direction.auto);
         }
+        if (direction.flush) {
+            this.flush = direction.flush;
+        }
+        if (direction.concat) {
+            this.concat = direction.concat;
+        }
     }
 }
 
