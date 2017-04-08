@@ -1414,6 +1414,43 @@ describe('Scenario', function () {
             // assert
             assert(displayMock.append.withArgs(concatStub).called);
         });
+        it('should not change font style after a message whose font style is changed', function () {
+            // arrange
+            scenario.progress.displayConfig.message.duration = 500;
+            scenario.progress.displayConfig.message.delay = 50;
+            scenario.directions = [
+                {
+                    message: {
+                        letters: normalCharacterArrayOf(
+                            ['a', 'b', 'c']
+                        ).concat([
+                            keyValueControlCharacterOf('duration', '0'),
+                            keyValueControlCharacterOf('delay', '0'),
+                            keyValueControlCharacterOf('fontSize', 'large'),
+                            keyValueControlCharacterOf('fontWeight', 'bold'),
+                        ]).concat(normalCharacterArrayOf(
+                            ['d', 'e', 'f']
+                        )),
+                    },
+                },
+            ];
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock);
+
+            // act
+            scenario.display(0);
+            scenario.display(1);
+
+            // assert
+            assert.equal(scenario.progress.displayConfig.message.duration, 500);
+            assert.equal(scenario.progress.displayConfig.message.delay, 50);
+            assert.equal(scenario.progress.displayConfig.message.fontSize, 'medium');
+            assert.equal(scenario.progress.displayConfig.message.fontStyle, 'normal');
+        });
     });
 
     describe('#displayBackground()', function () {
