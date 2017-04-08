@@ -14,9 +14,10 @@ const keyValueControlCharacterOf = (k, v) => new Character('keyValue', k, v);
 const hyperlinkControlCharacterOf = (k, v) => new Character('hyperlink', k, v);
 
 describe('Scenario', function () {
-    const scenario = new Scenario();
+    let scenario;
 
     beforeEach(function () {
+        scenario = new Scenario();
         scenario.$ = sinon.stub();
         scenario.$ = scenario.$.returns(scenario.$);
         scenario.$.delay = sinon.stub().returnsThis();
