@@ -103,7 +103,7 @@ class Scenario {
             config = this.progress.displayConfig.copy();
             config.update(direction.config);
         } else {
-            config = this.progress.displayConfig;
+            config = this.progress.displayConfig.copy();
         }
         if (direction.wait) {
             this.waitForSeconds(direction.wait);
