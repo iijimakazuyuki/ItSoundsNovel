@@ -98,6 +98,15 @@ class Scenario {
         clearTimeout(this.autoDisplay);
         let direction = this.directions[n];
         if (!direction) return;
+        if (direction.if) {
+            let condition = direction.if.reduce((ret, entry) =>
+                ret && this.progress.status[entry.name] === entry.value
+                , true);
+            if (!condition) {
+                this.display(++this.progress.pos);
+                return;
+            }
+        }
         let config;
         if (direction.config) {
             config = this.progress.displayConfig.copy();
@@ -112,6 +121,10 @@ class Scenario {
         if (direction.load) {
             this.disableUI();
             this.load(direction.load);
+            return;
+        }
+        if (direction.button) {
+            this.displayButtons(direction.button);
             return;
         }
         if (direction.image) {
@@ -153,6 +166,12 @@ class Scenario {
             } else {
                 this.playSound(direction.sound);
             }
+            this.display(++this.progress.pos);
+            return;
+        }
+        if (direction.status) {
+            this.progress.status[direction.status.name] =
+                direction.status.value;
             this.display(++this.progress.pos);
             return;
         }
@@ -203,6 +222,28 @@ class Scenario {
         });
         this.$(config.background.target).append(image);
         this.progress.backgroundUrl = url;
+    }
+
+    /**
+     * Display a button.
+     * @param {Button[]} buttons The buttons to display.
+     */
+    displayButtons(buttons) {
+        buttons.forEach(button => {
+            let buttonElement = this.$('#' + button.name);
+            buttonElement.text(button.message)
+                .show()
+                .click(() => {
+                    button.status.forEach(entry => {
+                        this.progress.status[entry.name] = entry.value;
+                    });
+                    buttons.forEach(b => {
+                        this.$('#' + b.name).hide().off('click');
+                    });
+                    this.flush();
+                    this.display(++this.progress.pos);
+                });
+        });
     }
 
     /**

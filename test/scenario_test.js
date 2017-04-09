@@ -1262,6 +1262,70 @@ describe('Scenario', function () {
                 ]
             );
         });
+        it('should set an event to set a flag', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- status:',
+                    '    name: flag1',
+                    '    value: on',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        status: {
+                            name: 'flag1',
+                            value: 'on',
+                        },
+                    },
+                ]
+            );
+        });
+        it('should set a branch condition', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- if:',
+                    '  - name: flag1',
+                    '    value: on',
+                    '  - name: flag2',
+                    '    value: on',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        if: [
+                            {
+                                name: 'flag1',
+                                value: 'on',
+                            },
+                            {
+                                name: 'flag2',
+                                value: 'on',
+                            },
+                        ],
+                    },
+                ]
+            );
+        });
     });
 
     describe('#init()', function () {
@@ -1450,6 +1514,138 @@ describe('Scenario', function () {
             assert.equal(scenario.progress.displayConfig.message.delay, 50);
             assert.equal(scenario.progress.displayConfig.message.fontSize, 'medium');
             assert.equal(scenario.progress.displayConfig.message.fontStyle, 'normal');
+        });
+        it('should set a flag', function () {
+            // arrange
+            scenario.progress.status['flag1'] = 'off';
+            scenario.directions = [
+                {
+                    status: { name: 'flag1', value: 'on' },
+                },
+                {
+                    status: { name: 'flag2', value: 'off' },
+                },
+            ];
+            scenario.progress.pos = 0;
+
+            // act
+            scenario.display(0);
+
+            // assert
+            assert.equal(scenario.progress.status['flag1'], 'on');
+            assert.equal(scenario.progress.status['flag2'], 'off');
+        });
+        it('should display all letters in the sentence only if a condition is satisfied', function () {
+            // arrange
+            let bStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            };
+            let cStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            };
+            let dStub = {
+                css: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            };
+            scenario.$.withArgs('<span>b</span>').returns(bStub);
+            scenario.$.withArgs('<span>c</span>').returns(cStub);
+            scenario.$.withArgs('<span>d</span>').returns(cStub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(displayMock);
+            let aLetterStub = {
+                value: 'b',
+                isKeyValue: sinon.stub().returns(false),
+                isHyperlink: sinon.stub().returns(false),
+            };
+            scenario.progress.status['flag1'] = 'on';
+            scenario.progress.status['flag2'] = 'on';
+            scenario.progress.status['flag3'] = 'off';
+            scenario.directions = [
+                {
+                    message: {
+                        letters: [aLetterStub]
+                    }
+                },
+                {
+                    if: [
+                        {
+                            name: 'flag1',
+                            value: 'on',
+                        },
+                        {
+                            name: 'flag2',
+                            value: 'on',
+                        },
+                    ],
+                    message: {
+                        letters: [
+                            {
+                                type: null, key: null, value: 'b',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
+                            {
+                                type: null, key: null, value: 'c',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
+                        ]
+                    }
+                },
+                {
+                    if: [
+                        {
+                            name: 'flag1',
+                            value: 'on',
+                        },
+                        {
+                            name: 'flag2',
+                            value: 'on',
+                        },
+                        {
+                            name: 'flag3',
+                            value: 'on',
+                        },
+                    ],
+                    message: {
+                        letters: [
+                            {
+                                type: null, key: null, value: 'd',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
+                            {
+                                type: null, key: null, value: 'e',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
+                            {
+                                type: null, key: null, value: 'f',
+                                isKeyValue: () => false,
+                                isHyperlink: () => false,
+                            },
+                        ]
+                    }
+                },
+            ];
+
+            // act
+            scenario.display(1);
+            scenario.display(2);
+
+            // assert
+            assert(displayMock.append.withArgs(bStub).called);
+            assert(displayMock.append.withArgs(cStub).called);
+            assert(displayMock.append.withArgs(dStub).notCalled);
         });
     });
 
@@ -2206,6 +2402,9 @@ describe('Scenario', function () {
                 },
                 backgroundUrl: 'abc.jpg',
                 scenarioUrl: 'abc.yml',
+                status: {
+                    flag: 'on',
+                },
             };
             scenario.window = {
                 localStorage: { progress: JSON.stringify(progress) },

@@ -15,3 +15,6 @@ How to make HTML using it-sounds-novel
 
 [Put buttons for saving and loading progress](put_buttons_for_saving_and_loading_progress.md)
 --------------------------------------------------------------------------------
+
+[Put buttons for making a choice](put_buttons_for_making_a_choice.md)
+--------------------------------------------------------------------------------

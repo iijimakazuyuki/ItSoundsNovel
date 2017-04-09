@@ -7,6 +7,7 @@ const BgmConfig = require('./bgm_config.js');
 const Image = require('./image.js');
 const Sound = require('./sound.js');
 const Message = require('./message.js');
+const Button = require('./button.js');
 
 /**
  * A direction of a scenario.
@@ -50,6 +51,15 @@ class Direction {
         }
         if (direction.concat) {
             this.concat = direction.concat;
+        }
+        if (direction.if) {
+            this.if = direction.if;
+        }
+        if (direction.status) {
+            this.status = direction.status;
+        }
+        if (direction.button) {
+            this.button = direction.button.map(button => new Button(button));
         }
     }
 }

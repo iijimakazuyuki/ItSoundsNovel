@@ -1,0 +1,92 @@
+- message: |-
+    I am a cat. I don't have my name yet.
+    ${fontStyle=italic}Do you want to name me?
+  flush: none
+  auto: 0
+- button:
+  - name: button1
+    message: Yes
+    status:
+    - name: naming
+      value: on
+  - name: button2
+    message: No
+    status:
+    - name: naming
+      value: off
+- if:
+  - name: naming
+    value: on
+  message: ${fontStyle=italic}What do you want to name me?
+  flush: none
+  auto: 0
+- if:
+  - name: naming
+    value: on
+  button:
+  - name: button1
+    message: Mike
+    status:
+    - name: mike
+      value: on
+    - name: kuro
+      value: off
+  - name: button2
+    message: Kuro
+    status:
+    - name: mike
+      value: off
+    - name: kuro
+      value: on
+- if:
+  - name: naming
+    value: on
+  - name: mike
+    value: on
+  message: I am Mike.
+- if:
+  - name: naming
+    value: on
+  - name: kuro
+    value: on
+  message: I am Kuro.
+- if:
+  - name: naming
+    value: on
+  message: ${fontStyle=italic}Really? What do you want to name me?
+  flush: none
+  auto: 0
+- if:
+  - name: naming
+    value: on
+  button:
+  - name: button1
+    message: Mike
+    status:
+    - name: mike
+      value: on
+    - name: kuro
+      value: off
+  - name: button2
+    message: Kuro
+    status:
+    - name: mike
+      value: off
+    - name: kuro
+      value: on
+- if:
+  - name: naming
+    value: on
+  - name: mike
+    value: off
+  message: I am not Mike.
+- if:
+  - name: naming
+    value: on
+  - name: kuro
+    value: off
+  message: I am not Kuro.
+- if:
+  - name: naming
+    value: off
+  load: make_a_branch.yml
