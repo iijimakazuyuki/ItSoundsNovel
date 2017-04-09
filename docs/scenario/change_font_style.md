@@ -16,6 +16,7 @@ is different from that of the second sentence.
     fontStyle: italic
     fontWeight: bold
     fontFamily: cursive
+    color: red
   message: I am a cat. I don't have my name yet.
 - I don't know where I was born.
 ```
@@ -32,6 +33,7 @@ is different from that of the first sentence.
     fontStyle: italic
     fontWeight: bold
     fontFamily: cursive
+    color: red
 - I don't know where I was born.
 - I only remember that I was meowing in dim and wet place.
 ```

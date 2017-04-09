@@ -375,6 +375,8 @@ class Scenario {
                     config.message.fontFamily = c.value;
                 } else if (c.key === 'fontWeight') {
                     config.message.fontWeight = c.value;
+                } else if (c.key === 'color') {
+                    config.message.color = c.value;
                 }
             } else if (c.isHyperlink()) {
                 let hyperlink = this.$('<a>', { href: c.value });
@@ -412,6 +414,7 @@ class Scenario {
                 fontStyle: config.message.fontStyle,
                 fontFamily: config.message.fontFamily,
                 fontWeight: config.message.fontWeight,
+                color: config.message.color,
             })
             .delay(delayTime)
             .queue(() => {

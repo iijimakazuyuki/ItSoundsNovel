@@ -24,6 +24,7 @@ class DisplayConfig {
         if (config.fontStyle) this.message.fontStyle = config.fontStyle;
         if (config.fontWeight) this.message.fontWeight = config.fontWeight;
         if (config.fontFamily) this.message.fontFamily = config.fontFamily;
+        if (config.color) this.message.color = config.color;
     }
     update(config) {
         this.updateMessageConfig(config);
@@ -53,6 +54,7 @@ class DisplayConfig {
                 fontStyle: this.message.fontStyle,
                 fontWeight: this.message.fontWeight,
                 fontFamily: this.message.fontFamily,
+                color: this.message.color,
             },
             background: {
                 target: this.background.target,
