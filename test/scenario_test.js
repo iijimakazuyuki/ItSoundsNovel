@@ -666,6 +666,49 @@ describe('Scenario', function () {
                 ]
             );
         });
+        it('should set a control character to change font color in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- ${color=#000000}',
+                    '- ${color=000000}',
+                    '- ${color=red}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('color', '#000000'),
+                            ],
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('color', '000000'),
+                            ],
+                        }
+                    },
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('color', 'red'),
+                            ],
+                        }
+                    },
+                ]
+            );
+        });
         it('should set hyperlink control characters in messages', function () {
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(

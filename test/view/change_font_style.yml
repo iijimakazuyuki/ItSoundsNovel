@@ -9,4 +9,4 @@
 - config:
     fontSize: small
     fontFamily: monospace
-- I saw something called${fontSize=large}${fontWeight=bold} human beings ${fontSize=medium}${fontWeight=normal}for the first time there.
+- I saw something called${fontSize=large}${fontWeight=bold}${color=red} human beings ${fontSize=medium}${fontWeight=normal}${color=#00ff00}for the first time there.
