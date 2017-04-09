@@ -44,6 +44,11 @@ class ScenarioProgress {
          * @type {string}
          */
         this.backgroundUrl = null;
+
+        /**
+         * The status.
+         */
+        this.status = {};
     }
     update(progress) {
         if (progress.pos) this.pos = progress.pos;
@@ -60,6 +65,9 @@ class ScenarioProgress {
             });
         }
         if (progress.backgroundUrl) this.backgroundUrl = progress.backgroundUrl;
+        for (let name in progress.status) {
+            this.status[name] = progress.status[name];
+        }
     }
 }
 
