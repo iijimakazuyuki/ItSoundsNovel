@@ -18,7 +18,7 @@ class Direction {
             this.message = new Message(String(direction));
             return;
         }
-        if (direction.message) this.message = new Message(direction.message);
+        if (direction.message) this.message = new Message(String(direction.message));
         if (direction.background) {
             this.background = direction.background;
             if (direction.config) this.config = new DisplayConfig({ background: direction.config });

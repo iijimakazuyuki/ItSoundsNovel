@@ -105,6 +105,7 @@ describe('Scenario', function () {
                 [
                     '- message: abc',
                     '- message: jkl',
+                    '- message: 123',
                 ].join('\n')
             );
             let url = '';
@@ -124,6 +125,11 @@ describe('Scenario', function () {
                     {
                         message: {
                             letters: normalCharacterArrayOf(['j', 'k', 'l']),
+                        }
+                    },
+                    {
+                        message: {
+                            letters: normalCharacterArrayOf(['1', '2', '3']),
                         }
                     },
                 ]
