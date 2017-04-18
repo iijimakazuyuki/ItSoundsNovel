@@ -9,6 +9,7 @@
     status:
     - name: naming
       value: on
+      display: naming now!
   - name: button2
     message: No
     status:

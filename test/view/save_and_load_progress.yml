@@ -14,16 +14,32 @@
     x: 100
     y: 200
     z: -2
+- status:
+    name: flag1
+    value: on
+    display: flag1 is set
 - I am a cat. I don't have my name yet.
 - image:
     name: cat1
     x: 100
     y: 10
 - bgm: stop
+- status:
+    name: flag1
+    value: off
+    display: none
+- status:
+    name: flag2
+    value: on
+    display: flag2 is set
 - message: I don't know where I was born.
   flush: none
   concat: " "
 - image:
     name: cat1
     control: remove
+- status:
+    name: flag2
+    value: off
+    display: none
 - I only remember that I was meowing in dim and wet place.
