@@ -1,0 +1,16 @@
+- status:
+    name: flag1
+    value: on
+    display: flag1 is set
+- status:
+    name: flag2
+    value: off
+- I am a cat. I don't have my name yet.
+- status:
+    name: flag2
+    value: on
+    display: flag2 is set
+- status:
+    name: flag1
+    display: none
+- I don't know where I was born.

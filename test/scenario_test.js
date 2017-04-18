@@ -332,6 +332,7 @@ describe('Scenario', function () {
                             message: { delay: 10, duration: 100 },
                             background: {},
                             image: {},
+                            status: {},
                         }
                     },
                     {
@@ -339,6 +340,7 @@ describe('Scenario', function () {
                             message: { delay: 10, duration: 100 },
                             background: {},
                             image: {},
+                            status: {},
                         }
                     },
                 ]
@@ -372,6 +374,7 @@ describe('Scenario', function () {
                             message: { delay: 10, duration: 100 },
                             background: {},
                             image: {},
+                            status: {},
                         }
                     },
                 ]
@@ -768,6 +771,37 @@ describe('Scenario', function () {
                 ]
             );
         });
+        it('should set status message', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- if:',
+                    '  - name: flag1',
+                    '    value: on',
+                    '  status:',
+                    '    name: flag1',
+                    '    display: aaa',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        if: [
+                            { name: 'flag1', value: 'on' },
+                        ],
+                        status: { name: 'flag1', display: 'aaa' },
+                    },
+                ]
+            );
+        });
         it('should set sound', function () {
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
@@ -888,6 +922,7 @@ describe('Scenario', function () {
                             background: { duration: 100 },
                             message: {},
                             image: {},
+                            status: {},
                         }
                     },
                 ]
@@ -1200,6 +1235,7 @@ describe('Scenario', function () {
                             },
                             background: {},
                             message: {},
+                            status: {},
                         }
                     },
                 ]
@@ -1569,7 +1605,7 @@ describe('Scenario', function () {
             scenario.progress.status['flag1'] = 'off';
             scenario.directions = [
                 {
-                    status: { name: 'flag1', value: 'on' },
+                    status: { name: 'flag1', value: 'on', display: 'flag1 is on' },
                 },
                 {
                     status: { name: 'flag2', value: 'off' },
@@ -1581,8 +1617,8 @@ describe('Scenario', function () {
             scenario.display(0);
 
             // assert
-            assert.equal(scenario.progress.status['flag1'], 'on');
-            assert.equal(scenario.progress.status['flag2'], 'off');
+            assert.deepEqual(scenario.progress.status['flag1'], { value: 'on', display: 'flag1 is on' });
+            assert.deepEqual(scenario.progress.status['flag2'], { value: 'off', display: 'none' });
         });
         it('should display all letters in the sentence only if a condition is satisfied', function () {
             // arrange
@@ -1615,9 +1651,9 @@ describe('Scenario', function () {
                 isKeyValue: sinon.stub().returns(false),
                 isHyperlink: sinon.stub().returns(false),
             };
-            scenario.progress.status['flag1'] = 'on';
-            scenario.progress.status['flag2'] = 'on';
-            scenario.progress.status['flag3'] = 'off';
+            scenario.progress.status['flag1'] = { value: 'on' };
+            scenario.progress.status['flag2'] = { value: 'on' };
+            scenario.progress.status['flag3'] = { value: 'off' };
             scenario.directions = [
                 {
                     message: {
@@ -2163,6 +2199,55 @@ describe('Scenario', function () {
         });
     });
 
+    describe('#displayStatusMessage()', function () {
+        it('should display a status message', function () {
+            // arrange
+            let name = 'flag1';
+            let display = 'flag1 is set';
+            let flag1Stub = {
+                text: sinon.spy(),
+            };
+            scenario.$.withArgs('#flag1').returns({ length: 0 });
+            scenario.$.withArgs('<div>', { id: name }).returns(flag1Stub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.status.target
+            ).returns(displayMock);
+
+            // act
+            scenario.displayStatusMessage(name, display);
+
+            // assert
+            assert(displayMock.append.called);
+            assert(flag1Stub.text.calledWith(display));
+        });
+        it('should update a status message', function () {
+            // arrange
+            let name = 'flag1';
+            let display = 'flag1 is set';
+            let flag1Stub = {
+                text: sinon.spy(),
+                length: 1,
+            };
+            scenario.$.withArgs('#flag1').returns(flag1Stub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.status.target
+            ).returns(displayMock);
+
+            // act
+            scenario.displayStatusMessage(name, display);
+
+            // assert
+            assert(displayMock.append.notCalled);
+            assert(flag1Stub.text.calledWith(display));
+        });
+    });
+
     describe('#disableUI()', function () {
         it('should off bindings', function () {
             // arrange
@@ -2430,6 +2515,9 @@ describe('Scenario', function () {
                     image: {
                         duration: 1000
                     },
+                    status: {
+                        target: '#statusWindow',
+                    },
                     ui: {
                         next: '#nextButton',
                         save: '#saveButton',
@@ -2452,7 +2540,7 @@ describe('Scenario', function () {
                 backgroundUrl: 'abc.jpg',
                 scenarioUrl: 'abc.yml',
                 status: {
-                    flag: 'on',
+                    flag: { value: 'on', display: 'none' },
                 },
             };
             scenario.window = {

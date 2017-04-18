@@ -9,6 +9,7 @@ const Direction = require('./direction.js');
 const Image = require('./image.js');
 const BgmConfig = require('./bgm_config.js');
 const Character = require('./character.js');
+const Flag = require('./flag.js');
 
 const BACKGROUND_IMAGE_DEFAULT_Z = -1000;
 
@@ -100,7 +101,7 @@ class Scenario {
         if (!direction) return;
         if (direction.if) {
             let condition = direction.if.reduce((ret, entry) =>
-                ret && this.progress.status[entry.name] === entry.value
+                ret && this.progress.status[entry.name].value === entry.value
                 , true);
             if (!condition) {
                 this.display(++this.progress.pos);
@@ -170,8 +171,17 @@ class Scenario {
             return;
         }
         if (direction.status) {
-            this.progress.status[direction.status.name] =
-                direction.status.value;
+            let flag = new Flag(direction.status.value, direction.status.display);
+            if (direction.status.value) {
+                this.progress.status[direction.status.name] = flag;
+            }
+            if (direction.status.display) {
+                this.displayStatusMessage(
+                    direction.status.name,
+                    direction.status.display,
+                    config
+                );
+            }
             this.display(++this.progress.pos);
             return;
         }
@@ -235,7 +245,10 @@ class Scenario {
                 .show()
                 .click(() => {
                     button.status.forEach(entry => {
-                        this.progress.status[entry.name] = entry.value;
+                        this.progress.status[entry.name] = new Flag(entry.value, entry.display);
+                        if (entry.display) {
+                            this.displayStatusMessage(entry.name, entry.display);
+                        }
                     });
                     buttons.forEach(b => {
                         this.$('#' + b.name).hide().off('click');
@@ -512,6 +525,35 @@ class Scenario {
         audio.remove();
     }
 
+    /** Flush status messages.
+     *
+     */
+    flushStatusMessage() {
+        this.$(this.progress.displayConfig.status.target).text('');
+    }
+
+    /**
+     * Display a status message.
+     * @param {string} name The name of the flag.
+     * @param {string} message The status message of the flag.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    displayStatusMessage(name, message, config = this.progress.displayConfig) {
+        let existingMessage = this.$('#' + name);
+        if (message !== 'none') {
+            if (existingMessage.length === 0) {
+                let statusMessage = this.$('<div>', { id: name, }).text(message);
+                this.$(config.status.target).append(statusMessage);
+            } else {
+                existingMessage.text(message);
+            }
+        } else {
+            if (existingMessage.length > 0) {
+                existingMessage.text('');
+            }
+        }
+    }
+
     /**
      * Disable the user interface.
      */
@@ -642,6 +684,7 @@ class Scenario {
         this.stopBgm(new BgmConfig({ bgm: 'stop' }));
         this.removeImages();
         this.removeBackgroundImage();
+        this.flushStatusMessage();
         this.progress = new ScenarioProgress();
         this.progress.update(JSON.parse(this.window.localStorage.progress));
         this.$.get({
@@ -658,6 +701,13 @@ class Scenario {
                 }
                 if (this.progress.bgmConfig) {
                     this.playBgm(this.progress.bgmConfig);
+                }
+                for (let key in this.progress.status) {
+                    if (this.progress.status[key].display) {
+                        this.displayStatusMessage(
+                            key, this.progress.status[key].display
+                        );
+                    }
                 }
                 this.init(this.progress.pos);
             },

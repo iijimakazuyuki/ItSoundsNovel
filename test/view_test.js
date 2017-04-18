@@ -863,6 +863,21 @@ describe('ItSoundsNovel View', function () {
             "I only remember that I was meowing in dim and wet place.";
 
         /**
+         * The a status message for flag1.
+         */
+        const FLAG1_STATUS_MESSAGE = "flag1 is set";
+
+        /**
+         * The a status message for flag2.
+         */
+        const FLAG2_STATUS_MESSAGE = "flag2 is set";
+
+        /**
+         * The a status message for cleared flag1 and cleared flag2.
+         */
+        const CLEARED_FLAG_STATUS_MESSAGE = "";
+
+        /**
          * The timeout for displaying the sentences.
          * The last letter of the third sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
@@ -890,6 +905,29 @@ describe('ItSoundsNovel View', function () {
                     driver.wait(
                         until.elementTextIs(element, FIRST_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'saveButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.get(BASE_URL + PATH)
+                ).then(() =>
+                    driver.findElement({ id: 'loadButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIRST_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'statusWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FLAG1_STATUS_MESSAGE)
                     )
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
@@ -920,6 +958,12 @@ describe('ItSoundsNovel View', function () {
                     driver.wait(
                         until.elementTextIs(element, SECOND_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'statusWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FLAG2_STATUS_MESSAGE)
                     )
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
@@ -950,6 +994,12 @@ describe('ItSoundsNovel View', function () {
                     driver.wait(
                         until.elementTextIs(element, THIRD_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'statusWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, CLEARED_FLAG_STATUS_MESSAGE)
                     )
                 ).then(() =>
                     driver.findElements({ id: 'cat1' })
@@ -1305,6 +1355,109 @@ describe('ItSoundsNovel View', function () {
                     driver.wait(
                         until.elementTextIs(element, SIXTH_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                );
+        }
+
+        it('should be performed in Firefox', function () {
+            return TEST_SEQUENCE_OF('firefox');
+        });
+        it('should be performed in Chrome', function () {
+            return TEST_SEQUENCE_OF('chrome');
+        })
+        it('should be performed in IE', function () {
+            return TEST_SEQUENCE_OF('ie');
+        })
+        it('should be performed in Edge', function () {
+            return TEST_SEQUENCE_OF('MicrosoftEdge');
+        })
+    });
+
+    describe('Display flag status', function () {
+
+        /**
+         * The path to the tested view.
+         */
+        const PATH = 'display_flag_status.html';
+
+        /**
+         * The first or second sentence in the sequence.
+         */
+        const FIRST_SENTENCE = "I am a cat. I don't have my name yet.";
+
+        /**
+         * The second sentence in the sequence.
+         */
+        const SECOND_SENTENCE = "I don't know where I was born.";
+
+        /**
+         * The a status message for flag1.
+         */
+        const FLAG1_STATUS_MESSAGE = "flag1 is set";
+
+        /**
+         * The a status message for flag2.
+         */
+        const FLAG2_STATUS_MESSAGE = "flag2 is set";
+
+        /**
+         * The timeout for displaying the sentences.
+         * The last letter of the first sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] *  37 + 500 [ms] = 2350 [ms] < 5000 [ms] (= timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
+
+        /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
+         * @param browserDriverName {string} The browser name of WebDriver.
+         * @returns {Thenable} The WebDriver test sequence.
+         */
+        const TEST_SEQUENCE_OF = browserDriverName => {
+            let driver = browserDrivers.get(browserDriverName);
+            return driver.get(BASE_URL + PATH)
+                .then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIRST_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'flag1' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FLAG1_STATUS_MESSAGE)
+                    )
+                ).then(() =>
+                    driver.findElements({ id: 'flag2' })
+                ).then(elements => {
+                    assert.lengthOf(elements, 0);
+                    return driver.findElement
+                }).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'flag2' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FLAG2_STATUS_MESSAGE)
                     )
                 );
         }

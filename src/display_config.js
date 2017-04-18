@@ -14,6 +14,8 @@ class DisplayConfig {
         if (config.background) this.background = config.background;
         this.image = {};
         if (config.image) this.image = config.image;
+        this.status = {};
+        if (config.status) this.status = config.status;
         if (config.ui) this.ui = config.ui;
     }
     updateMessageConfig(config) {
@@ -35,6 +37,11 @@ class DisplayConfig {
             }
             if (config.background.duration) {
                 this.background.duration = config.background.duration;
+            }
+        }
+        if (config.status) {
+            if (config.status.target) {
+                this.status.target = config.status.target;
             }
         }
         if (config.image) {
@@ -62,6 +69,9 @@ class DisplayConfig {
             },
             image: {
                 duration: this.image.duration,
+            },
+            status: {
+                target: this.status.target,
             },
             ui: {
                 next: this.ui.next,
@@ -93,6 +103,9 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
     },
     image: {
         duration: 1000,
+    },
+    status: {
+        target: '#statusWindow',
     },
     ui: {
         next: '#nextButton',
