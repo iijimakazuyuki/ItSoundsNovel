@@ -223,12 +223,12 @@ class Scenario {
             zIndex: BACKGROUND_IMAGE_DEFAULT_Z,
             transition: config.background.duration / 1000 + 's',
             opacity: 0,
-        }).on('load', () => {
+        }).delay(100).queue(() => {
             image.css({
                 opacity: 1,
+            }).on('transitionend', () => {
+                previousImage.remove();
             });
-        }).on('transitionend', () => {
-            previousImage.remove();
         });
         this.$(config.background.target).append(image);
         this.progress.backgroundUrl = url;
@@ -294,7 +294,7 @@ class Scenario {
                 transition: config.image.duration / 1000 + 's',
                 zIndex: image.z,
                 opacity: 0,
-            }).on('load', () => {
+            }).delay(100).queue(() => {
                 imageElement.css({
                     opacity: 1,
                 });
