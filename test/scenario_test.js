@@ -1740,6 +1740,8 @@ describe('Scenario', function () {
             let stub = {
                 css: sinon.stub().returnsThis(),
                 on: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
             };
             let backgroundMock = {
                 append: sinon.spy()
@@ -1786,6 +1788,8 @@ describe('Scenario', function () {
             let stub = {
                 css: sinon.stub().returnsThis(),
                 on: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
             };
             let backgroundMock = {
                 append: sinon.spy()
