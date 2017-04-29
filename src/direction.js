@@ -8,6 +8,7 @@ const Image = require('./image.js');
 const Sound = require('./sound.js');
 const Message = require('./message.js');
 const Button = require('./button.js');
+const Overlay = require('./overlay.js');
 
 /**
  * A direction of a scenario.
@@ -22,6 +23,9 @@ class Direction {
         if (direction.background) {
             this.background = direction.background;
             if (direction.config) this.config = new DisplayConfig({ background: direction.config });
+        } else if (direction.overlay) {
+            this.overlay = new Overlay(direction.overlay);
+            if (direction.config) this.config = new DisplayConfig({ overlay: direction.config });
         } else if (direction.image) {
             this.image = new Image(direction.image);
             if (direction.config) this.config = new DisplayConfig({ image: direction.config });

@@ -12,6 +12,8 @@ class DisplayConfig {
         if (config.message) this.updateMessageConfig(config.message);
         this.background = {};
         if (config.background) this.background = config.background;
+        this.overlay = {};
+        if (config.overlay) this.overlay = config.overlay;
         this.image = {};
         if (config.image) this.image = config.image;
         this.status = {};
@@ -37,6 +39,14 @@ class DisplayConfig {
             }
             if (config.background.duration) {
                 this.background.duration = config.background.duration;
+            }
+        }
+        if (config.overlay) {
+            if (config.overlay.target) {
+                this.overlay.target = config.overlay.target;
+            }
+            if (config.overlay.duration) {
+                this.overlay.duration = config.overlay.duration;
             }
         }
         if (config.status) {
@@ -66,6 +76,10 @@ class DisplayConfig {
             background: {
                 target: this.background.target,
                 duration: this.background.duration,
+            },
+            overlay: {
+                target: this.overlay.target,
+                duration: this.overlay.duration,
             },
             image: {
                 duration: this.image.duration,
@@ -98,6 +112,10 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
         fontWeight: 'normal',
     },
     background: {
+        target: '#backgroundWindow',
+        duration: 1000,
+    },
+    overlay: {
         target: '#backgroundWindow',
         duration: 1000,
     },

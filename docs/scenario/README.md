@@ -22,6 +22,9 @@ How to write scenarios
 [Display images](display_images.md)
 --------------------------------------------------------------------------------
 
+[Display an overlay](display_an_overlay.md)
+--------------------------------------------------------------------------------
+
 [Load another scenario](load_another_scenario.md)
 --------------------------------------------------------------------------------
 

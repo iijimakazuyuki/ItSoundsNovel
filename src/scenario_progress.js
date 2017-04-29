@@ -6,6 +6,7 @@ const DisplayConfig = require('./display_config.js');
 const Image = require('./image.js');
 const BgmConfig = require('./bgm_config.js');
 const Background = require('./background.js');
+const Overlay = require('./overlay.js');
 
 /**
  * The progress of the scenario.
@@ -47,6 +48,12 @@ class ScenarioProgress {
         this.background = new Background(null, 'transparent');
 
         /**
+         * The overlay.
+         * @type {Overlay}
+         */
+        this.overlay = new Overlay('transparent', '1.0');
+
+        /**
          * The status.
          */
         this.status = {};
@@ -67,6 +74,9 @@ class ScenarioProgress {
         }
         if (progress.background) {
             this.background.update(progress.background);
+        }
+        if (progress.overlay) {
+            this.overlay.update(progress.overlay);
         }
         for (let name in progress.status) {
             this.status[name] = progress.status[name];

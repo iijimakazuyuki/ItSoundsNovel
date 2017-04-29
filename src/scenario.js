@@ -12,6 +12,7 @@ const Character = require('./character.js');
 const Flag = require('./flag.js');
 
 const BACKGROUND_IMAGE_DEFAULT_Z = -1000;
+const OVERLAY_DEFAULT_Z = 1000;
 
 /**
  * Scenario for a sound novel.
@@ -181,6 +182,16 @@ class Scenario {
             }
             return;
         }
+        if (direction.overlay) {
+            this.displayOverlay(direction.overlay, config);
+            if (direction.next === 'wait') {
+                this.disableUI();
+                this.waitForOverlay(config);
+            } else {
+                this.display(++this.progress.pos);
+            }
+            return;
+        }
         if (direction.sound) {
             if (direction.sound.control === 'stop') {
                 this.stopSound();
@@ -293,6 +304,49 @@ class Scenario {
             next();
         });
         this.progress.background.color = color;
+    }
+
+    /**
+     * Display an overlay.
+     * @param {Overlay} overlay The overlay.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    displayOverlay(overlay, config = this.progress.displayConfig) {
+        let overlayElement = this.$(config.overlay.target + ' .overlay');
+        if (overlayElement.length === 0) {
+            overlayElement = this.$('<div>',
+                { class: 'overlay' }
+            ).css({
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: OVERLAY_DEFAULT_Z,
+                backgroundColor: 'transparent',
+                pointerEvents: 'none',
+                opacity: 1,
+            });
+            this.$(config.overlay.target).append(overlayElement);
+        }
+        overlayElement.delay(100).queue(function (next) {
+            overlayElement.css({
+                backgroundColor: overlay.color,
+                opacity: overlay.opacity,
+                transition: config.overlay.duration / 1000 + 's',
+            });
+            next();
+        });
+        this.progress.overlay = overlay;
+    }
+
+    /**
+     * Remove an overlay.
+     */
+    removeOverlay() {
+        let config = this.progress.displayConfig.copy();
+        config.update({ overlay: { duration: 0 } });
+        this.displayOverlay('transparent', config);
     }
 
     /**
@@ -412,6 +466,18 @@ class Scenario {
     waitForBackgroundColor(config = this.progress.displayConfig) {
         let backgroundElement = this.$(config.background.target + ' .backgroundColor');
         backgroundElement.one('transitionend', () => {
+            this.enableUI();
+            this.display(++this.progress.pos);
+        });
+    }
+
+    /**
+     * Wait for displaying an overlay.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    waitForOverlay(config = this.progress.displayConfig) {
+        let overlayElement = this.$(config.overlay.target + ' .overlay');
+        overlayElement.one('transitionend', () => {
             this.enableUI();
             this.display(++this.progress.pos);
         });
@@ -758,6 +824,7 @@ class Scenario {
         this.removeImages();
         this.removeBackgroundImage();
         this.resetBackgroundColor();
+        this.removeOverlay();
         this.flushStatusMessage();
         this.progress = new ScenarioProgress();
         this.progress.update(JSON.parse(this.window.localStorage.progress));
@@ -778,6 +845,9 @@ class Scenario {
                 }
                 if (this.progress.bgmConfig) {
                     this.playBgm(this.progress.bgmConfig);
+                }
+                if (this.progress.overlay) {
+                    this.displayOverlay(this.progress.overlay);
                 }
                 for (let key in this.progress.status) {
                     if (this.progress.status[key].display) {
