@@ -1,8 +1,11 @@
-Display a background image
+Display a background
 ================================================================================
 
 Example
 --------------------------------------------------------------------------------
+
+To display a background image,
+specify the path to the background image.
 
 ```yaml
 - background:
@@ -10,7 +13,15 @@ Example
 - I am a cat. I don't have my name yet.
 ```
 
-The background image will be displayed and the next direction will be executed
+To change background color, specify the color.
+
+```yaml
+- background:
+    color: white
+- I am a cat. I don't have my name yet.
+```
+
+The background will be displayed and the next direction will be executed
 simultaneously unless `next: wait` is specified.
 
 ```yaml

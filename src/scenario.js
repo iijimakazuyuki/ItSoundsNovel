@@ -150,14 +150,34 @@ class Scenario {
         if (direction.background) {
             if (direction.background.control === 'remove') {
                 this.removeBackground(config);
-            } else {
-                this.displayBackground(direction.background.image, config);
+                if (direction.next === 'wait') {
+                    this.disableUI();
+                    this.waitForBackgroundImage(config);
+                } else {
+                    this.display(++this.progress.pos);
+                }
+                return;
             }
-            if (direction.next === 'wait') {
-                this.disableUI();
-                this.waitForBackground(config);
-            } else {
-                this.display(++this.progress.pos);
+            if (direction.background.image) {
+                this.displayBackgroundImage(direction.background.image, config);
+                if (direction.next === 'wait') {
+                    this.disableUI();
+                    this.waitForBackgroundImage(config);
+                } else {
+                    this.display(++this.progress.pos);
+                }
+                return;
+            }
+            if (direction.background.color) {
+                this.changeBackgroundColor(direction.background.color, config);
+                this.removeBackground(config);
+                if (direction.next === 'wait') {
+                    this.disableUI();
+                    this.waitForBackgroundColor(config);
+                } else {
+                    this.display(++this.progress.pos);
+                }
+                return;
             }
             return;
         }
@@ -209,7 +229,7 @@ class Scenario {
      * @param {string} url The url of the background image.
      * @param {DisplayConfig} config The display configuration.
      */
-    displayBackground(url, config = this.progress.displayConfig) {
+    displayBackgroundImage(url, config = this.progress.displayConfig) {
         let previousImage =
             this.$(config.background.target + ' .backgroundImage');
         previousImage.removeClass('active');
@@ -228,10 +248,51 @@ class Scenario {
                 opacity: 1,
             }).on('transitionend', () => {
                 previousImage.remove();
+                this.resetBackgroundColor();
             });
         });
         this.$(config.background.target).append(image);
-        this.progress.backgroundUrl = url;
+        this.progress.background.image = url;
+    }
+
+    /**
+     * Reset background color.
+     */
+    resetBackgroundColor() {
+        let config = this.progress.displayConfig.copy();
+        config.update({ background: { duration: 0 } });
+        this.changeBackgroundColor('transparent', config);
+    }
+
+    /**
+     * Change background color.
+     * @param {string} color The background color.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    changeBackgroundColor(color, config = this.progress.displayConfig) {
+        let background = this.$(config.background.target + ' .backgroundColor');
+        if (background.length === 0) {
+            background = this.$('<div>',
+                { class: 'backgroundColor' }
+            ).css({
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'transparent',
+                zIndex: BACKGROUND_IMAGE_DEFAULT_Z,
+            });
+            this.$(config.background.target).append(background);
+        }
+        background.delay(100).queue(function (next) {
+            background.css({
+                backgroundColor: color,
+                transition: config.background.duration / 1000 + 's',
+            });
+            next();
+        });
+        this.progress.background.color = color;
     }
 
     /**
@@ -272,7 +333,7 @@ class Scenario {
         }).on('transitionend', () => {
             previousImage.remove();
         });
-        this.progress.backgroundUrl = null;
+        this.progress.background.image = null;
     }
 
     /**
@@ -335,10 +396,22 @@ class Scenario {
      * Wait for displaying background image.
      * @param {DisplayConfig} config The display configuration.
      */
-    waitForBackground(config = this.progress.displayConfig) {
+    waitForBackgroundImage(config = this.progress.displayConfig) {
         let imageElement =
             this.$(config.background.target + ' .backgroundImage.active');
         imageElement.one('transitionend', () => {
+            this.enableUI();
+            this.display(++this.progress.pos);
+        });
+    }
+
+    /**
+     * Wait for changing background color.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    waitForBackgroundColor(config = this.progress.displayConfig) {
+        let backgroundElement = this.$(config.background.target + ' .backgroundColor');
+        backgroundElement.one('transitionend', () => {
             this.enableUI();
             this.display(++this.progress.pos);
         });
@@ -578,7 +651,7 @@ class Scenario {
 
     /**
      * Enable the next button to execute next direction.
-     */
+      */
     enableNextDirectionButton() {
         this.$(this.progress.displayConfig.ui.next).click(() => {
             this.flush();
@@ -587,10 +660,10 @@ class Scenario {
     }
 
     /**
-     * Enable the next button to skip displaying.
-     * @param {boolean} wait If the next button is disabled to wait for displaying.
-     * @param {number} auto Time from the last letter displaying to next direction being executed.
-     */
+      * Enable the next button to skip displaying.
+      * @param {boolean} wait If the next button is disabled to wait for displaying.
+      * @param {number} auto Time from the last letter displaying to next direction being executed.
+      */
     changeButtonDuringDisplaying(wait, auto = null) {
         this.$(this.progress.displayConfig.ui.next).off('click');
         let transitionEnd;
@@ -684,6 +757,7 @@ class Scenario {
         this.stopBgm(new BgmConfig({ bgm: 'stop' }));
         this.removeImages();
         this.removeBackgroundImage();
+        this.resetBackgroundColor();
         this.flushStatusMessage();
         this.progress = new ScenarioProgress();
         this.progress.update(JSON.parse(this.window.localStorage.progress));
@@ -696,8 +770,11 @@ class Scenario {
                 for (let key in this.progress.images) {
                     this.displayImage(this.progress.images[key]);
                 }
-                if (this.progress.backgroundUrl) {
-                    this.displayBackground(this.progress.backgroundUrl);
+                if (this.progress.background) {
+                    if (this.progress.background.image) {
+                        this.displayBackgroundImage(this.progress.background.image);
+                    }
+                    this.changeBackgroundColor(this.progress.background.color);
                 }
                 if (this.progress.bgmConfig) {
                     this.playBgm(this.progress.bgmConfig);

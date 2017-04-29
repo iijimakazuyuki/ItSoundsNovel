@@ -1476,6 +1476,157 @@ describe('ItSoundsNovel View', function () {
         })
     });
 
+    describe('Change background color', function () {
+
+        /**
+         * The path to the tested view.
+         */
+        const PATH = 'change_background_color.html';
+
+        /**
+         * The first sentence in the sequence.
+         */
+        const FIRST_SENTENCE = "I am a cat. I don't have my name yet.";
+
+        /**
+         * The second sentence in the sequence.
+         */
+        const SECOND_SENTENCE = "I don't know where I was born.";
+
+        /**
+         * The third sentence in the sequence.
+         */
+        const THIRD_SENTENCE =
+            "I only remember that I was meowing in dim and wet place.";
+
+        /**
+         * The fourth sentence in the sequence.
+         */
+        const FOURTH_SENTENCE =
+            "I saw something called human beings for the first time there.";
+
+        /**
+         * The fourth sentence in the sequence.
+         */
+        const FIFTH_SENTENCE =
+            "In addition, it turned out that it was a student, which is the most ferocious species of human beings.";
+
+        /**
+         * The timeout for displaying the background image.
+         */
+        const LONG_TIMEOUT_FOR_DISPLAYING_IMAGE = 5000;
+
+        /**
+         * The timeout for displaying the fifth sentence.
+         * The last letter of the sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] *  102 + 500 [ms] = 5600 [ms] < 8000 [ms] (= timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_SENTENCE = 8000;
+
+        /**
+         * The timeout for displaying the third and fourth sentence.
+         * The last letter of the fourth sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] *  60 + 500 [ms] = 3500 [ms] < 5000 [ms] (+ LONG_TIMEOUT_FOR_DISPLAYING_IMAGE = timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE = 5000 + LONG_TIMEOUT_FOR_DISPLAYING_IMAGE;
+
+        /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
+         * @param browserDriverName {string} The browser name of WebDriver.
+         * @returns {Thenable} The WebDriver test sequence.
+         */
+        const TEST_SEQUENCE_OF = browserDriverName => {
+            let driver = browserDrivers.get(browserDriverName);
+            return driver.get(BASE_URL + PATH)
+                .then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIRST_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, THIRD_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FOURTH_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIFTH_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElements({ className: 'backgroundImage' })
+                ).then(elements => {
+                    assert.lengthOf(elements, 0);
+                });
+        }
+
+        it('should be performed in Firefox', function () {
+            return TEST_SEQUENCE_OF('firefox');
+        });
+        it('should be performed in Chrome', function () {
+            return TEST_SEQUENCE_OF('chrome');
+        })
+        it('should be performed in IE', function () {
+            return TEST_SEQUENCE_OF('ie');
+        })
+        it('should be performed in Edge', function () {
+            return TEST_SEQUENCE_OF('MicrosoftEdge');
+        })
+    });
+
     after(function () {
         let stopAppServer = new Promise(resolve => {
             appServer.close(resolve);
