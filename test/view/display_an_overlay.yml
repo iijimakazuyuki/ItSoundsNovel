@@ -1,0 +1,26 @@
+- background:
+    image: image/background_1.jpg
+  config:
+    duration: 200
+- overlay:
+    color: white
+  config:
+    duration: 100
+  next: wait
+- overlay:
+    color: transparent
+  config:
+    duration: 100
+  next: wait
+- I am a cat. I don't have my name yet.
+- overlay:
+    color: rgba(1, 1, 1, 0.5)
+- I don't know where I was born.
+- config:
+    overlay:
+      duration: 5000
+- overlay:
+    color: blue
+    opacity: 0.3
+  next: wait
+- I only remember that I was meowing in dim and wet place.

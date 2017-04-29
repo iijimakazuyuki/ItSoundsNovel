@@ -331,6 +331,7 @@ describe('Scenario', function () {
                         config: {
                             message: { delay: 10, duration: 100 },
                             background: {},
+                            overlay: {},
                             image: {},
                             status: {},
                         }
@@ -339,6 +340,7 @@ describe('Scenario', function () {
                         config: {
                             message: { delay: 10, duration: 100 },
                             background: {},
+                            overlay: {},
                             image: {},
                             status: {},
                         }
@@ -373,6 +375,7 @@ describe('Scenario', function () {
                         config: {
                             message: { delay: 10, duration: 100 },
                             background: {},
+                            overlay: {},
                             image: {},
                             status: {},
                         }
@@ -921,6 +924,7 @@ describe('Scenario', function () {
                         config: {
                             background: { duration: 100 },
                             message: {},
+                            overlay: {},
                             image: {},
                             status: {},
                         }
@@ -1062,7 +1066,100 @@ describe('Scenario', function () {
                         },
                         config: {
                             background: { duration: 100 },
+                            overlay: {},
                             message: {},
+                            image: {},
+                            status: {},
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set an overlay', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- overlay:',
+                    '    color: black',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        overlay: {
+                            color: 'black',
+                            opacity: '1.0',
+                        },
+                    },
+                ]
+            );
+        });
+        it('should set an overlay with wait', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- overlay:',
+                    '    color: black',
+                    '  next: wait',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        overlay: {
+                            color: 'black',
+                            opacity: '1.0',
+                        },
+                        next: 'wait',
+                    },
+                ]
+            );
+        });
+        it('should set an overlay with a display configuration', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- overlay:',
+                    '    color: black',
+                    '  config:',
+                    '    duration: 100',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        overlay: {
+                            color: 'black',
+                            opacity: '1.0',
+                        },
+                        config: {
+                            background: {},
+                            message: {},
+                            overlay: { duration: 100 },
                             image: {},
                             status: {},
                         }
@@ -1323,6 +1420,7 @@ describe('Scenario', function () {
                             },
                             background: {},
                             message: {},
+                            overlay: {},
                             status: {},
                         }
                     },
@@ -1851,6 +1949,34 @@ describe('Scenario', function () {
         });
     });
 
+    describe('#displayOverlay()', function () {
+        it('should display an overlay in the background window', function () {
+            // arrange
+            let stub = {
+                css: sinon.stub().returnsThis(),
+                on: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            };
+            let backgroundMock = {
+                append: sinon.spy(),
+                css: sinon.spy(),
+            };
+            scenario.$.withArgs('<div>', {
+                class: 'overlay',
+            }).returns(stub);
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.overlay.target
+            ).returns(backgroundMock);
+            let overlay = { color: 'rgba(0,0,0,0.5)', opacity: '1.0' };
+            // act
+            scenario.displayOverlay(overlay);
+
+            // assert
+            assert(backgroundMock.append.withArgs(stub).called);
+        });
+    });
+
     describe('#changeBackgroundColor()', function () {
         it('should change background color of the background window', function () {
             // arrange
@@ -1970,6 +2096,24 @@ describe('Scenario', function () {
 
             // assert
             assert(imageElementMock.one.called);
+        });
+    });
+
+    describe('#waitForOverlay()', function () {
+        it('should bind transitionend on an overlay', function () {
+            // arrange
+            let overlayElementMock = {
+                one: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.overlay.target + ' .overlay'
+            ).returns(overlayElementMock);
+
+            // act
+            scenario.waitForOverlay();
+
+            // assert
+            assert(overlayElementMock.one.called);
         });
     });
 
@@ -2651,6 +2795,10 @@ describe('Scenario', function () {
                         target: '#backgroundWindow',
                         duration: 1000
                     },
+                    overlay: {
+                        target: '#backgroundWindow',
+                        duration: 1000,
+                    },
                     image: {
                         duration: 1000
                     },
@@ -2679,6 +2827,10 @@ describe('Scenario', function () {
                 background: {
                     image: 'abc.jpg',
                     color: 'transparent',
+                },
+                overlay: {
+                    color: 'black',
+                    opacity: '0.5',
                 },
                 scenarioUrl: 'abc.yml',
                 status: {

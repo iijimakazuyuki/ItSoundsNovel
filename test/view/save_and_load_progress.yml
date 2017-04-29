@@ -3,6 +3,8 @@
 - bgm: bgm/bgm_1.mp3
   loop:
     head: 9.6
+- overlay:
+    color: rgba(0, 0, 0, 0.5)
 - image:
     name: cat1
     source: image/cat.png
@@ -21,6 +23,8 @@
 - I am a cat. I don't have my name yet.
 - background:
     color: lightgray
+- overlay:
+    color: transparent
 - image:
     name: cat1
     x: 100
@@ -39,6 +43,9 @@
   concat: " "
 - background:
     color: transparent
+- overlay:
+    color: black
+    opacity: 0.5
 - image:
     name: cat1
     control: remove
