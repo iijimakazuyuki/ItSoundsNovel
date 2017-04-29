@@ -5,6 +5,7 @@
 const DisplayConfig = require('./display_config.js');
 const Image = require('./image.js');
 const BgmConfig = require('./bgm_config.js');
+const Background = require('./background.js');
 
 /**
  * The progress of the scenario.
@@ -40,10 +41,10 @@ class ScenarioProgress {
         this.bgmConfig = null;
 
         /**
-         * The url of the background image.
-         * @type {string}
+         * The background.
+         * @type {Background}
          */
-        this.backgroundUrl = null;
+        this.background = new Background(null, 'transparent');
 
         /**
          * The status.
@@ -64,7 +65,9 @@ class ScenarioProgress {
                 head: progress.bgmConfig.head,
             });
         }
-        if (progress.backgroundUrl) this.backgroundUrl = progress.backgroundUrl;
+        if (progress.background) {
+            this.background.update(progress.background);
+        }
         for (let name in progress.status) {
             this.status[name] = progress.status[name];
         }

@@ -1,0 +1,22 @@
+- background:
+    color: "#000000"
+- I am a cat. I don't have my name yet.
+- background:
+    color: transparent
+  config:
+    duration: 100
+- I don't know where I was born.
+- config:
+    background:
+      duration: 5000
+- background:
+    color: blue
+  next: wait
+- I only remember that I was meowing in dim and wet place.
+- background:
+    image: image/background_1.jpg
+  next: wait
+- I saw something called human beings for the first time there.
+- background:
+    color: black
+- In addition, it turned out that it was a student, which is the most ferocious species of human beings.

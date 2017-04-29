@@ -982,6 +982,94 @@ describe('Scenario', function () {
                 ]
             );
         });
+        it('should set a background color', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- background:',
+                    '    color: black',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        background: {
+                            color: 'black',
+                        },
+                    },
+                ]
+            );
+        });
+        it('should set background color with wait', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- background:',
+                    '    color: black',
+                    '  next: wait',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        background: {
+                            color: 'black',
+                        },
+                        next: 'wait',
+                    },
+                ]
+            );
+        });
+        it('should set background color with a display configuration', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- background:',
+                    '    color: black',
+                    '  config:',
+                    '    duration: 100',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        background: {
+                            color: 'black',
+                        },
+                        config: {
+                            background: { duration: 100 },
+                            message: {},
+                            image: {},
+                            status: {},
+                        }
+                    },
+                ]
+            );
+        });
         it('should set an event to stop background music', function () {
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
@@ -1734,7 +1822,7 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#displayBackground()', function () {
+    describe('#displayBackgroundImage()', function () {
         it('should display an image in the background window', function () {
             // arrange
             let stub = {
@@ -1744,7 +1832,8 @@ describe('Scenario', function () {
                 queue: sinon.stub().returnsThis(),
             };
             let backgroundMock = {
-                append: sinon.spy()
+                append: sinon.spy(),
+                css: sinon.spy(),
             };
             scenario.$.withArgs('<img>', {
                 src: 'a.jpg',
@@ -1755,7 +1844,35 @@ describe('Scenario', function () {
             ).returns(backgroundMock);
 
             // act
-            scenario.displayBackground('a.jpg');
+            scenario.displayBackgroundImage('a.jpg');
+
+            // assert
+            assert(backgroundMock.append.withArgs(stub).called);
+        });
+    });
+
+    describe('#changeBackgroundColor()', function () {
+        it('should change background color of the background window', function () {
+            // arrange
+            let stub = {
+                css: sinon.stub().returnsThis(),
+                on: sinon.stub().returnsThis(),
+                delay: sinon.stub().returnsThis(),
+                queue: sinon.stub().returnsThis(),
+            };
+            let backgroundMock = {
+                append: sinon.spy(),
+                css: sinon.spy(),
+            };
+            scenario.$.withArgs('<div>', {
+                class: 'backgroundColor',
+            }).returns(stub);
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.background.target
+            ).returns(backgroundMock);
+
+            // act
+            scenario.changeBackgroundColor('#000000');
 
             // assert
             assert(backgroundMock.append.withArgs(stub).called);
@@ -1838,7 +1955,7 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#waitForBackground()', function () {
+    describe('#waitForBackgroundImage()', function () {
         it('should bind transitionend on a background image', function () {
             // arrange
             let imageElementMock = {
@@ -1849,10 +1966,28 @@ describe('Scenario', function () {
             ).returns(imageElementMock);
 
             // act
-            scenario.waitForBackground();
+            scenario.waitForBackgroundImage();
 
             // assert
             assert(imageElementMock.one.called);
+        });
+    });
+
+    describe('#waitForBackgroundColor()', function () {
+        it('should bind transitionend on a background window', function () {
+            // arrange
+            let backgroundElementMock = {
+                one: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.background.target + ' .backgroundColor'
+            ).returns(backgroundElementMock);
+
+            // act
+            scenario.waitForBackgroundColor();
+
+            // assert
+            assert(backgroundElementMock.one.called);
         });
     });
 
@@ -2541,7 +2676,10 @@ describe('Scenario', function () {
                     loop: true,
                     head: 0,
                 },
-                backgroundUrl: 'abc.jpg',
+                background: {
+                    image: 'abc.jpg',
+                    color: 'transparent',
+                },
                 scenarioUrl: 'abc.yml',
                 status: {
                     flag: { value: 'on', display: 'none' },

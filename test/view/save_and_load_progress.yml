@@ -19,6 +19,8 @@
     value: on
     display: flag1 is set
 - I am a cat. I don't have my name yet.
+- background:
+    color: lightgray
 - image:
     name: cat1
     x: 100
@@ -35,6 +37,8 @@
 - message: I don't know where I was born.
   flush: none
   concat: " "
+- background:
+    color: transparent
 - image:
     name: cat1
     control: remove
