@@ -405,6 +405,8 @@ class Scenario {
                 src: image.source,
             }).css({
                 position: 'absolute',
+                top: 0,
+                left: 0,
                 transform: transform,
                 transition: config.image.duration / 1000 + 's',
                 zIndex: image.z,
