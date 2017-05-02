@@ -397,9 +397,9 @@ class Scenario {
      */
     displayImage(image, config = this.progress.displayConfig) {
         let existingImage = this.$('#' + image.name);
-        let transform = 'translate(' + image.x + 'px,' + image.y + 'px)';
         if (existingImage.length === 0) {
-            if (!image.z) image.z = Image.defaultZ();
+            image.default();
+            let transform = TRANSFORM_OF_IMAGE(image);
             let imageElement = this.$('<img>', {
                 id: image.name,
                 src: image.source,
@@ -429,9 +429,10 @@ class Scenario {
                     existingImage.remove();
                 });
             } else {
-                newCss.transform = transform;
-                if (image.z) newCss.zIndex = image.z;
-                this.progress.images[image.name].update(image);
+                let prevImage = this.progress.images[image.name];
+                prevImage.update(image);
+                newCss.transform = TRANSFORM_OF_IMAGE(prevImage);
+                newCss.zIndex = prevImage.z;
             }
             existingImage.css(newCss);
         }
@@ -864,5 +865,14 @@ class Scenario {
         });
     }
 }
+
+const TRANSFORM_OF_IMAGE = image =>
+    [TRANSLATE_OF_IMAGE(image), SCALE_OF_IMAGE(image)].join(' ');
+
+const TRANSLATE_OF_IMAGE = image =>
+    'translate(' + image.x + 'px,' + image.y + 'px)';
+
+const SCALE_OF_IMAGE = image =>
+    'scale(' + image.scaleX + ', ' + image.scaleY + ')';
 
 module.exports = Scenario;

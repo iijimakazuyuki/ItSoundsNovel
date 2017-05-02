@@ -10,6 +10,8 @@
     source: image/cat.png
     x: 10
     y: 10
+    scaleX: 0.5
+    scaleY: 0.5
 - image:
     name: cat2
     source: image/cat.png
