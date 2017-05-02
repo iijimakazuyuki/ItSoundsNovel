@@ -8,6 +8,8 @@ To display an image, name it and specify the path to an image file.
 `z` means display order (`z-index`). The larger covers the smaller.
 The default value of `z` is `-1`.
 The value of `z` of background image is `-1000`.
+`scaleX` and `scaleY` means a ratio of scaling up and down.
+Both default values of those are `1`.
 The image will be displayed and the next direction will be executed
 simultaneously unless `next: wait` is specified.
 
@@ -23,6 +25,8 @@ simultaneously unless `next: wait` is specified.
     x: 100
     y: 10
     z: -2
+    scaleX: 0.01
+    scaleY: 0.01
   next: wait
 ```
 
@@ -40,6 +44,26 @@ In the example below, the image will move from left to right.
     name: cat
     x: 100
     y: 10
+```
+
+The displayed image can be scaled.
+In the example below, the image will be enlarged.
+
+```yaml
+- image:
+    name: cat
+    source: image/cat.png
+    x: 10
+    y: 10
+    scaleX: 0.01
+    scaleY: 0.01
+  config:
+    duration: 10
+  next: wait
+- image:
+    name: cat
+    scaleX: 1.0
+    scaleY: 1.0
 ```
 
 To change the display speed or moving speed, specify the duration.

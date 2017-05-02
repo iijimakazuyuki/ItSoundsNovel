@@ -4,6 +4,7 @@ const sinon = require('sinon');
 
 const Message = require('../src/message.js');
 const Character = require('../src/character.js');
+const Image = require('../src/image.js');
 
 const normalCharacterOf = v => new Character(null, null, v);
 
@@ -1325,6 +1326,13 @@ describe('Scenario', function () {
                     '    x: 10',
                     '    y: 10',
                     '    z: -5',
+                    '- image:',
+                    '    name: abc',
+                    '    source: abc.jpg',
+                    '    x: 10',
+                    '    y: 10',
+                    '    scaleX: 0.1',
+                    '    scaleY: 0.1',
                 ].join('\n')
             );
             let url = '';
@@ -1351,6 +1359,16 @@ describe('Scenario', function () {
                             x: 10,
                             y: 10,
                             z: -5,
+                        }
+                    },
+                    {
+                        image: {
+                            name: 'abc',
+                            source: 'abc.jpg',
+                            x: 10,
+                            y: 10,
+                            scaleX: 0.1,
+                            scaleY: 0.1,
                         }
                     },
                 ]
@@ -1427,6 +1445,73 @@ describe('Scenario', function () {
                 ]
             );
         });
+        it('should set an event to scale an image', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- image:',
+                    '    name: abc',
+                    '    scaleX: 0.1',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        image: {
+                            name: 'abc',
+                            scaleX: 0.1,
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set an event to scale an image with a configuration', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- image:',
+                    '    name: abc',
+                    '    scaleY: 0.1',
+                    '  config:',
+                    '    duration: 100',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        image: {
+                            name: 'abc',
+                            scaleY: 0.1,
+                        },
+                        config: {
+                            image: {
+                                duration: 100,
+                            },
+                            background: {},
+                            message: {},
+                            overlay: {},
+                            status: {},
+                        }
+                    },
+                ]
+            );
+        });
         it('should set an event to remove an image', function () {
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
@@ -1450,8 +1535,6 @@ describe('Scenario', function () {
                         image: {
                             name: 'abc',
                             control: 'remove',
-                            x: 0,
-                            y: 0,
                         }
                     },
                 ]
@@ -2037,12 +2120,12 @@ describe('Scenario', function () {
             let backgroundMock = {
                 append: sinon.spy()
             };
-            let image = {
+            let image = new Image({
                 name: 'a',
                 source: 'a.jpg',
                 x: 10,
                 y: 20,
-            };
+            });
             scenario.$.withArgs('<img>', {
                 id: 'a',
                 src: 'a.jpg',

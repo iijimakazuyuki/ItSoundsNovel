@@ -5,6 +5,17 @@
     source: image/cat.png
     x: 10
     y: 10
+    scaleX: 0.001
+    scaleY: 0.001
+  config:
+    duration: 10
+  next: wait
+- image:
+    name: cat1
+    scaleX: 0.5
+    scaleY: 0.5
+  config:
+    duration: 5000
 - image:
     name: cat2
     source: image/cat.png
