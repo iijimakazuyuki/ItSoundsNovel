@@ -12,6 +12,7 @@
     y: 10
     scaleX: 0.5
     scaleY: 0.5
+    rotateZ: 180deg
 - image:
     name: cat2
     source: image/cat.png
