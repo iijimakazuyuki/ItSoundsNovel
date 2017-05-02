@@ -867,12 +867,17 @@ class Scenario {
 }
 
 const TRANSFORM_OF_IMAGE = image =>
-    [TRANSLATE_OF_IMAGE(image), SCALE_OF_IMAGE(image)].join(' ');
+    [TRANSLATE_OF_IMAGE, SCALE_OF_IMAGE, ROTATE_OF_IMAGE].map(f => f(image)).join(' ');
 
 const TRANSLATE_OF_IMAGE = image =>
     'translate(' + image.x + 'px,' + image.y + 'px)';
 
 const SCALE_OF_IMAGE = image =>
     'scale(' + image.scaleX + ', ' + image.scaleY + ')';
+
+const ROTATE_OF_IMAGE = image =>
+    ' rotateX(' + image.rotateX + ')'
+    + ' rotateY(' + image.rotateY + ')'
+    + ' rotateZ(' + image.rotateZ + ')';
 
 module.exports = Scenario;

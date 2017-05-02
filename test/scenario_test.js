@@ -1333,6 +1333,14 @@ describe('Scenario', function () {
                     '    y: 10',
                     '    scaleX: 0.1',
                     '    scaleY: 0.1',
+                    '- image:',
+                    '    name: abc',
+                    '    source: abc.jpg',
+                    '    x: 10',
+                    '    y: 10',
+                    '    rotateX: 60deg',
+                    '    rotateY: -60deg',
+                    '    rotateZ: 180deg',
                 ].join('\n')
             );
             let url = '';
@@ -1369,6 +1377,17 @@ describe('Scenario', function () {
                             y: 10,
                             scaleX: 0.1,
                             scaleY: 0.1,
+                        }
+                    },
+                    {
+                        image: {
+                            name: 'abc',
+                            source: 'abc.jpg',
+                            x: 10,
+                            y: 10,
+                            rotateX: '60deg',
+                            rotateY: '-60deg',
+                            rotateZ: '180deg',
                         }
                     },
                 ]
@@ -1498,6 +1517,73 @@ describe('Scenario', function () {
                         image: {
                             name: 'abc',
                             scaleY: 0.1,
+                        },
+                        config: {
+                            image: {
+                                duration: 100,
+                            },
+                            background: {},
+                            message: {},
+                            overlay: {},
+                            status: {},
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set an event to rotate an image', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- image:',
+                    '    name: abc',
+                    '    rotateX: 180deg',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        image: {
+                            name: 'abc',
+                            rotateX: '180deg',
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set an event to rotate an image with a configuration', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- image:',
+                    '    name: abc',
+                    '    rotateY: 180deg',
+                    '  config:',
+                    '    duration: 100',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        image: {
+                            name: 'abc',
+                            rotateY: '180deg',
                         },
                         config: {
                             image: {
