@@ -71,6 +71,11 @@ describe('ItSoundsNovel View', function () {
         const FIRST_SENTENCE = "I am a cat.\nI don't have my name yet.";
 
         /**
+         * The ruby for the first sentence in the sequence.
+         */
+        const RUBY_FOR_FIRST_SENTENCE = "Namae wa mada nai.";
+
+        /**
          * The second sentence in the sequence.
          */
         const SECOND_SENTENCE = "I don't know where I was born.";
@@ -121,7 +126,12 @@ describe('ItSoundsNovel View', function () {
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
                     driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
+                        until.elementTextContains(element, FIRST_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextContains(element, RUBY_FOR_FIRST_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
                 ).then(() =>

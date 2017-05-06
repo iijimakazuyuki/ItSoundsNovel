@@ -16,6 +16,8 @@ const hyperlinkControlCharacterOf = (k, v) => new Character('hyperlink', k, v);
 
 const sleepControlCharacterOf = v => new Character('sleep', 'sleep', v);
 
+const rubyControlCharacterOf = (k, v) => new Character('ruby', k, v);
+
 describe('Scenario', function () {
     let scenario;
 
@@ -427,7 +429,9 @@ describe('Scenario', function () {
                     '- abcdef${duration=200}',
                     '- ${[aaa](bbb)}abcdef',
                     '- abcdef${[aaa](bbb)}',
-                    '- abc${delay=100}def${duration=200}ghi${[jkl](/mno)}pqr',
+                    '- ${aaa(bbb)}abcdef',
+                    '- abcdef${aaa(bbb)}',
+                    '- abc${delay=100}def${duration=200}ghi${[jkl](/mno)}pqr${stu(vwx)}yz',
                 ].join('\n')
             );
             let url = '';
@@ -477,6 +481,24 @@ describe('Scenario', function () {
                     },
                     {
                         message: {
+                            letters: [
+                                rubyControlCharacterOf('aaa', 'bbb')
+                            ].concat(normalCharacterArrayOf(
+                                ['a', 'b', 'c', 'd', 'e', 'f']
+                            )),
+                        },
+                    },
+                    {
+                        message: {
+                            letters: normalCharacterArrayOf(
+                                ['a', 'b', 'c', 'd', 'e', 'f']
+                            ).concat([
+                                rubyControlCharacterOf('aaa', 'bbb')
+                            ]),
+                        },
+                    },
+                    {
+                        message: {
                             letters: normalCharacterArrayOf(
                                 ['a', 'b', 'c']
                             ).concat([
@@ -491,6 +513,10 @@ describe('Scenario', function () {
                                 hyperlinkControlCharacterOf('jkl', '/mno')
                             ]).concat(normalCharacterArrayOf(
                                 ['p', 'q', 'r']
+                            )).concat([
+                                rubyControlCharacterOf('stu', 'vwx')
+                            ]).concat(normalCharacterArrayOf(
+                                ['y', 'z']
                             )),
                         },
                     },
@@ -830,6 +856,33 @@ describe('Scenario', function () {
                         message: {
                             letters: [
                                 sleepControlCharacterOf('1000'),
+                            ],
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set a control character to display ruby', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- ${word(ruby)}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                rubyControlCharacterOf('word', 'ruby'),
                             ],
                         }
                     },
@@ -1897,12 +1950,14 @@ describe('Scenario', function () {
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                             {
                                 type: null, key: null, value: 'c',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                         ]
                     }
@@ -1915,18 +1970,21 @@ describe('Scenario', function () {
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                             {
                                 type: null, key: null, value: 'e',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                             {
                                 type: null, key: null, value: 'f',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                         ]
                     }
@@ -2100,12 +2158,14 @@ describe('Scenario', function () {
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                             {
                                 type: null, key: null, value: 'c',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                         ]
                     }
@@ -2132,18 +2192,21 @@ describe('Scenario', function () {
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                             {
                                 type: null, key: null, value: 'e',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                             {
                                 type: null, key: null, value: 'f',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
                                 isSleep: () => false,
+                                isRuby: () => false,
                             },
                         ]
                     }
@@ -2943,7 +3006,7 @@ describe('Scenario', function () {
                 one: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.message.target + ' :last'
+                scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
 
             // act
@@ -2967,7 +3030,7 @@ describe('Scenario', function () {
                 one: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.message.target + ' :last'
+                scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
 
             // act
@@ -2991,7 +3054,7 @@ describe('Scenario', function () {
                 one: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.message.target + ' :last'
+                scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
 
             // act
@@ -3015,7 +3078,7 @@ describe('Scenario', function () {
                 one: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.message.target + ' :last'
+                scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
 
             // act

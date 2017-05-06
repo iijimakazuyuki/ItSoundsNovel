@@ -17,6 +17,7 @@ class Message {
         let controlCharacterRegex = /\${(.*?)}/g
         let keyValueControlCharacterRegex = /(.+?)=(.*?)$/
         let hyperlinkControlCharacterRegex = /\[(.*?)\]\((.*?)\)/
+        let rubyControlCharacterRegex = /(.*?)\((.*?)\)/
         let resultArray;
         while ((resultArray = controlCharacterRegex.exec(message))) {
             message.slice(index, resultArray.index).split('').forEach(v => {
@@ -39,6 +40,12 @@ class Message {
                 if (hyperlinkResultArray) {
                     let character = new Character('hyperlink', hyperlinkResultArray[1], hyperlinkResultArray[2]);
                     this.letters.push(character);
+                } else {
+                    let rubyResultArray = rubyControlCharacterRegex.exec(resultArray[1]);
+                    if (rubyResultArray) {
+                        let character = new Character('ruby', rubyResultArray[1], rubyResultArray[2]);
+                        this.letters.push(character);
+                    }
                 }
             }
             index = controlCharacterRegex.lastIndex;

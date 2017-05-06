@@ -63,3 +63,9 @@ To embed a hyperlink, write `${[label](url or absolute path or relative path)}`.
 ```yaml
 - I am a ${[cat](http://example.com)}. I don't have my name yet.
 ```
+
+In the example below, the ruby will be displayed on the word.
+
+```yaml
+- ${word(ruby)}
+```
