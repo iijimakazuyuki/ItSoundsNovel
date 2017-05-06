@@ -10,6 +10,9 @@ How to write scenarios
 [Change the display speed of sentences](change_the_display_speed_of_sentences.md)
 --------------------------------------------------------------------------------
 
+[Change message window color](change_message_window_color.md)
+--------------------------------------------------------------------------------
+
 [Play sounds](play_sounds.md)
 --------------------------------------------------------------------------------
 

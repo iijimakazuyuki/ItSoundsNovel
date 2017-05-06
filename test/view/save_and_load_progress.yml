@@ -1,3 +1,7 @@
+- config:
+    message:
+      background:
+        color: rgba(0, 0, 0, 0.3)
 - background:
     image: image/background_1.jpg
 - bgm: bgm/bgm_1.mp3
@@ -24,6 +28,10 @@
     value: on
     display: flag1 is set
 - I am a cat. I don't have my name yet.
+- config:
+    message:
+      background:
+        color: transparent
 - background:
     color: lightgray
 - overlay:

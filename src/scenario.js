@@ -218,6 +218,14 @@ class Scenario {
         }
         if (!direction.message) {
             this.progress.displayConfig.update(direction.config);
+            if (direction.config.message.background) {
+                this.changeMessageWindowColor();
+                if (direction.next === 'wait') {
+                    this.disableUI();
+                    this.waitForChangingMessageWindowColor();
+                    return;
+                }
+            }
             this.display(++this.progress.pos);
             return;
         }
@@ -347,6 +355,18 @@ class Scenario {
         let config = this.progress.displayConfig.copy();
         config.update({ overlay: { duration: 0 } });
         this.displayOverlay('transparent', config);
+    }
+
+    /**
+     * Change message window color.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    changeMessageWindowColor(config = this.progress.displayConfig) {
+        let messageWindow = this.$(config.message.target);
+        messageWindow.css({
+            backgroundColor: config.message.background.color,
+            transition: config.message.background.duration / 1000 + 's',
+        });
     }
 
     /**
@@ -481,6 +501,18 @@ class Scenario {
     waitForOverlay(config = this.progress.displayConfig) {
         let overlayElement = this.$(config.overlay.target + ' .overlay');
         overlayElement.one('transitionend', () => {
+            this.enableUI();
+            this.display(++this.progress.pos);
+        });
+    }
+
+    /**
+     * Wait for changing message window color.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    waitForChangingMessageWindowColor(config = this.progress.displayConfig) {
+        let messageWindow = this.$(config.message.target);
+        messageWindow.one('transitionend', () => {
             this.enableUI();
             this.display(++this.progress.pos);
         });
@@ -831,6 +863,7 @@ class Scenario {
         this.flushStatusMessage();
         this.progress = new ScenarioProgress();
         this.progress.update(JSON.parse(this.window.localStorage.progress));
+        this.changeMessageWindowColor();
         this.$.get({
             url: this.progress.scenarioUrl,
             success: data => {
