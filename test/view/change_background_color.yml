@@ -9,6 +9,7 @@
 - config:
     background:
       duration: 5000
+      timingFunction: ease-out
 - background:
     color: blue
   next: wait

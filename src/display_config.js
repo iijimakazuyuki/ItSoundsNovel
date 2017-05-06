@@ -15,6 +15,7 @@ class DisplayConfig {
                 this.message.background = {
                     color: config.message.background.color,
                     duration: config.message.background.duration,
+                    timingFunction: config.message.background.timingFunction,
                 };
             }
             if (config.message.position) {
@@ -27,6 +28,7 @@ class DisplayConfig {
                     rotateY: config.message.position.rotateY,
                     rotateZ: config.message.position.rotateZ,
                     duration: config.message.position.duration,
+                    timingFunction: config.message.position.timingFunction,
                 };
             }
         }
@@ -44,6 +46,7 @@ class DisplayConfig {
         if (config.target) this.message.target = config.target;
         if (config.delay) this.message.delay = config.delay;
         if (config.duration) this.message.duration = config.duration;
+        if (config.timingFunction) this.message.timingFunction = config.timingFunction;
         if (config.fontSize) this.message.fontSize = config.fontSize;
         if (config.fontStyle) this.message.fontStyle = config.fontStyle;
         if (config.fontWeight) this.message.fontWeight = config.fontWeight;
@@ -62,6 +65,10 @@ class DisplayConfig {
                 if (config.message.background.duration) {
                     this.message.background.duration
                         = config.message.background.duration;
+                }
+                if (config.message.background.timingFunction) {
+                    this.message.background.timingFunction
+                        = config.message.background.timingFunction;
                 }
             }
             if (config.message.position) {
@@ -97,6 +104,10 @@ class DisplayConfig {
                     this.message.position.duration
                         = config.message.position.duration;
                 }
+                if (config.message.position.timingFunction) {
+                    this.message.position.timingFunction
+                        = config.message.position.timingFunction;
+                }
             }
         }
         if (config.background) {
@@ -106,6 +117,9 @@ class DisplayConfig {
             if (config.background.duration) {
                 this.background.duration = config.background.duration;
             }
+            if (config.background.timingFunction) {
+                this.background.timingFunction = config.background.timingFunction;
+            }
         }
         if (config.overlay) {
             if (config.overlay.target) {
@@ -113,6 +127,9 @@ class DisplayConfig {
             }
             if (config.overlay.duration) {
                 this.overlay.duration = config.overlay.duration;
+            }
+            if (config.overlay.timingFunction) {
+                this.overlay.timingFunction = config.overlay.timingFunction;
             }
         }
         if (config.status) {
@@ -124,6 +141,9 @@ class DisplayConfig {
             if (config.image.duration) {
                 this.image.duration = config.image.duration;
             }
+            if (config.image.timingFunction) {
+                this.image.timingFunction = config.image.timingFunction;
+            }
         }
         if (config.ui) this.ui = config.ui;
     }
@@ -133,6 +153,7 @@ class DisplayConfig {
                 target: this.message.target,
                 delay: this.message.delay,
                 duration: this.message.duration,
+                timingFunction: this.message.timingFunction,
                 fontSize: this.message.fontSize,
                 fontStyle: this.message.fontStyle,
                 fontWeight: this.message.fontWeight,
@@ -141,6 +162,7 @@ class DisplayConfig {
                 background: {
                     color: this.message.background.color,
                     duration: this.message.background.duration,
+                    timingFunction: this.message.background.timingFunction,
                 },
                 position: {
                     x: this.message.position.x,
@@ -151,18 +173,22 @@ class DisplayConfig {
                     rotateY: this.message.position.rotateY,
                     rotateZ: this.message.position.rotateZ,
                     duration: this.message.position.duration,
+                    timingFunction: this.message.position.timingFunction,
                 },
             },
             background: {
                 target: this.background.target,
                 duration: this.background.duration,
+                timingFunction: this.background.timingFunction,
             },
             overlay: {
                 target: this.overlay.target,
                 duration: this.overlay.duration,
+                timingFunction: this.overlay.timingFunction,
             },
             image: {
                 duration: this.image.duration,
+                timingFunction: this.image.timingFunction,
             },
             status: {
                 target: this.status.target,
@@ -187,12 +213,14 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
         target: '#messageWindow',
         delay: 50,
         duration: 500,
+        timingFunction: 'linear',
         fontSize: 'medium',
         fontStyle: 'normal',
         fontWeight: 'normal',
         background: {
             color: 'transparent',
             duration: 1000,
+            timingFunction: 'linear',
         },
         position: {
             x: 0,
@@ -203,18 +231,22 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
             rotateY: '0deg',
             rotateZ: '0deg',
             duration: 1000,
+            timingFunction: 'linear',
         },
     },
     background: {
         target: '#backgroundWindow',
         duration: 1000,
+        timingFunction: 'linear',
     },
     overlay: {
         target: '#backgroundWindow',
         duration: 1000,
+        timingFunction: 'linear',
     },
     image: {
         duration: 1000,
+        timingFunction: 'linear',
     },
     status: {
         target: '#statusWindow',

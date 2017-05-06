@@ -267,7 +267,7 @@ class Scenario {
             top: 0,
             left: 0,
             zIndex: BACKGROUND_IMAGE_DEFAULT_Z,
-            transition: config.background.duration / 1000 + 's',
+            transition: TRANSITION_OF(config.background),
             opacity: 0,
         }).delay(100).queue(() => {
             image.css({
@@ -314,7 +314,7 @@ class Scenario {
         background.delay(100).queue(function (next) {
             background.css({
                 backgroundColor: color,
-                transition: config.background.duration / 1000 + 's',
+                transition: TRANSITION_OF(config.background),
             });
             next();
         });
@@ -348,7 +348,7 @@ class Scenario {
             overlayElement.css({
                 backgroundColor: overlay.color,
                 opacity: overlay.opacity,
-                transition: config.overlay.duration / 1000 + 's',
+                transition: TRANSITION_OF(config.overlay),
             });
             next();
         });
@@ -372,7 +372,7 @@ class Scenario {
         let messageWindow = this.$(config.message.target);
         messageWindow.css({
             backgroundColor: config.message.background.color,
-            transition: config.message.background.duration / 1000 + 's',
+            transition: TRANSITION_OF(config.message.background),
         });
     }
 
@@ -384,7 +384,7 @@ class Scenario {
         let messageWindow = this.$(config.message.target);
         messageWindow.css({
             transform: TRANSFORM_OF(config.message.position),
-            transition: config.message.position.duration / 1000 + 's',
+            transition: TRANSITION_OF(config.message.position),
         });
     }
 
@@ -421,7 +421,7 @@ class Scenario {
         let previousImage =
             this.$(config.background.target + ' .backgroundImage.active');
         previousImage.css({
-            transition: config.background.duration / 1000 + 's',
+            transition: TRANSITION_OF(config.background),
             opacity: 0,
         }).on('transitionend', () => {
             previousImage.remove();
@@ -447,7 +447,7 @@ class Scenario {
                 top: 0,
                 left: 0,
                 transform: transform,
-                transition: config.image.duration / 1000 + 's',
+                transition: TRANSITION_OF(config.image),
                 zIndex: image.z,
                 opacity: 0,
             }).delay(100).queue(() => {
@@ -459,7 +459,7 @@ class Scenario {
             this.progress.images[image.name] = image;
         } else {
             let newCss = {
-                transition: config.image.duration / 1000 + 's',
+                transition: TRANSITION_OF(config.image),
             };
             if (image.control === 'remove') {
                 delete this.progress.images[image.name];
@@ -595,6 +595,8 @@ class Scenario {
                     config.message.fontWeight = c.value;
                 } else if (c.key === 'color') {
                     config.message.color = c.value;
+                } else if (c.key === 'timingFunction') {
+                    config.message.timingFunction = c.value;
                 }
             } else if (c.isHyperlink()) {
                 let hyperlink = this.$('<a>', { href: c.value });
@@ -669,7 +671,7 @@ class Scenario {
             .css({
                 visibility: 'hidden',
                 display: 'inline',
-                transition: config.message.duration / 1000 + 's',
+                transition: TRANSITION_OF(config.message),
                 opacity: 0,
                 fontSize: config.message.fontSize,
                 fontStyle: config.message.fontStyle,
@@ -987,5 +989,8 @@ const ROTATE_OF = element =>
     ' rotateX(' + element.rotateX + ')'
     + ' rotateY(' + element.rotateY + ')'
     + ' rotateZ(' + element.rotateZ + ')';
+
+const TRANSITION_OF = element =>
+    element.duration / 1000 + 's ' + element.timingFunction;
 
 module.exports = Scenario;

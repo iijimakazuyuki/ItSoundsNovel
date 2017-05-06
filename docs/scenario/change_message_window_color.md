@@ -13,6 +13,7 @@ in 500 milliseconds.
       background:
         color: black
         duration: 500
+        timingFunction: ease
 ```
 
 Background color of the message window  will change and
@@ -25,5 +26,6 @@ unless `next: wait` is specified.
       background:
         color: black
         duration: 500
+        timingFunction: ease
   next: wait
 ```

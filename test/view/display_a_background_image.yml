@@ -9,6 +9,7 @@
 - config:
     background:
       duration: 5000
+      timingFunction: ease-in
 - background:
     image: image/background_1.jpg
   next: wait

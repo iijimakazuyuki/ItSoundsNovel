@@ -3,6 +3,7 @@
       background:
         color: "#000000"
         duration: 500
+        timingFunction: ease-in
       color: "#ffffff"
 - I am a cat. I don't have my name yet.
 - background:

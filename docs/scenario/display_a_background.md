@@ -31,13 +31,14 @@ simultaneously unless `next: wait` is specified.
 - I am a cat. I don't have my name yet.
 ```
 
-To change the display speed, specify the duration.
+To change the display speed, specify the duration or the timing function.
 
 ```yaml
 - background:
     image: path/to/image.jpg
   config:
     duration: 5000
+    timingFunction: linear
 - I am a cat. I don't have my name yet.
 ```
 
@@ -47,6 +48,7 @@ To change the default display speed, specify only `config`.
 - config:
     background:
       duration: 100
+      timingFunction: linear
 - background:
     image: path/to/image.jpg
 - I am a cat. I don't have my name yet.
