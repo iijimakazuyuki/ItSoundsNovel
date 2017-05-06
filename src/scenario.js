@@ -226,6 +226,13 @@ class Scenario {
                     return;
                 }
             }
+            if (direction.config.message.position) {
+                this.moveMessageWindow();
+                if (direction.next === 'wait') {
+                    this.disableUI();
+                    this.waitForMovingMessageWindow();
+                }
+            }
             this.display(++this.progress.pos);
             return;
         }
@@ -370,6 +377,18 @@ class Scenario {
     }
 
     /**
+     * Move a message window.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    moveMessageWindow(config = this.progress.displayConfig) {
+        let messageWindow = this.$(config.message.target);
+        messageWindow.css({
+            transform: TRANSFORM_OF(config.message.position),
+            transition: config.message.position.duration / 1000 + 's',
+        });
+    }
+
+    /**
      * Display a button.
      * @param {Button[]} buttons The buttons to display.
      */
@@ -419,7 +438,7 @@ class Scenario {
         let existingImage = this.$('#' + image.name);
         if (existingImage.length === 0) {
             image.default();
-            let transform = TRANSFORM_OF_IMAGE(image);
+            let transform = TRANSFORM_OF(image);
             let imageElement = this.$('<img>', {
                 id: image.name,
                 src: image.source,
@@ -451,7 +470,7 @@ class Scenario {
             } else {
                 let prevImage = this.progress.images[image.name];
                 prevImage.update(image);
-                newCss.transform = TRANSFORM_OF_IMAGE(prevImage);
+                newCss.transform = TRANSFORM_OF(prevImage);
                 newCss.zIndex = prevImage.z;
             }
             existingImage.css(newCss);
@@ -511,6 +530,18 @@ class Scenario {
      * @param {DisplayConfig} config The display configuration.
      */
     waitForChangingMessageWindowColor(config = this.progress.displayConfig) {
+        let messageWindow = this.$(config.message.target);
+        messageWindow.one('transitionend', () => {
+            this.enableUI();
+            this.display(++this.progress.pos);
+        });
+    }
+
+    /**
+     * Wait for moving a message window.
+     * @param {DisplayConfig} config The display configuration.
+     */
+    waitForMovingMessageWindow(config = this.progress.displayConfig) {
         let messageWindow = this.$(config.message.target);
         messageWindow.one('transitionend', () => {
             this.enableUI();
@@ -864,6 +895,7 @@ class Scenario {
         this.progress = new ScenarioProgress();
         this.progress.update(JSON.parse(this.window.localStorage.progress));
         this.changeMessageWindowColor();
+        this.moveMessageWindow();
         this.$.get({
             url: this.progress.scenarioUrl,
             success: data => {
@@ -899,18 +931,18 @@ class Scenario {
     }
 }
 
-const TRANSFORM_OF_IMAGE = image =>
-    [TRANSLATE_OF_IMAGE, SCALE_OF_IMAGE, ROTATE_OF_IMAGE].map(f => f(image)).join(' ');
+const TRANSFORM_OF = element =>
+    [TRANSLATE_OF, SCALE_OF, ROTATE_OF].map(f => f(element)).join(' ');
 
-const TRANSLATE_OF_IMAGE = image =>
-    'translate(' + image.x + 'px,' + image.y + 'px)';
+const TRANSLATE_OF = element =>
+    'translate(' + element.x + 'px,' + element.y + 'px)';
 
-const SCALE_OF_IMAGE = image =>
-    'scale(' + image.scaleX + ', ' + image.scaleY + ')';
+const SCALE_OF = element =>
+    'scale(' + element.scaleX + ', ' + element.scaleY + ')';
 
-const ROTATE_OF_IMAGE = image =>
-    ' rotateX(' + image.rotateX + ')'
-    + ' rotateY(' + image.rotateY + ')'
-    + ' rotateZ(' + image.rotateZ + ')';
+const ROTATE_OF = element =>
+    ' rotateX(' + element.rotateX + ')'
+    + ' rotateY(' + element.rotateY + ')'
+    + ' rotateZ(' + element.rotateZ + ')';
 
 module.exports = Scenario;

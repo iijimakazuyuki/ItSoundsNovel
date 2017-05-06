@@ -2,6 +2,12 @@
     message:
       background:
         color: rgba(0, 0, 0, 0.3)
+- config:
+    message:
+      position:
+        x: 100
+        y: 100
+        rotateZ: 10deg
 - background:
     image: image/background_1.jpg
 - bgm: bgm/bgm_1.mp3
@@ -32,6 +38,12 @@
     message:
       background:
         color: transparent
+- config:
+    message:
+      position:
+        x: 0
+        y: 0
+        rotateZ: 0deg
 - background:
     color: lightgray
 - overlay:
