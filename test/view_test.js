@@ -887,10 +887,10 @@ describe('ItSoundsNovel View', function () {
         const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
 
         /**
-         * The sleep time for clicking next button after waiting
-         * for displaying a sentence.
+         * The sleep time for clicking the next button, the save button or
+         * the load button after waiting for displaying a sentence.
          */
-        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+        const SLEEP_TIME_FOR_CLICKING_BUTTONS = 1000;
 
         /**
          * @param browserDriverName {string} The browser name of WebDriver.
@@ -913,6 +913,8 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.get(BASE_URL + PATH)
                 ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
                     driver.findElement({ id: 'loadButton' })
                 ).then(element =>
                     element.click()
@@ -930,7 +932,7 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, FLAG1_STATUS_MESSAGE)
                     )
                 ).then(() =>
-                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -948,6 +950,8 @@ describe('ItSoundsNovel View', function () {
                     element.click()
                 ).then(() =>
                     driver.get(BASE_URL + PATH)
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
                 ).then(() =>
                     driver.findElement({ id: 'loadButton' })
                 ).then(element =>
@@ -966,7 +970,7 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, FLAG2_STATUS_MESSAGE)
                     )
                 ).then(() =>
-                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
                 ).then(element =>
@@ -984,6 +988,8 @@ describe('ItSoundsNovel View', function () {
                     element.click()
                 ).then(() =>
                     driver.get(BASE_URL + PATH)
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
                 ).then(() =>
                     driver.findElement({ id: 'loadButton' })
                 ).then(element =>
