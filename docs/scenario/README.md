@@ -13,6 +13,9 @@ How to write scenarios
 [Change message window color](change_message_window_color.md)
 --------------------------------------------------------------------------------
 
+[Move a message window](move_a_message_window.md)
+--------------------------------------------------------------------------------
+
 [Play sounds](play_sounds.md)
 --------------------------------------------------------------------------------
 

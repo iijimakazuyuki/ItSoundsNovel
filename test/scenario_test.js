@@ -320,6 +320,15 @@ describe('Scenario', function () {
                     '      background:',
                     '        color: black',
                     '        duration: 500',
+                    '      position:',
+                    '        x: 10',
+                    '        y: 10',
+                    '        scaleX: 0.5',
+                    '        scaleY: 0.5',
+                    '        rotateX: 10deg',
+                    '        rotateY: 20deg',
+                    '        rotateZ: 30deg',
+                    '        duration: 500',
                 ].join('\n')
             );
             let url = '';
@@ -350,6 +359,16 @@ describe('Scenario', function () {
                                 duration: 100,
                                 background: {
                                     color: 'black',
+                                    duration: 500,
+                                },
+                                position: {
+                                    x: 10,
+                                    y: 10,
+                                    scaleX: 0.5,
+                                    scaleY: 0.5,
+                                    rotateX: '10deg',
+                                    rotateY: '20deg',
+                                    rotateZ: '30deg',
                                     duration: 500,
                                 },
                             },
@@ -2206,6 +2225,26 @@ describe('Scenario', function () {
         });
     });
 
+    describe('#moveMessageWindow()', function () {
+        it('should change the position of a message window', function () {
+            // arrange
+            let messageWindowMock = {
+                css: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(messageWindowMock);
+            scenario.progress.displayConfig.message.position.x = 100;
+            scenario.progress.displayConfig.message.position.y = 100;
+
+            // act
+            scenario.moveMessageWindow();
+
+            // assert
+            assert(messageWindowMock.css.called);
+        });
+    });
+
     describe('#removeBackground()', function () {
         it('should remove a background image', function () {
             // arrange
@@ -2348,6 +2387,24 @@ describe('Scenario', function () {
 
             // act
             scenario.waitForChangingMessageWindowColor();
+
+            // assert
+            assert(messageWindowElementMock.one.called);
+        });
+    });
+
+    describe('#waitForMovingMessageWindow()', function () {
+        it('should bind transitionend on a message window', function () {
+            // arrange
+            let messageWindowElementMock = {
+                one: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(messageWindowElementMock);
+
+            // act
+            scenario.waitForMovingMessageWindow();
 
             // assert
             assert(messageWindowElementMock.one.called);
@@ -3011,6 +3068,16 @@ describe('Scenario', function () {
                         fontWeight: 'normal',
                         background: {
                             color: 'transparent',
+                            duration: 1000,
+                        },
+                        position: {
+                            x: 0,
+                            y: 0,
+                            scaleX: 1,
+                            scaleY: 1,
+                            rotateX: '0deg',
+                            rotateY: '0deg',
+                            rotateZ: '0deg',
                             duration: 1000,
                         },
                     },

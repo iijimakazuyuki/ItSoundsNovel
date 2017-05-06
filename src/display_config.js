@@ -17,6 +17,18 @@ class DisplayConfig {
                     duration: config.message.background.duration,
                 };
             }
+            if (config.message.position) {
+                this.message.position = {
+                    x: config.message.position.x,
+                    y: config.message.position.y,
+                    scaleX: config.message.position.scaleX,
+                    scaleY: config.message.position.scaleY,
+                    rotateX: config.message.position.rotateX,
+                    rotateY: config.message.position.rotateY,
+                    rotateZ: config.message.position.rotateZ,
+                    duration: config.message.position.duration,
+                };
+            }
         }
         this.background = {};
         if (config.background) this.background = config.background;
@@ -50,6 +62,40 @@ class DisplayConfig {
                 if (config.message.background.duration) {
                     this.message.background.duration
                         = config.message.background.duration;
+                }
+            }
+            if (config.message.position) {
+                if (config.message.position.x || config.message.position.x === 0) {
+                    this.message.position.x
+                        = config.message.position.x;
+                }
+                if (config.message.position.y || config.message.position.y === 0) {
+                    this.message.position.y
+                        = config.message.position.y;
+                }
+                if (config.message.position.scaleX) {
+                    this.message.position.scaleX
+                        = config.message.position.scaleX;
+                }
+                if (config.message.position.scaleY) {
+                    this.message.position.scaleY
+                        = config.message.position.scaleY;
+                }
+                if (config.message.position.rotateX) {
+                    this.message.position.rotateX
+                        = config.message.position.rotateX;
+                }
+                if (config.message.position.rotateY) {
+                    this.message.position.rotateY
+                        = config.message.position.rotateY;
+                }
+                if (config.message.position.rotateZ) {
+                    this.message.position.rotateZ
+                        = config.message.position.rotateZ;
+                }
+                if (config.message.position.duration) {
+                    this.message.position.duration
+                        = config.message.position.duration;
                 }
             }
         }
@@ -96,6 +142,16 @@ class DisplayConfig {
                     color: this.message.background.color,
                     duration: this.message.background.duration,
                 },
+                position: {
+                    x: this.message.position.x,
+                    y: this.message.position.y,
+                    scaleX: this.message.position.scaleX,
+                    scaleY: this.message.position.scaleY,
+                    rotateX: this.message.position.rotateX,
+                    rotateY: this.message.position.rotateY,
+                    rotateZ: this.message.position.rotateZ,
+                    duration: this.message.position.duration,
+                },
             },
             background: {
                 target: this.background.target,
@@ -136,6 +192,16 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
         fontWeight: 'normal',
         background: {
             color: 'transparent',
+            duration: 1000,
+        },
+        position: {
+            x: 0,
+            y: 0,
+            scaleX: 1,
+            scaleY: 1,
+            rotateX: '0deg',
+            rotateY: '0deg',
+            rotateZ: '0deg',
             duration: 1000,
         },
     },
