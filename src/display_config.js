@@ -9,7 +9,15 @@ class DisplayConfig {
     constructor(config) {
         this.message = {};
         this.updateMessageConfig(config);
-        if (config.message) this.updateMessageConfig(config.message);
+        if (config.message) {
+            this.updateMessageConfig(config.message);
+            if (config.message.background) {
+                this.message.background = {
+                    color: config.message.background.color,
+                    duration: config.message.background.duration,
+                };
+            }
+        }
         this.background = {};
         if (config.background) this.background = config.background;
         this.overlay = {};
@@ -32,7 +40,19 @@ class DisplayConfig {
     }
     update(config) {
         this.updateMessageConfig(config);
-        if (config.message) this.updateMessageConfig(config.message);
+        if (config.message) {
+            this.updateMessageConfig(config.message);
+            if (config.message.background) {
+                if (config.message.background.color) {
+                    this.message.background.color
+                        = config.message.background.color;
+                }
+                if (config.message.background.duration) {
+                    this.message.background.duration
+                        = config.message.background.duration;
+                }
+            }
+        }
         if (config.background) {
             if (config.background.target) {
                 this.background.target = config.background.target;
@@ -72,6 +92,10 @@ class DisplayConfig {
                 fontWeight: this.message.fontWeight,
                 fontFamily: this.message.fontFamily,
                 color: this.message.color,
+                background: {
+                    color: this.message.background.color,
+                    duration: this.message.background.duration,
+                },
             },
             background: {
                 target: this.background.target,
@@ -110,6 +134,10 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
         fontSize: 'medium',
         fontStyle: 'normal',
         fontWeight: 'normal',
+        background: {
+            color: 'transparent',
+            duration: 1000,
+        },
     },
     background: {
         target: '#backgroundWindow',

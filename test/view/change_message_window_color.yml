@@ -1,0 +1,26 @@
+- config:
+    message:
+      background:
+        color: "#000000"
+        duration: 500
+      color: "#ffffff"
+- I am a cat. I don't have my name yet.
+- background:
+    color: gray
+  config:
+    duration: 500
+- config:
+    message:
+      background:
+        color: transparent
+        duration: 500
+      color: black
+  next: wait
+- I don't know where I was born.
+- config:
+    message:
+      background:
+        color: rgba(0, 0, 0, 0.5)
+        duration: 500
+      color: white
+- I only remember that I was meowing in dim and wet place.

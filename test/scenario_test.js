@@ -317,6 +317,9 @@ describe('Scenario', function () {
                     '    message:',
                     '      delay: 10',
                     '      duration: 100',
+                    '      background:',
+                    '        color: black',
+                    '        duration: 500',
                 ].join('\n')
             );
             let url = '';
@@ -330,7 +333,10 @@ describe('Scenario', function () {
                 [
                     {
                         config: {
-                            message: { delay: 10, duration: 100 },
+                            message: {
+                                delay: 10,
+                                duration: 100,
+                            },
                             background: {},
                             overlay: {},
                             image: {},
@@ -339,7 +345,14 @@ describe('Scenario', function () {
                     },
                     {
                         config: {
-                            message: { delay: 10, duration: 100 },
+                            message: {
+                                delay: 10,
+                                duration: 100,
+                                background: {
+                                    color: 'black',
+                                    duration: 500,
+                                },
+                            },
                             background: {},
                             overlay: {},
                             image: {},
@@ -2174,6 +2187,25 @@ describe('Scenario', function () {
         });
     });
 
+    describe('#changeMessageWindowColor()', function () {
+        it('should change background color of the message window', function () {
+            // arrange
+            let messageWindowMock = {
+                css: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(messageWindowMock);
+            scenario.progress.displayConfig.message.background.color = 'black';
+
+            // act
+            scenario.changeMessageWindowColor();
+
+            // assert
+            assert(messageWindowMock.css.called);
+        });
+    });
+
     describe('#removeBackground()', function () {
         it('should remove a background image', function () {
             // arrange
@@ -2301,6 +2333,24 @@ describe('Scenario', function () {
 
             // assert
             assert(backgroundElementMock.one.called);
+        });
+    });
+
+    describe('#waitForChangingMessageWindowColor()', function () {
+        it('should bind transitionend on a message window', function () {
+            // arrange
+            let messageWindowElementMock = {
+                one: sinon.spy(),
+            };
+            scenario.$.withArgs(
+                scenario.progress.displayConfig.message.target
+            ).returns(messageWindowElementMock);
+
+            // act
+            scenario.waitForChangingMessageWindowColor();
+
+            // assert
+            assert(messageWindowElementMock.one.called);
         });
     });
 
@@ -2959,6 +3009,10 @@ describe('Scenario', function () {
                         fontSize: 'medium',
                         fontStyle: 'normal',
                         fontWeight: 'normal',
+                        background: {
+                            color: 'transparent',
+                            duration: 1000,
+                        },
                     },
                     background: {
                         target: '#backgroundWindow',

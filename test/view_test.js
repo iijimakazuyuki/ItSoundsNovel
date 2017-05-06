@@ -1736,6 +1736,116 @@ describe('ItSoundsNovel View', function () {
         })
     });
 
+    describe('Change message window color', function () {
+
+        /**
+         * The path to the tested view.
+         */
+        const PATH = 'change_message_window_color.html';
+
+        /**
+         * The first sentence in the sequence.
+         */
+        const FIRST_SENTENCE = "I am a cat. I don't have my name yet.";
+
+        /**
+         * The second sentence in the sequence.
+         */
+        const SECOND_SENTENCE = "I don't know where I was born.";
+
+        /**
+         * The third sentence in the sequence.
+         */
+        const THIRD_SENTENCE =
+            "I only remember that I was meowing in dim and wet place.";
+
+        /**
+         * The timeout for changing message widnow color.
+         */
+        const TIMEOUT_FOR_CHANGING_COLOR = 500;
+
+        /**
+         * The timeout for displaying the first or the third sentence.
+         * The last letter of the third sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] *  56 + 500 [ms] = 3300 [ms] < 5000 [ms] (= timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
+
+        /**
+         * The timeout for displaying the second sentence.
+         * The last letter of the second sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] * 30 + 500 [ms] = 2000 [ms] < 5000 [ms] (+ TIMEOUT_FOR_CHANGING_COLOR = timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_CHANGING_COLOR_AND_DISPLAYING_SENTENCE
+            = 5000 + TIMEOUT_FOR_CHANGING_COLOR;
+
+        /**
+         * The sleep time for clicking next button after waiting
+         * for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON = 1000;
+
+        /**
+         * @param browserDriverName {string} The browser name of WebDriver.
+         * @returns {Thenable} The WebDriver test sequence.
+         */
+        const TEST_SEQUENCE_OF = browserDriverName => {
+            let driver = browserDrivers.get(browserDriverName);
+            return driver.get(BASE_URL + PATH)
+                .then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIRST_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_CHANGING_COLOR_AND_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, THIRD_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                );
+        }
+
+        it('should be performed in Firefox', function () {
+            return TEST_SEQUENCE_OF('firefox');
+        });
+        it('should be performed in Chrome', function () {
+            return TEST_SEQUENCE_OF('chrome');
+        })
+        it('should be performed in IE', function () {
+            return TEST_SEQUENCE_OF('ie');
+        })
+        it('should be performed in Edge', function () {
+            return TEST_SEQUENCE_OF('MicrosoftEdge');
+        })
+    });
+
     after(function () {
         let stopAppServer = new Promise(resolve => {
             appServer.close(resolve);
