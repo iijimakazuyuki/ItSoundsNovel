@@ -14,6 +14,8 @@ const keyValueControlCharacterOf = (k, v) => new Character('keyValue', k, v);
 
 const hyperlinkControlCharacterOf = (k, v) => new Character('hyperlink', k, v);
 
+const sleepControlCharacterOf = v => new Character('sleep', 'sleep', v);
+
 describe('Scenario', function () {
     let scenario;
 
@@ -801,6 +803,33 @@ describe('Scenario', function () {
                         message: {
                             letters: [
                                 hyperlinkControlCharacterOf('aaa', 'https://example.com/bbb/ccc'),
+                            ],
+                        }
+                    },
+                ]
+            );
+        });
+        it('should set a control character to delay messages displaying', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- ${sleep=1000}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                sleepControlCharacterOf('1000'),
                             ],
                         }
                     },
@@ -1867,11 +1896,13 @@ describe('Scenario', function () {
                                 type: null, key: null, value: 'b',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                             {
                                 type: null, key: null, value: 'c',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                         ]
                     }
@@ -1883,16 +1914,19 @@ describe('Scenario', function () {
                                 type: null, key: null, value: 'd',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                             {
                                 type: null, key: null, value: 'e',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                             {
                                 type: null, key: null, value: 'f',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                         ]
                     }
@@ -2037,6 +2071,7 @@ describe('Scenario', function () {
                 value: 'b',
                 isKeyValue: sinon.stub().returns(false),
                 isHyperlink: sinon.stub().returns(false),
+                isSleep: sinon.stub().returns(false),
             };
             scenario.progress.status['flag1'] = { value: 'on' };
             scenario.progress.status['flag2'] = { value: 'on' };
@@ -2064,11 +2099,13 @@ describe('Scenario', function () {
                                 type: null, key: null, value: 'b',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                             {
                                 type: null, key: null, value: 'c',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                         ]
                     }
@@ -2094,16 +2131,19 @@ describe('Scenario', function () {
                                 type: null, key: null, value: 'd',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                             {
                                 type: null, key: null, value: 'e',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                             {
                                 type: null, key: null, value: 'f',
                                 isKeyValue: () => false,
                                 isHyperlink: () => false,
+                                isSleep: () => false,
                             },
                         ]
                     }

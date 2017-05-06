@@ -20,6 +20,12 @@ class Character {
     isHyperlink() {
         return this.type === 'hyperlink';
     }
+    /**
+     * Return true if this is sleep control character.
+     */
+    isSleep() {
+        return this.type === 'sleep';
+    }
 }
 
 module.exports = Character;
