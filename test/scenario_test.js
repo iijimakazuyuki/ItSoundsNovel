@@ -329,7 +329,9 @@ describe('Scenario', function () {
                     '        timingFunction: ease-in',
                     '      position:',
                     '        x: 10',
-                    '        y: 10',
+                    '        y: 10%',
+                    '        width: 100%',
+                    '        height: 50px',
                     '        scaleX: 0.5',
                     '        scaleY: 0.5',
                     '        rotateX: 10deg',
@@ -373,8 +375,10 @@ describe('Scenario', function () {
                                     timingFunction: 'ease-in',
                                 },
                                 position: {
-                                    x: 10,
-                                    y: 10,
+                                    x: '10px',
+                                    y: '10%',
+                                    width: '100%',
+                                    height: '50px',
                                     scaleX: 0.5,
                                     scaleY: 0.5,
                                     rotateX: '10deg',
@@ -1477,21 +1481,25 @@ describe('Scenario', function () {
                     '- image:',
                     '    name: abc',
                     '    source: abc.jpg',
-                    '    x: 10',
-                    '    y: 10',
+                    '    x: 10px',
+                    '    y: 10px',
+                    '    width: 10px',
+                    '    height: 10px',
                     '    z: -5',
                     '- image:',
                     '    name: abc',
                     '    source: abc.jpg',
-                    '    x: 10',
-                    '    y: 10',
+                    '    x: 10%',
+                    '    y: 10%',
+                    '    width: 100%',
+                    '    height: 100%',
                     '    scaleX: 0.1',
                     '    scaleY: 0.1',
                     '- image:',
                     '    name: abc',
                     '    source: abc.jpg',
-                    '    x: 10',
-                    '    y: 10',
+                    '    x: 0',
+                    '    y: 0',
                     '    rotateX: 60deg',
                     '    rotateY: -60deg',
                     '    rotateZ: 180deg',
@@ -1510,16 +1518,18 @@ describe('Scenario', function () {
                         image: {
                             name: 'abc',
                             source: 'abc.jpg',
-                            x: 10,
-                            y: 10,
+                            x: '10px',
+                            y: '10px',
                         }
                     },
                     {
                         image: {
                             name: 'abc',
                             source: 'abc.jpg',
-                            x: 10,
-                            y: 10,
+                            x: '10px',
+                            y: '10px',
+                            width: '10px',
+                            height: '10px',
                             z: -5,
                         }
                     },
@@ -1527,8 +1537,10 @@ describe('Scenario', function () {
                         image: {
                             name: 'abc',
                             source: 'abc.jpg',
-                            x: 10,
-                            y: 10,
+                            x: '10%',
+                            y: '10%',
+                            width: '100%',
+                            height: '100%',
                             scaleX: 0.1,
                             scaleY: 0.1,
                         }
@@ -1537,8 +1549,8 @@ describe('Scenario', function () {
                         image: {
                             name: 'abc',
                             source: 'abc.jpg',
-                            x: 10,
-                            y: 10,
+                            x: '0',
+                            y: '0',
                             rotateX: '60deg',
                             rotateY: '-60deg',
                             rotateZ: '180deg',
@@ -1570,8 +1582,8 @@ describe('Scenario', function () {
                     {
                         image: {
                             name: 'abc',
-                            x: 10,
-                            y: 10,
+                            x: '10px',
+                            y: '10px',
                         }
                     },
                 ]
@@ -1602,8 +1614,8 @@ describe('Scenario', function () {
                     {
                         image: {
                             name: 'abc',
-                            x: 10,
-                            y: 10,
+                            x: '10px',
+                            y: '10px',
                         },
                         config: {
                             image: {
@@ -1804,8 +1816,8 @@ describe('Scenario', function () {
                     {
                         image: {
                             name: 'abc',
-                            x: 10,
-                            y: 10,
+                            x: '10px',
+                            y: '10px',
                         },
                         next: 'wait',
                     },
@@ -3218,6 +3230,8 @@ describe('Scenario', function () {
                         position: {
                             x: 0,
                             y: 0,
+                            width: 'auto',
+                            height: 'auto',
                             scaleX: 1,
                             scaleY: 1,
                             rotateX: '0deg',
@@ -3253,8 +3267,8 @@ describe('Scenario', function () {
                     abc: {
                         name: 'abc',
                         source: 'abc.png',
-                        x: 10,
-                        y: 10,
+                        x: '10px',
+                        y: '10px',
                         z: -2,
                     }
                 },

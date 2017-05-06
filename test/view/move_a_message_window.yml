@@ -1,8 +1,9 @@
 - config:
     message:
       position:
-        x: 10
+        x: 25%
         y: 10
+        width: 50%
         duration: 500
 - I am a cat. I don't have my name yet.
 - config:
