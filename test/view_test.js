@@ -1046,18 +1046,32 @@ describe('ItSoundsNovel View', function () {
         const SECOND_SENTENCE = "I don't know where I was born.";
 
         /**
+         * The seconds to sleep in the sentence.
+         */
+        const SLEEP_TIME = 1000;
+
+        /**
          * The seconds to wait.
          */
         const WAIT_SECONDS = 5000;
 
         /**
-         * The timeout for displaying the first or second sentence.
+         * The timeout for displaying the first sentence.
          * The last letter of the first sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
-         *   = 50 [ms] *  37 + 500 [ms] = 2350 [ms] < 5000 [ms] (+ WAIT_SECONDS = timeout),
+         *   = 50 [ms] * 37 + 500 [ms] = 2350 [ms] < 5000 [ms] (+ SLEEP_TIME = timeout),
          * so the test should be done before its timeout.
          */
-        const TIMEOUT_FOR_DISPLAYING_SENTENCE = 10000;
+        const TIMEOUT_FOR_DISPLAYING_FIRST_SENTENCE = 5000 + SLEEP_TIME;
+
+        /**
+         * The timeout for displaying the second sentence.
+         * The last letter of the second sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] * 30 + 500 [ms] = 2000 [ms] < 5000 [ms] (+ WAIT_SECONDS = timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_SECOND_SENTENCE = 5000 + WAIT_SECONDS;
 
         /**
          * The sleep time for clicking next button after waiting
@@ -1080,7 +1094,7 @@ describe('ItSoundsNovel View', function () {
                     startTime = new Date();
                     return driver.wait(
                         until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                        TIMEOUT_FOR_DISPLAYING_FIRST_SENTENCE
                     );
                 }).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
@@ -1093,15 +1107,15 @@ describe('ItSoundsNovel View', function () {
                 ).then(element =>
                     driver.wait(
                         until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                        TIMEOUT_FOR_DISPLAYING_SECOND_SENTENCE
                     )
                 ).then(() => {
                     let endTime = new Date();
                     // The first sentence will be displayed more slowly
-                    // than the second or fourth sentence.
+                    // than the time to wait or sleep.
                     assert.isAbove(
                         endTime - startTime,
-                        WAIT_SECONDS
+                        WAIT_SECONDS + SLEEP_TIME
                     );
                 });
         }

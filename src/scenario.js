@@ -604,6 +604,8 @@ class Scenario {
                     delayTime += config.message.delay;
                 });
                 this.$(config.message.target).append(hyperlink);
+            } else if (c.isSleep()) {
+                delayTime += Number(c.value);
             } else {
                 let elementLetter = this.createLetterElement(c.value, delayTime, config);
                 this.$(config.message.target).append(elementLetter);

@@ -25,8 +25,15 @@ class Message {
             });
             let keyValueResultArray = keyValueControlCharacterRegex.exec(resultArray[1]);
             if (keyValueResultArray) {
-                let character = new Character('keyValue', keyValueResultArray[1], keyValueResultArray[2]);
-                this.letters.push(character);
+                let key = keyValueResultArray[1];
+                let value = keyValueResultArray[2];
+                if (key === 'sleep') {
+                    let character = new Character('sleep', key, value);
+                    this.letters.push(character);
+                } else {
+                    let character = new Character('keyValue', key, value);
+                    this.letters.push(character);
+                }
             } else {
                 let hyperlinkResultArray = hyperlinkControlCharacterRegex.exec(resultArray[1]);
                 if (hyperlinkResultArray) {
