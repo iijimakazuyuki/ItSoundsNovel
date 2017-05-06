@@ -383,6 +383,8 @@ class Scenario {
     moveMessageWindow(config = this.progress.displayConfig) {
         let messageWindow = this.$(config.message.target);
         messageWindow.css({
+            width: config.message.position.width,
+            height: config.message.position.height,
             transform: TRANSFORM_OF(config.message.position),
             transition: TRANSITION_OF(config.message.position),
         });
@@ -446,6 +448,8 @@ class Scenario {
                 position: 'absolute',
                 top: 0,
                 left: 0,
+                width: image.width,
+                height: image.height,
                 transform: transform,
                 transition: TRANSITION_OF(config.image),
                 zIndex: image.z,
@@ -470,6 +474,8 @@ class Scenario {
             } else {
                 let prevImage = this.progress.images[image.name];
                 prevImage.update(image);
+                newCss.width = prevImage.width;
+                newCss.height = prevImage.height;
                 newCss.transform = TRANSFORM_OF(prevImage);
                 newCss.zIndex = prevImage.z;
             }
@@ -980,7 +986,7 @@ const TRANSFORM_OF = element =>
     [TRANSLATE_OF, SCALE_OF, ROTATE_OF].map(f => f(element)).join(' ');
 
 const TRANSLATE_OF = element =>
-    'translate(' + element.x + 'px,' + element.y + 'px)';
+    'translate(' + element.x + ',' + element.y + ')';
 
 const SCALE_OF = element =>
     'scale(' + element.scaleX + ', ' + element.scaleY + ')';

@@ -5,6 +5,8 @@ Example
 --------------------------------------------------------------------------------
 
 To display an image, name it and specify the path to an image file.
+`x` and `y` means the position of the image.
+`x` and `y` can be set as `px` or `%`.
 `z` means display order (`z-index`). The larger covers the smaller.
 The default value of `z` is `-1`.
 The value of `z` of background image is `-1000`.
@@ -12,6 +14,11 @@ The value of `z` of background image is `-1000`.
 Both default values of those are `1`.
 `rotateX`, `rotateY` and `rotateZ` means angle of rotation.
 All default values of those are `0deg`.
+`width` means width of the image.
+`height` means height of the image.
+`width` and `height` can be set as `px` or `%`.
+When `width` or `height` is set to `100%`,
+the image will fill the background window.
 The image will be displayed and the next direction will be executed
 simultaneously unless `next: wait` is specified.
 
@@ -24,12 +31,19 @@ simultaneously unless `next: wait` is specified.
 - image:
     name: cat2
     source: image/cat2.png
-    x: 100
-    y: 10
+    x: 100px
+    y: 10px
     z: -2
     scaleX: 0.01
     scaleY: 0.01
     rotateX: 180deg
+    height: 100%
+- image:
+    name: cat3
+    source: image/cat3.png
+    x: 50%
+    y: 0
+    width: 100%
   next: wait
 ```
 

@@ -2,6 +2,11 @@
  * @module DisplayConfig
  */
 
+const NORMALIZE_POSITION = x => {
+    if (isFinite(x) && x !== 0) return x + 'px';
+    return String(x);
+};
+
 /**
  * Configuration for display scenarios.
  */
@@ -20,8 +25,10 @@ class DisplayConfig {
             }
             if (config.message.position) {
                 this.message.position = {
-                    x: config.message.position.x,
-                    y: config.message.position.y,
+                    x: NORMALIZE_POSITION(config.message.position.x),
+                    y: NORMALIZE_POSITION(config.message.position.y),
+                    width: config.message.position.width,
+                    height: config.message.position.height,
                     scaleX: config.message.position.scaleX,
                     scaleY: config.message.position.scaleY,
                     rotateX: config.message.position.rotateX,
@@ -79,6 +86,14 @@ class DisplayConfig {
                 if (config.message.position.y || config.message.position.y === 0) {
                     this.message.position.y
                         = config.message.position.y;
+                }
+                if (config.message.position.width || config.message.position.width === 0) {
+                    this.message.position.width
+                        = config.message.position.width;
+                }
+                if (config.message.position.height || config.message.position.height === 0) {
+                    this.message.position.height
+                        = config.message.position.height;
                 }
                 if (config.message.position.scaleX) {
                     this.message.position.scaleX
@@ -167,6 +182,8 @@ class DisplayConfig {
                 position: {
                     x: this.message.position.x,
                     y: this.message.position.y,
+                    width: this.message.position.width,
+                    height: this.message.position.height,
                     scaleX: this.message.position.scaleX,
                     scaleY: this.message.position.scaleY,
                     rotateX: this.message.position.rotateX,
@@ -225,6 +242,8 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
         position: {
             x: 0,
             y: 0,
+            width: 'auto',
+            height: 'auto',
             scaleX: 1,
             scaleY: 1,
             rotateX: '0deg',
