@@ -606,6 +606,47 @@ class Scenario {
                 this.$(config.message.target).append(hyperlink);
             } else if (c.isSleep()) {
                 delayTime += Number(c.value);
+            } else if (c.isRuby()) {
+                // If font size css is set to each element of ruby,
+                // ruby might overwrap above sentences.
+                // Therefore we set font size css to only ruby element
+                // and we make a display configuration for ruby,
+                // which does not have font size css.
+                let ruby = this.$('<ruby>').css({
+                    fontSize: config.message.fontSize,
+                });
+                let configForRuby = config.copy();
+                configForRuby.message.fontSize = '';
+                c.key.split('').forEach((letter, index) => {
+                    let elementLetter = this.createLetterElement(
+                        letter,
+                        delayTime + config.message.delay * index,
+                        configForRuby
+                    );
+                    ruby.append(elementLetter);
+                });
+                this.$('<rp>').append(this.createLetterElement(
+                    '(',
+                    delayTime,
+                    configForRuby
+                )).appendTo(ruby);
+                let rt = this.$('<rt>');
+                ruby.append(rt);
+                c.value.split('').forEach((letter, index) => {
+                    let elementLetter = this.createLetterElement(
+                        letter,
+                        delayTime + config.message.delay * c.key.length * index / c.value.length,
+                        configForRuby
+                    );
+                    rt.append(elementLetter);
+                });
+                this.$('<rp>').append(this.createLetterElement(
+                    ')',
+                    delayTime + config.message.delay * c.key.length,
+                    configForRuby
+                )).appendTo(ruby);
+                delayTime += config.message.delay * c.key.length;
+                this.$(config.message.target).append(ruby);
             } else {
                 let elementLetter = this.createLetterElement(c.value, delayTime, config);
                 this.$(config.message.target).append(elementLetter);
@@ -839,7 +880,7 @@ class Scenario {
                 };
             }
         }
-        this.$(this.progress.displayConfig.message.target + ' :last')
+        this.$(this.progress.displayConfig.message.target + ' > :last')
             .one('transitionend', transitionEnd);
     }
 

@@ -26,6 +26,12 @@ class Character {
     isSleep() {
         return this.type === 'sleep';
     }
+    /**
+     * Return true if this is ruby control character.
+     */
+    isRuby() {
+        return this.type === 'ruby';
+    }
 }
 
 module.exports = Character;
