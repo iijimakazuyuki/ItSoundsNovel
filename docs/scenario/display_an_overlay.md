@@ -22,11 +22,13 @@ An overlay can be used for a flash.
     color: white
   config:
     duration: 100
+    timingFunction: ease-out
   next: wait
 - overlay:
     color: transparent
   config:
     duration: 100
+    timingFunction: ease-in
   next: wait
 - I am a cat. I don't have my name yet.
 ```

@@ -2,9 +2,10 @@
 - config:
     delay: 10
     duration: 100
+    timingFunction: ease
   message: I don't know where I was born.
 - I only remember that I was meowing in dim and wet place.
 - config:
     delay: 10
     duration: 100
-- I saw something called${delay=100}${duration=200} human beings ${delay=10}${duration=200}for the first time there.
+- I saw something called${delay=100}${duration=200}${timingFunction=ease-out} human beings ${delay=10}${duration=200}${timingFunction=linear}for the first time there.

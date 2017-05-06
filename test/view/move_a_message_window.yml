@@ -14,5 +14,6 @@
         scaleY: 1.2
         rotateZ: 30deg
         duration: 500
+        timingFunction: ease-in-out
   next: wait
 - I don't know where I was born.

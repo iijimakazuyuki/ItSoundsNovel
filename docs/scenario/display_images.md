@@ -86,7 +86,8 @@ In the example below, the image will be turned over vertically.
     rotateX: 180deg
 ```
 
-To change the display speed or moving speed, specify the duration.
+To change the display speed or moving speed, specify the duration
+or the timing function.
 
 ```yaml
 - image:
@@ -96,6 +97,7 @@ To change the display speed or moving speed, specify the duration.
     y: 10
   config:
     duration: 5000
+    timingFunction: ease-out
 - wait
 - image:
     name: cat
@@ -103,6 +105,7 @@ To change the display speed or moving speed, specify the duration.
     y: 100
   config:
     duration: 100
+    timingFunction: linear
 - wait
 ```
 
@@ -124,6 +127,7 @@ To change the default display speed or moving speed, specify only `config`.
 - config:
     image:
       duration: 100
+      timingFunction: linear
 - image:
     name: cat
     x: 10

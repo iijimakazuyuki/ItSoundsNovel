@@ -14,6 +14,7 @@ is different from that of the second sentence.
 - config:
     delay: 10
     duration: 100
+    timingFunction: ease-in-out
   message: I am a cat. I don't have my name yet.
 - I don't know where I was born.
 ```
@@ -28,6 +29,7 @@ is different from that of the first sentence.
 - config:
     delay: 10
     duration: 100
+    timingFunction: ease-in-out
 - I don't know where I was born.
 - I only remember that I was meowing in dim and wet place.
 ```
@@ -35,8 +37,9 @@ is different from that of the first sentence.
 To change the display speed in the displaying sentence,
 put control sequences into the sentence.
 In the example below, `${delay=10}` and `${duration=100}`
+and `${timingFunction=ease-in-out}`
 will not be displayed but change the display speed for the remaining letters.
 
 ```yaml
-- I am a cat.${delay=10}${duration=100} I don't have my name yet.
+- I am a cat.${delay=10}${duration=100}${timingFunction=ease-in-out} I don't have my name yet.
 ```

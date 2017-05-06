@@ -20,6 +20,7 @@ All default values of those are `0deg`.
         scaleY: 0.5
         rotateZ: 30deg
         duration: 500
+        timingFunction: ease-out
 ```
 
 The message window  will move and

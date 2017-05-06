@@ -17,6 +17,7 @@
     rotateZ: 180deg
   config:
     duration: 5000
+    timingFunction: ease-in
 - image:
     name: cat2
     source: image/cat.png

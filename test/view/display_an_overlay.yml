@@ -19,6 +19,7 @@
 - config:
     overlay:
       duration: 5000
+      timingFunction: ease-out
 - overlay:
     color: blue
     opacity: 0.3

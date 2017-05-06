@@ -317,13 +317,16 @@ describe('Scenario', function () {
                     '- config:',
                     '    delay: 10',
                     '    duration: 100',
+                    '    timingFunction: ease',
                     '- config:',
                     '    message:',
                     '      delay: 10',
                     '      duration: 100',
+                    '      timingFunction: ease-in-out',
                     '      background:',
                     '        color: black',
                     '        duration: 500',
+                    '        timingFunction: ease-in',
                     '      position:',
                     '        x: 10',
                     '        y: 10',
@@ -333,6 +336,7 @@ describe('Scenario', function () {
                     '        rotateY: 20deg',
                     '        rotateZ: 30deg',
                     '        duration: 500',
+                    '        timingFunction: ease-out',
                 ].join('\n')
             );
             let url = '';
@@ -349,6 +353,7 @@ describe('Scenario', function () {
                             message: {
                                 delay: 10,
                                 duration: 100,
+                                timingFunction: 'ease',
                             },
                             background: {},
                             overlay: {},
@@ -361,9 +366,11 @@ describe('Scenario', function () {
                             message: {
                                 delay: 10,
                                 duration: 100,
+                                timingFunction: 'ease-in-out',
                                 background: {
                                     color: 'black',
                                     duration: 500,
+                                    timingFunction: 'ease-in',
                                 },
                                 position: {
                                     x: 10,
@@ -374,6 +381,7 @@ describe('Scenario', function () {
                                     rotateY: '20deg',
                                     rotateZ: '30deg',
                                     duration: 500,
+                                    timingFunction: 'ease-out',
                                 },
                             },
                             background: {},
@@ -394,6 +402,7 @@ describe('Scenario', function () {
                     '  config:',
                     '    delay: 10',
                     '    duration: 100',
+                    '    timingFunction: ease',
                 ].join('\n')
             );
             let url = '';
@@ -410,7 +419,11 @@ describe('Scenario', function () {
                             letters: normalCharacterArrayOf(['m', 'n', 'o']),
                         },
                         config: {
-                            message: { delay: 10, duration: 100 },
+                            message: {
+                                delay: 10,
+                                duration: 100,
+                                timingFunction: 'ease'
+                            },
                             background: {},
                             overlay: {},
                             image: {},
@@ -571,6 +584,33 @@ describe('Scenario', function () {
                         message: {
                             letters: [
                                 keyValueControlCharacterOf('duration', '200')
+                            ],
+                        },
+                    },
+                ]
+            );
+        });
+        it('should set a control character to change a time function in messages', function () {
+            // arrange
+            scenario.$.get = sinon.stub().yieldsTo(
+                'success',
+                [
+                    '- ${timeFunction=ease}',
+                ].join('\n')
+            );
+            let url = '';
+
+            // act
+            scenario.load(url, false);
+
+            // assert
+            assert.deepEqual(
+                scenario.directions,
+                [
+                    {
+                        message: {
+                            letters: [
+                                keyValueControlCharacterOf('timeFunction', 'ease')
                             ],
                         },
                     },
@@ -3166,12 +3206,14 @@ describe('Scenario', function () {
                         target: '#messageWindow',
                         delay: 50,
                         duration: 500,
+                        timingFunction: 'linear',
                         fontSize: 'medium',
                         fontStyle: 'normal',
                         fontWeight: 'normal',
                         background: {
                             color: 'transparent',
                             duration: 1000,
+                            timingFunction: 'linear',
                         },
                         position: {
                             x: 0,
@@ -3182,18 +3224,22 @@ describe('Scenario', function () {
                             rotateY: '0deg',
                             rotateZ: '0deg',
                             duration: 1000,
+                            timingFunction: 'linear',
                         },
                     },
                     background: {
                         target: '#backgroundWindow',
-                        duration: 1000
+                        duration: 1000,
+                        timingFunction: 'linear',
                     },
                     overlay: {
                         target: '#backgroundWindow',
                         duration: 1000,
+                        timingFunction: 'linear',
                     },
                     image: {
-                        duration: 1000
+                        duration: 1000,
+                        timingFunction: 'linear',
                     },
                     status: {
                         target: '#statusWindow',
