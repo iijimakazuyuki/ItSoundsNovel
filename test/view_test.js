@@ -1766,7 +1766,7 @@ describe('ItSoundsNovel View', function () {
             "I only remember that I was meowing in dim and wet place.";
 
         /**
-         * The timeout for changing message widnow color.
+         * The timeout for changing message window color.
          */
         const TIMEOUT_FOR_CHANGING_COLOR = 500;
 
