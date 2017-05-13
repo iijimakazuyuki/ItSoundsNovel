@@ -31,8 +31,11 @@
     z: -2
 - status:
     name: flag1
-    value: on
-    display: flag1 is set
+    value:
+      type: random
+      min: 1
+      max: 5
+    display: flag1 is ${value}
 - status:
     name: flag3
     value: on

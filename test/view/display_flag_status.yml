@@ -10,6 +10,13 @@
     value: on
     display: flag3 is set
     target: "#anotherStatusWindow"
+- status:
+    name: variable
+    value:
+      type: random
+      min: 1
+      max: 5
+    display: variable is ${value}
 - I am a cat. I don't have my name yet.
 - status:
     name: flag2
