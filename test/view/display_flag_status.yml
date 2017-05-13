@@ -5,6 +5,11 @@
 - status:
     name: flag2
     value: off
+- status:
+    name: flag3
+    value: on
+    display: flag3 is set
+    target: "#anotherStatusWindow"
 - I am a cat. I don't have my name yet.
 - status:
     name: flag2

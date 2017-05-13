@@ -202,7 +202,11 @@ class Scenario {
             return;
         }
         if (direction.status) {
-            let flag = new Flag(direction.status.value, direction.status.display);
+            let flag = new Flag(
+                direction.status.value,
+                direction.status.display,
+                direction.status.target
+            );
             if (direction.status.value) {
                 this.progress.status[direction.status.name] = flag;
             }
@@ -210,6 +214,7 @@ class Scenario {
                 this.displayStatusMessage(
                     direction.status.name,
                     direction.status.display,
+                    direction.status.target,
                     config
                 );
             }
@@ -785,23 +790,43 @@ class Scenario {
      *
      */
     flushStatusMessage() {
-        this.$(this.progress.displayConfig.status.target).text('');
+        for (let key in this.progress.status) {
+            let flag = this.progress.status[key];
+            if (flag.display) {
+                this.$('#' + key).remove();
+            }
+        }
     }
 
     /**
      * Display a status message.
      * @param {string} name The name of the flag.
      * @param {string} message The status message of the flag.
+     * @param {string} target The target of displaying the status message.
      * @param {DisplayConfig} config The display configuration.
      */
-    displayStatusMessage(name, message, config = this.progress.displayConfig) {
+    displayStatusMessage(name, message, target, config = this.progress.displayConfig) {
         let existingMessage = this.$('#' + name);
         if (message !== 'none') {
             if (existingMessage.length === 0) {
                 let statusMessage = this.$('<div>', { id: name, }).text(message);
-                this.$(config.status.target).append(statusMessage);
+                if (target) {
+                    this.$(target).append(statusMessage);
+                } else {
+                    this.$(config.status.target).append(statusMessage);
+                }
             } else {
                 existingMessage.text(message);
+                let parentId = existingMessage.parent().attr('id');
+                if (target) {
+                    if (parentId !== target) {
+                        existingMessage.detach().appendTo(this.$(target));
+                    }
+                } else {
+                    if (parentId !== config.status.target) {
+                        existingMessage.detach().appendTo(this.$(config.status.target));
+                    }
+                }
             }
         } else {
             if (existingMessage.length > 0) {
@@ -971,7 +996,9 @@ class Scenario {
                 for (let key in this.progress.status) {
                     if (this.progress.status[key].display) {
                         this.displayStatusMessage(
-                            key, this.progress.status[key].display
+                            key,
+                            this.progress.status[key].display,
+                            this.progress.status[key].target
                         );
                     }
                 }
