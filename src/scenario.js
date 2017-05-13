@@ -203,6 +203,7 @@ class Scenario {
         }
         if (direction.status) {
             let flag = new Flag(
+                direction.status.name,
                 direction.status.value,
                 direction.status.display,
                 direction.status.target
@@ -211,12 +212,7 @@ class Scenario {
                 this.progress.status[direction.status.name] = flag;
             }
             if (direction.status.display) {
-                this.displayStatusMessage(
-                    direction.status.name,
-                    direction.status.display,
-                    direction.status.target,
-                    config
-                );
+                this.displayStatusMessage(flag, config);
             }
             this.display(++this.progress.pos);
             return;
@@ -800,27 +796,37 @@ class Scenario {
 
     /**
      * Display a status message.
-     * @param {string} name The name of the flag.
-     * @param {string} message The status message of the flag.
-     * @param {string} target The target of displaying the status message.
+     * @param {Flag} flag The flag to display.
      * @param {DisplayConfig} config The display configuration.
      */
-    displayStatusMessage(name, message, target, config = this.progress.displayConfig) {
-        let existingMessage = this.$('#' + name);
-        if (message !== 'none') {
+    displayStatusMessage(flag, config = this.progress.displayConfig) {
+        let existingMessage = this.$('#' + flag.name);
+        if (flag.display !== 'none') {
+            let message = '';
+            let controlCharacterRegex = /\${(.*?)}/g
+            let index = 0;
+            let resultArray;
+            while ((resultArray = controlCharacterRegex.exec(flag.display))) {
+                message += flag.display.slice(index, resultArray.index);
+                if (resultArray[1] === 'value') {
+                    message += flag.value;
+                }
+                index = controlCharacterRegex.lastIndex;
+            }
+            message += flag.display.slice(index);
             if (existingMessage.length === 0) {
-                let statusMessage = this.$('<div>', { id: name, }).text(message);
-                if (target) {
-                    this.$(target).append(statusMessage);
+                let statusMessage = this.$('<div>', { id: flag.name, }).text(message);
+                if (flag.target) {
+                    this.$(flag.target).append(statusMessage);
                 } else {
                     this.$(config.status.target).append(statusMessage);
                 }
             } else {
                 existingMessage.text(message);
                 let parentId = existingMessage.parent().attr('id');
-                if (target) {
-                    if (parentId !== target) {
-                        existingMessage.detach().appendTo(this.$(target));
+                if (flag.target) {
+                    if (parentId !== flag.target) {
+                        existingMessage.detach().appendTo(this.$(flag.target));
                     }
                 } else {
                     if (parentId !== config.status.target) {
@@ -995,11 +1001,7 @@ class Scenario {
                 }
                 for (let key in this.progress.status) {
                     if (this.progress.status[key].display) {
-                        this.displayStatusMessage(
-                            key,
-                            this.progress.status[key].display,
-                            this.progress.status[key].target
-                        );
+                        this.displayStatusMessage(this.progress.status[key]);
                     }
                 }
                 this.init(this.progress.pos);

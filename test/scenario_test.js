@@ -2148,8 +2148,14 @@ describe('Scenario', function () {
             scenario.display(0);
 
             // assert
-            assert.deepEqual(scenario.progress.status['flag1'], { value: 'on', display: 'flag1 is on' });
-            assert.deepEqual(scenario.progress.status['flag2'], { value: 'off', display: 'none' });
+            assert.deepEqual(
+                scenario.progress.status['flag1'],
+                { name: 'flag1', value: 'on', display: 'flag1 is on' }
+            );
+            assert.deepEqual(
+                scenario.progress.status['flag2'],
+                { name: 'flag2', value: 'off', display: 'none' }
+            );
         });
         it('should display all letters in the sentence only if a condition is satisfied', function () {
             // arrange
@@ -2931,7 +2937,10 @@ describe('Scenario', function () {
             ).returns(displayMock);
 
             // act
-            scenario.displayStatusMessage(name, display);
+            scenario.displayStatusMessage({
+                name: name,
+                display: display,
+            });
 
             // assert
             assert(displayMock.append.called);
@@ -2953,7 +2962,11 @@ describe('Scenario', function () {
             scenario.$.withArgs(target).returns(displayMock);
 
             // act
-            scenario.displayStatusMessage(name, display, target);
+            scenario.displayStatusMessage({
+                name: name,
+                display: display,
+                target: target,
+            });
 
             // assert
             assert(displayMock.append.called);
@@ -2981,7 +2994,11 @@ describe('Scenario', function () {
             scenario.$.withArgs(target).returns(displayMock);
 
             // act
-            scenario.displayStatusMessage(name, display, target);
+            scenario.displayStatusMessage({
+                name: name,
+                display: display,
+                target: target,
+            });
 
             // assert
             assert(flag1Stub.text.calledWith(display));
@@ -3009,7 +3026,11 @@ describe('Scenario', function () {
             scenario.$.withArgs(target).returns(displayMock);
 
             // act
-            scenario.displayStatusMessage(name, display, target);
+            scenario.displayStatusMessage({
+                name: name,
+                display: display,
+                target: target,
+            });
 
             // assert
             assert(flag1Stub.text.calledWith(display));

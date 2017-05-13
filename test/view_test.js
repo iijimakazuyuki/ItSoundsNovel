@@ -875,7 +875,7 @@ describe('ItSoundsNovel View', function () {
         /**
          * The a status message for flag1.
          */
-        const FLAG1_STATUS_MESSAGE = "flag1 is set";
+        const FLAG1_STATUS_MESSAGE = "flag1 is";
 
         /**
          * The a status message for flag2.
@@ -944,7 +944,7 @@ describe('ItSoundsNovel View', function () {
                     driver.findElement({ id: 'statusWindow' })
                 ).then(element =>
                     driver.wait(
-                        until.elementTextIs(element, FLAG1_STATUS_MESSAGE)
+                        until.elementTextContains(element, FLAG1_STATUS_MESSAGE)
                     )
                 ).then(() =>
                     driver.findElement({ id: 'anotherStatusWindow' })
@@ -1447,6 +1447,11 @@ describe('ItSoundsNovel View', function () {
         const FLAG3_STATUS_MESSAGE = "flag3 is set";
 
         /**
+         * The a status message for variable.
+         */
+        const VARIABLE_STATUS_MESSAGE = "variable is";
+
+        /**
          * The timeout for displaying the sentences.
          * The last letter of the first sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
@@ -1493,6 +1498,12 @@ describe('ItSoundsNovel View', function () {
                     assert.lengthOf(elements, 0);
                     return driver.findElement
                 }).then(() =>
+                    driver.findElement({ id: 'variable' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextContains(element, VARIABLE_STATUS_MESSAGE)
+                    )
+                ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })

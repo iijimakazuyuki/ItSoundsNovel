@@ -17,6 +17,19 @@ And a status message, `flag1 is on` will be displayed in the status window.
     value: off
 ```
 
+In the example below, `variable` will be set an integer between 1 and 5.
+And `${value}` in the status message will be that value.
+
+```yaml
+- status:
+    name: variable
+    value:
+      type: random
+      min: 1
+      max: 5
+    display: variable is ${value}
+```
+
 To clear the status message, specify `display: none`.
 
 ```yaml
