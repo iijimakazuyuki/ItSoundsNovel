@@ -2914,7 +2914,7 @@ describe('Scenario', function () {
     });
 
     describe('#displayStatusMessage()', function () {
-        it('should display a status message', function () {
+        it('should display a status message in the default status window', function () {
             // arrange
             let name = 'flag1';
             let display = 'flag1 is set';
@@ -2937,28 +2937,83 @@ describe('Scenario', function () {
             assert(displayMock.append.called);
             assert(flag1Stub.text.calledWith(display));
         });
+        it('should display a status message in the given status window', function () {
+            // arrange
+            let name = 'flag1';
+            let display = 'flag1 is set';
+            let target = '#anotherStatusWindow';
+            let flag1Stub = {
+                text: sinon.spy(),
+            };
+            scenario.$.withArgs('#flag1').returns({ length: 0 });
+            scenario.$.withArgs('<div>', { id: name }).returns(flag1Stub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(target).returns(displayMock);
+
+            // act
+            scenario.displayStatusMessage(name, display, target);
+
+            // assert
+            assert(displayMock.append.called);
+            assert(flag1Stub.text.calledWith(display));
+        });
         it('should update a status message', function () {
             // arrange
             let name = 'flag1';
             let display = 'flag1 is set';
+            let target = 'statusWindow';
+            let statusWindowStub = {
+                attr: sinon.stub().returns('statusWindow'),
+            };
             let flag1Stub = {
                 text: sinon.spy(),
                 length: 1,
+                detach: sinon.stub().returnsThis(),
+                appendTo: sinon.spy(),
+                parent: sinon.stub().returns(statusWindowStub),
             };
             scenario.$.withArgs('#flag1').returns(flag1Stub);
             let displayMock = {
                 append: sinon.spy()
             };
-            scenario.$.withArgs(
-                scenario.progress.displayConfig.status.target
-            ).returns(displayMock);
+            scenario.$.withArgs(target).returns(displayMock);
 
             // act
-            scenario.displayStatusMessage(name, display);
+            scenario.displayStatusMessage(name, display, target);
 
             // assert
-            assert(displayMock.append.notCalled);
             assert(flag1Stub.text.calledWith(display));
+            assert(flag1Stub.appendTo.notCalled);
+        });
+        it('should change a status window to display a status message', function () {
+            // arrange
+            let name = 'flag1';
+            let display = 'flag1 is set';
+            let target = 'anotherStatusWindow';
+            let statusWindowStub = {
+                attr: sinon.stub().returns('statusWindow'),
+            };
+            let flag1Stub = {
+                text: sinon.spy(),
+                length: 1,
+                detach: sinon.stub().returnsThis(),
+                appendTo: sinon.spy(),
+                parent: sinon.stub().returns(statusWindowStub),
+            };
+            scenario.$.withArgs('#flag1').returns(flag1Stub);
+            let displayMock = {
+                append: sinon.spy()
+            };
+            scenario.$.withArgs(target).returns(displayMock);
+
+            // act
+            scenario.displayStatusMessage(name, display, target);
+
+            // assert
+            assert(flag1Stub.text.calledWith(display));
+            assert(flag1Stub.appendTo.calledWith(displayMock));
         });
     });
 
@@ -3288,6 +3343,7 @@ describe('Scenario', function () {
                 scenarioUrl: 'abc.yml',
                 status: {
                     flag: { value: 'on', display: 'none' },
+                    flag2: { value: 'on', display: 'none', target: 'another' },
                 },
             };
             scenario.window = {

@@ -28,3 +28,12 @@ To clear the status message, specify `display: none`.
     value: on
     display: none
 ```
+
+To display a status message in another status window, specify `target`.
+
+```yaml
+- status:
+    name: flag1
+    display: 'flag1 is set'
+    target: '#anotherWindow'
+```
