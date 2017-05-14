@@ -202,17 +202,12 @@ class Scenario {
             return;
         }
         if (direction.status) {
-            let flag = new Flag(
-                direction.status.name,
-                direction.status.value,
-                direction.status.display,
-                direction.status.target
-            );
-            if (direction.status.value) {
-                this.progress.status[direction.status.name] = flag;
-            }
+            this.updateStatus(direction.status);
             if (direction.status.display) {
-                this.displayStatusMessage(flag, config);
+                this.displayStatusMessage(
+                    this.progress.status[direction.status.name],
+                    config
+                );
             }
             this.display(++this.progress.pos);
             return;
@@ -402,9 +397,11 @@ class Scenario {
                 .show()
                 .click(() => {
                     button.status.forEach(entry => {
-                        this.progress.status[entry.name] = new Flag(entry.value, entry.display);
+                        this.updateStatus(entry);
                         if (entry.display) {
-                            this.displayStatusMessage(entry.name, entry.display);
+                            this.displayStatusMessage(
+                                this.progress.status[entry.name]
+                            );
                         }
                     });
                     buttons.forEach(b => {
@@ -414,6 +411,23 @@ class Scenario {
                     this.display(++this.progress.pos);
                 });
         });
+    }
+
+    /**
+     * Update status.
+     * @param {object} status The status to update.
+     */
+    updateStatus(status) {
+        if (this.progress.status[status.name]) {
+            this.progress.status[status.name].update(status);
+        } else {
+            this.progress.status[status.name] = new Flag(
+                status.name,
+                status.value,
+                status.display,
+                status.target
+            );
+        }
     }
 
     /**
@@ -1000,6 +1014,13 @@ class Scenario {
                     this.displayOverlay(this.progress.overlay);
                 }
                 for (let key in this.progress.status) {
+                    let flag = this.progress.status[key];
+                    this.progress.status[key] = new Flag(
+                        flag.name,
+                        flag.value,
+                        flag.display,
+                        flag.target
+                    );
                     if (this.progress.status[key].display) {
                         this.displayStatusMessage(this.progress.status[key]);
                     }

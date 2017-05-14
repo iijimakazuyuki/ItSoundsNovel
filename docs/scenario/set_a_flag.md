@@ -30,6 +30,36 @@ And `${value}` in the status message will be that value.
     display: variable is ${value}
 ```
 
+In the example below, `variable` will be added by 2.
+
+```yaml
+- status:
+    name: variable
+    value: 1
+    display: variable is ${value}
+- status:
+    name: variable
+    value:
+      type: add
+      by: 2
+    display: variable is ${value}
+```
+
+In the example below, `variable` will be multiplied by 3
+
+```yaml
+- status:
+    name: variable
+    value: 1
+    display: variable is ${value}
+- status:
+    name: variable
+    value:
+      type: multiply
+      by: 3
+    display: variable is ${value}
+```
+
 To clear the status message, specify `display: none`.
 
 ```yaml

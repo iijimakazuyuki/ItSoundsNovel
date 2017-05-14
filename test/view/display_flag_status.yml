@@ -17,6 +17,14 @@
       min: 1
       max: 5
     display: variable is ${value}
+- status:
+    name: add
+    value: 1
+    display: ${value}
+- status:
+    name: multiply
+    value: 1
+    display: ${value}
 - I am a cat. I don't have my name yet.
 - status:
     name: flag2
@@ -25,4 +33,16 @@
 - status:
     name: flag1
     display: none
+- status:
+    name: add
+    value:
+      type: add
+      by: -1
+    display: ${value}
+- status:
+    name: multiply
+    value:
+      type: multiply
+      by: 2
+    display: ${value}
 - I don't know where I was born.

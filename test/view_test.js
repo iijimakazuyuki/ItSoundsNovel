@@ -1452,6 +1452,26 @@ describe('ItSoundsNovel View', function () {
         const VARIABLE_STATUS_MESSAGE = "variable is";
 
         /**
+         * The a status message before addition.
+         */
+        const STATUS_MESSAGE_BEFORE_ADDITION = "1";
+
+        /**
+         * The a status message after addition.
+         */
+        const STATUS_MESSAGE_AFTER_ADDITION = "0";
+
+        /**
+         * The a status message before multiplication.
+         */
+        const STATUS_MESSAGE_BEFORE_MULTIPLICATION = "1";
+
+        /**
+         * The a status message after multiplication.
+         */
+        const STATUS_MESSAGE_AFTER_MULTIPLICATION = "2";
+
+        /**
          * The timeout for displaying the sentences.
          * The last letter of the first sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
@@ -1504,6 +1524,18 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextContains(element, VARIABLE_STATUS_MESSAGE)
                     )
                 ).then(() =>
+                    driver.findElement({ id: 'add' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, STATUS_MESSAGE_BEFORE_ADDITION)
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'multiply' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, STATUS_MESSAGE_BEFORE_MULTIPLICATION)
+                    )
+                ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
@@ -1521,6 +1553,18 @@ describe('ItSoundsNovel View', function () {
                 ).then(element =>
                     driver.wait(
                         until.elementTextIs(element, FLAG2_STATUS_MESSAGE)
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'add' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, STATUS_MESSAGE_AFTER_ADDITION)
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'multiply' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, STATUS_MESSAGE_AFTER_MULTIPLICATION)
                     )
                 );
         }
