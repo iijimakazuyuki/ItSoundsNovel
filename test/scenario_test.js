@@ -5,6 +5,7 @@ const sinon = require('sinon');
 const Message = require('../src/message.js');
 const Character = require('../src/character.js');
 const Image = require('../src/image.js');
+const Flag = require('../src/flag.js');
 
 const normalCharacterOf = v => new Character(null, null, v);
 
@@ -2133,13 +2134,25 @@ describe('Scenario', function () {
         });
         it('should set a flag', function () {
             // arrange
-            scenario.progress.status['flag1'] = 'off';
+            scenario.progress.status['flag1'] = new Flag('flag1', 'off');
             scenario.directions = [
                 {
                     status: { name: 'flag1', value: 'on', display: 'flag1 is on' },
                 },
                 {
                     status: { name: 'flag2', value: 'off' },
+                },
+                {
+                    status: { name: 'add', value: 1 },
+                },
+                {
+                    status: { name: 'multiply', value: 1 },
+                },
+                {
+                    status: { name: 'add', value: { type: 'add', by: 1 } },
+                },
+                {
+                    status: { name: 'multiply', value: { type: 'multiply', by: 3 } },
                 },
             ];
             scenario.progress.pos = 0;
@@ -2155,6 +2168,14 @@ describe('Scenario', function () {
             assert.deepEqual(
                 scenario.progress.status['flag2'],
                 { name: 'flag2', value: 'off', display: 'none' }
+            );
+            assert.deepEqual(
+                scenario.progress.status['add'],
+                { name: 'add', value: 2, display: 'none' }
+            );
+            assert.deepEqual(
+                scenario.progress.status['multiply'],
+                { name: 'multiply', value: 3, display: 'none' }
             );
         });
         it('should display all letters in the sentence only if a condition is satisfied', function () {
