@@ -391,6 +391,7 @@ class Scenario {
      * @param {Button[]} buttons The buttons to display.
      */
     displayButtons(buttons) {
+        this.disableNextButton();
         buttons.forEach(button => {
             let buttonElement = this.$('#' + button.name);
             buttonElement.text(button.message)
@@ -859,9 +860,30 @@ class Scenario {
      * Disable the user interface.
      */
     disableUI() {
+        this.disableNextButton();
+        this.disableSaveButton();
+        this.disableLoadButton();
+    }
+
+    /**
+     * Disable the next button.
+     */
+    disableNextButton() {
         this.$(this.progress.displayConfig.ui.next).off('click');
-        this.$(this.progress.displayConfig.ui.load).off('click');
+    }
+
+    /**
+     * Disable the save button.
+     */
+    disableSaveButton() {
         this.$(this.progress.displayConfig.ui.save).off('click');
+    }
+
+    /**
+     * Disable the load button.
+     */
+    disableLoadButton() {
+        this.$(this.progress.displayConfig.ui.load).off('click');
     }
 
     /**
