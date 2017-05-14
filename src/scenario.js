@@ -945,17 +945,10 @@ class Scenario {
         elementLetters
             .clearQueue()
             .css({
-                transition: '60s',
-                opacity: 0,
-            })
-            .delay(100)
-            .queue(function () {
-                $(this).css({
-                    transition: '0s',
-                    visibility: 'visible',
-                    opacity: 1,
-                });
-            });
+                transition: '0s',
+                visibility: 'visible',
+                opacity: 1,
+            }).trigger('transitionend');
     }
 
     /**
