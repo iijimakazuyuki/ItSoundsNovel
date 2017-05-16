@@ -160,7 +160,32 @@ class DisplayConfig {
                 this.image.timingFunction = config.image.timingFunction;
             }
         }
-        if (config.ui) this.ui = config.ui;
+        if (config.ui) {
+            if (config.ui.next) {
+                if (config.ui.next.target) {
+                    this.ui.next.target = config.ui.next.target;
+                }
+                if (config.ui.next.status) {
+                    this.ui.next.status = config.ui.next.status;
+                }
+            }
+            if (config.ui.save) {
+                if (config.ui.save.target) {
+                    this.ui.save.target = config.ui.save.target;
+                }
+                if (config.ui.save.status) {
+                    this.ui.save.status = config.ui.save.status;
+                }
+            }
+            if (config.ui.load) {
+                if (config.ui.load.target) {
+                    this.ui.load.target = config.ui.load.target;
+                }
+                if (config.ui.load.status) {
+                    this.ui.load.status = config.ui.load.status;
+                }
+            }
+        }
     }
     copy() {
         return new DisplayConfig({
@@ -211,9 +236,18 @@ class DisplayConfig {
                 target: this.status.target,
             },
             ui: {
-                next: this.ui.next,
-                save: this.ui.save,
-                load: this.ui.load,
+                next: {
+                    target: this.ui.next.target,
+                    status: this.ui.next.status,
+                },
+                save: {
+                    target: this.ui.save.target,
+                    status: this.ui.save.status,
+                },
+                load: {
+                    target: this.ui.load.target,
+                    status: this.ui.load.status,
+                },
             },
         });
     }
@@ -271,9 +305,18 @@ const DEFAULT_DISPLAY_CONFIG = new DisplayConfig({
         target: '#statusWindow',
     },
     ui: {
-        next: '#nextButton',
-        save: '#saveButton',
-        load: '#loadButton',
+        next: {
+            target: '#nextButton',
+            status: 'available',
+        },
+        save: {
+            target: '#saveButton',
+            status: 'available',
+        },
+        load: {
+            target: '#loadButton',
+            status: 'available',
+        },
     },
 });
 module.exports = DisplayConfig;
