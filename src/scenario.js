@@ -402,6 +402,7 @@ class Scenario {
             let buttonElement = this.$('#' + button.name);
             buttonElement.text(button.message)
                 .show()
+                .off('click')
                 .click(() => {
                     button.status.forEach(entry => {
                         this.updateStatus(entry);
