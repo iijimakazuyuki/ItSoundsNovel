@@ -15,6 +15,12 @@ class Background {
             this.color = background.color;
         }
     }
+    copy() {
+        return new Background(
+            this.image,
+            this.color
+        );
+    }
 }
 
 module.exports = Background;

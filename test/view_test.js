@@ -867,12 +867,6 @@ describe('ItSoundsNovel View', function () {
             + " I only remember that I was meowing in dim and wet place.";
 
         /**
-         * The third sentence in the sequence.
-         */
-        const THIRD_SENTENCE =
-            "I only remember that I was meowing in dim and wet place.";
-
-        /**
          * The a status message for flag1.
          */
         const FLAG1_STATUS_MESSAGE = "flag1 is";
@@ -1019,20 +1013,10 @@ describe('ItSoundsNovel View', function () {
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
                     driver.wait(
-                        until.elementTextIs(element, THIRD_SENTENCE),
+                        until.elementTextIs(element, SECOND_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
-                ).then(() =>
-                    driver.findElement({ id: 'statusWindow' })
-                ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, CLEARED_FLAG_STATUS_MESSAGE)
-                    )
-                ).then(() =>
-                    driver.findElements({ id: 'cat1' })
-                ).then(elements => {
-                    assert.lengthOf(elements, 0);
-                });
+                );
         }
 
         it('should be performed in Firefox', function () {

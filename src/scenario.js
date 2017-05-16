@@ -39,6 +39,11 @@ class Scenario {
         this.progress = new ScenarioProgress();
 
         /**
+         * The progress to save.
+         */
+        this.progressToSave = null;
+
+        /**
          * True if a displayed message is flushed when the next button is clicked.
          */
         this.willFlush = true;
@@ -241,6 +246,7 @@ class Scenario {
         }
         if (direction.flush) {
             this.willFlush = direction.flush !== 'none';
+            if (!this.willFlush) this.progressToSave = this.progress.copy();
         }
         this.displayMessage(direction.message, config);
         this.changeButtonDuringDisplaying(direction.next === 'wait', direction.auto);
@@ -588,6 +594,7 @@ class Scenario {
      */
     flush() {
         if (this.willFlush) {
+            this.progressToSave = null;
             this.$(this.progress.displayConfig.message.target).text('');
         } else {
             this.willFlush = true;
@@ -977,7 +984,11 @@ class Scenario {
      * Save the progress to the local storage of the web browser.
      */
     saveProgress() {
-        this.window.localStorage.progress = JSON.stringify(this.progress);
+        if (this.progressToSave) {
+            this.window.localStorage.progress = JSON.stringify(this.progressToSave);
+        } else {
+            this.window.localStorage.progress = JSON.stringify(this.progress);
+        }
     }
 
     removeImages() {
