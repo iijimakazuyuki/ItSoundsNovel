@@ -37,6 +37,7 @@ describe('Scenario', function () {
         scenario.$.get = sinon.stub().returnsThis();
         scenario.$.removeClass = sinon.stub().returnsThis();
         scenario.$.one = sinon.stub().returnsThis();
+        scenario.$.show = sinon.stub().returnsThis();
     });
 
     describe('#load()', function () {
@@ -1949,10 +1950,12 @@ describe('Scenario', function () {
         it('should bind click on next button', function () {
             // arrange
             let nextButtonMock = {
+                off: sinon.stub().returnsThis(),
+                show: sinon.stub().returnsThis(),
                 click: sinon.spy()
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.next
+                scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
 
             // act
@@ -2600,7 +2603,7 @@ describe('Scenario', function () {
                 off: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.next
+                scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonStub);
 
             // act
@@ -3066,19 +3069,19 @@ describe('Scenario', function () {
                 off: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.next
+                scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonStub);
             let saveButtonStub = {
                 off: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.save
+                scenario.progress.displayConfig.ui.save.target
             ).returns(saveButtonStub);
             let loadButtonStub = {
                 off: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.load
+                scenario.progress.displayConfig.ui.load.target
             ).returns(loadButtonStub);
 
             // act
@@ -3091,30 +3094,36 @@ describe('Scenario', function () {
         });
     });
 
-    describe('#enableUI()', function () {
+    describe('#updateButtons()', function () {
         it('should bind click on buttons', function () {
             // arrange
             let nextButtonMock = {
+                off: sinon.stub().returnsThis(),
+                show: sinon.stub().returnsThis(),
                 click: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.next
+                scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
             let saveButtonMock = {
+                off: sinon.stub().returnsThis(),
+                show: sinon.stub().returnsThis(),
                 click: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.save
+                scenario.progress.displayConfig.ui.save.target
             ).returns(saveButtonMock);
             let loadButtonMock = {
+                off: sinon.stub().returnsThis(),
+                show: sinon.stub().returnsThis(),
                 click: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.load
+                scenario.progress.displayConfig.ui.load.target
             ).returns(loadButtonMock);
 
             // act
-            scenario.enableUI();
+            scenario.updateButtons();
 
             // assert
             assert(nextButtonMock.click.called);
@@ -3127,10 +3136,12 @@ describe('Scenario', function () {
         it('should bind click on next button', function () {
             // arrange
             let nextButtonMock = {
+                off: sinon.stub().returnsThis(),
+                show: sinon.stub().returnsThis(),
                 click: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.next
+                scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
 
             // act
@@ -3145,11 +3156,12 @@ describe('Scenario', function () {
         it('should off and bind click on next button and the last letter element', function () {
             // arrange
             let nextButtonMock = {
+                show: sinon.stub().returnsThis(),
                 off: sinon.spy(),
                 click: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.next
+                scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
             let letterElementMock = {
                 one: sinon.spy(),
@@ -3173,7 +3185,7 @@ describe('Scenario', function () {
                 click: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.next
+                scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
             let letterElementMock = {
                 one: sinon.spy(),
@@ -3193,11 +3205,12 @@ describe('Scenario', function () {
         it('should off and bind click on next button and the last letter element with automatic displaying', function () {
             // arrange
             let nextButtonMock = {
+                show: sinon.stub().returnsThis(),
                 off: sinon.spy(),
                 click: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.next
+                scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
             let letterElementMock = {
                 one: sinon.spy(),
@@ -3221,7 +3234,7 @@ describe('Scenario', function () {
                 click: sinon.spy(),
             };
             scenario.$.withArgs(
-                scenario.progress.displayConfig.ui.next
+                scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
             let letterElementMock = {
                 one: sinon.spy(),
@@ -3356,9 +3369,18 @@ describe('Scenario', function () {
                         target: '#statusWindow',
                     },
                     ui: {
-                        next: '#nextButton',
-                        save: '#saveButton',
-                        load: '#loadButton',
+                        next: {
+                            target: '#nextButton',
+                            status: 'available',
+                        },
+                        save: {
+                            target: '#saveButton',
+                            status: 'available',
+                        },
+                        load: {
+                            target: '#loadButton',
+                            status: 'available',
+                        },
                     }
                 }, images: {
                     abc: {

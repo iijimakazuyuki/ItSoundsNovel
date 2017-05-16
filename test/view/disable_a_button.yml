@@ -1,0 +1,65 @@
+- message: ${fontStyle=italic}Do you want to disable the next button?
+  flush: none
+  auto: 0
+- button:
+  - name: button1
+    message: Yes
+    status:
+    - name: disable
+      value: on
+  - name: button2
+    message: No
+    status:
+    - name: disable
+      value: off
+- if:
+  - name: disable
+    value: on
+  config:
+    ui:
+      next:
+        status: unavailable
+- Can you utilize the next button?
+- message: ${fontStyle=italic}Do you want to disable the save button?
+  flush: none
+  auto: 0
+- button:
+  - name: button1
+    message: Yes
+    status:
+    - name: disable
+      value: on
+  - name: button2
+    message: No
+    status:
+    - name: disable
+      value: off
+- if:
+  - name: disable
+    value: on
+  config:
+    ui:
+      save:
+        status: unavailable
+- message: ${fontStyle=italic}Do you want to disable the load button?
+  flush: none
+  auto: 0
+- button:
+  - name: button1
+    message: Yes
+    status:
+    - name: disable
+      value: on
+  - name: button2
+    message: No
+    status:
+    - name: disable
+      value: off
+- if:
+  - name: disable
+    value: on
+  config:
+    ui:
+      load:
+        status: unavailable
+- Can you utilize the buttons?

@@ -1,0 +1,52 @@
+- I hide the next button...
+- config:
+    ui:
+      next:
+        status: invisible
+- message: ${fontStyle=italic}Do you want to hide the save button?
+  flush: none
+  auto: 0
+- button:
+  - name: button1
+    message: Yes
+    status:
+    - name: hide
+      value: on
+  - name: button2
+    message: No
+    status:
+    - name: hide
+      value: off
+- if:
+  - name: hide
+    value: on
+  config:
+    ui:
+      save:
+        status: invisible
+- message: ${fontStyle=italic}Do you want to hide the load button?
+  flush: none
+  auto: 0
+- button:
+  - name: button1
+    message: Yes
+    status:
+    - name: hide
+      value: on
+  - name: button2
+    message: No
+    status:
+    - name: hide
+      value: off
+- if:
+  - name: hide
+    value: on
+  config:
+    ui:
+      load:
+        status: invisible
+- config:
+    ui:
+      next:
+        status: available
+- Can you utilize the buttons?

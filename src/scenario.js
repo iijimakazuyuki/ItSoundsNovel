@@ -80,7 +80,7 @@ class Scenario {
                     this.init(0);
                 } else {
                     this.progress.pos = -1;
-                    this.enableUI();
+                    this.updateButtons();
                 }
 
             },
@@ -93,7 +93,7 @@ class Scenario {
      */
     init(pos) {
         this.progress.pos = pos;
-        this.enableUI();
+        this.updateButtons();
         this.display(pos);
     }
 
@@ -234,6 +234,7 @@ class Scenario {
                     this.waitForMovingMessageWindow();
                 }
             }
+            this.updateButtons();
             this.display(++this.progress.pos);
             return;
         }
@@ -439,6 +440,29 @@ class Scenario {
     }
 
     /**
+     * Enable, disable or hide the buttons.
+     */
+    updateButtons() {
+        this.disableUI();
+        if (this.progress.displayConfig.ui.next.status === 'invisible') {
+            this.hideNextButton();
+        } else if (this.progress.displayConfig.ui.next.status === 'available') {
+            this.enableNextDirectionButton();
+        }
+        if (this.progress.displayConfig.ui.save.status === 'invisible') {
+            this.hideSaveButton();
+        } else if (this.progress.displayConfig.ui.save.status === 'available') {
+            this.enableSaveButton();
+        }
+        if (this.progress.displayConfig.ui.load.status === 'invisible') {
+            this.hideLoadButton();
+        } else if (this.progress.displayConfig.ui.load.status === 'available') {
+            this.enableLoadButton();
+        }
+    }
+
+
+    /**
      * Remove a background image.
      * @param {DisplayConfig} config The display configuration.
      */
@@ -512,7 +536,7 @@ class Scenario {
     waitForImage(image) {
         let imageElement = this.$('#' + image.name);
         imageElement.one('transitionend', () => {
-            this.enableUI();
+            this.updateButtons();
             this.display(++this.progress.pos);
         });
     }
@@ -525,7 +549,7 @@ class Scenario {
         let imageElement =
             this.$(config.background.target + ' .backgroundImage.active');
         imageElement.one('transitionend', () => {
-            this.enableUI();
+            this.updateButtons();
             this.display(++this.progress.pos);
         });
     }
@@ -537,7 +561,7 @@ class Scenario {
     waitForBackgroundColor(config = this.progress.displayConfig) {
         let backgroundElement = this.$(config.background.target + ' .backgroundColor');
         backgroundElement.one('transitionend', () => {
-            this.enableUI();
+            this.updateButtons();
             this.display(++this.progress.pos);
         });
     }
@@ -549,7 +573,7 @@ class Scenario {
     waitForOverlay(config = this.progress.displayConfig) {
         let overlayElement = this.$(config.overlay.target + ' .overlay');
         overlayElement.one('transitionend', () => {
-            this.enableUI();
+            this.updateButtons();
             this.display(++this.progress.pos);
         });
     }
@@ -561,7 +585,7 @@ class Scenario {
     waitForChangingMessageWindowColor(config = this.progress.displayConfig) {
         let messageWindow = this.$(config.message.target);
         messageWindow.one('transitionend', () => {
-            this.enableUI();
+            this.updateButtons();
             this.display(++this.progress.pos);
         });
     }
@@ -573,7 +597,7 @@ class Scenario {
     waitForMovingMessageWindow(config = this.progress.displayConfig) {
         let messageWindow = this.$(config.message.target);
         messageWindow.one('transitionend', () => {
-            this.enableUI();
+            this.updateButtons();
             this.display(++this.progress.pos);
         });
     }
@@ -583,9 +607,9 @@ class Scenario {
      * @param {number} seconds The waiting seconds.
      */
     waitForSeconds(seconds) {
-        this.$(this.progress.displayConfig.ui.next).off('click');
+        this.$(this.progress.displayConfig.ui.next.target).off('click');
         setTimeout(() => {
-            this.enableNextDirectionButton();
+            this.updateButtons();
             this.display(++this.progress.pos);
         }, seconds);
     }
@@ -877,44 +901,85 @@ class Scenario {
      * Disable the next button.
      */
     disableNextButton() {
-        this.$(this.progress.displayConfig.ui.next).off('click');
+        this.$(this.progress.displayConfig.ui.next.target).off('click');
     }
 
     /**
      * Disable the save button.
      */
     disableSaveButton() {
-        this.$(this.progress.displayConfig.ui.save).off('click');
+        this.$(this.progress.displayConfig.ui.save.target).off('click');
     }
 
     /**
      * Disable the load button.
      */
     disableLoadButton() {
-        this.$(this.progress.displayConfig.ui.load).off('click');
-    }
-
-    /**
-     * Enable the user interface.
-     */
-    enableUI() {
-        this.enableNextDirectionButton();
-        this.$(this.progress.displayConfig.ui.save).click(() => {
-            this.saveProgress();
-        });
-        this.$(this.progress.displayConfig.ui.load).click(() => {
-            this.loadProgress();
-        });
+        this.$(this.progress.displayConfig.ui.load.target).off('click');
     }
 
     /**
      * Enable the next button to execute next direction.
       */
     enableNextDirectionButton() {
-        this.$(this.progress.displayConfig.ui.next).click(() => {
-            this.flush();
-            this.display(++this.progress.pos);
-        });
+        this.$(this.progress.displayConfig.ui.next.target)
+            .show()
+            .click(() => {
+                this.flush();
+                this.display(++this.progress.pos);
+            });
+    }
+
+    enableSkipButton() {
+        this.$(this.progress.displayConfig.ui.next.target)
+            .show()
+            .click(() => {
+                this.skipDisplayingLetters();
+                this.updateButtons();
+            });
+    }
+
+    /**
+     * Enable the save button.
+      */
+    enableSaveButton() {
+        this.$(this.progress.displayConfig.ui.save.target)
+            .show()
+            .click(() => {
+                this.saveProgress();
+            });
+    }
+
+    /**
+     * Enable the load button.
+      */
+    enableLoadButton() {
+        this.$(this.progress.displayConfig.ui.load.target)
+            .show()
+            .click(() => {
+                this.loadProgress();
+            });
+    }
+
+    /**
+     * Hide the next button.
+     */
+    hideNextButton() {
+        this.$(this.progress.displayConfig.ui.next.target).hide();
+    }
+
+    /**
+     * Hide the save button.
+     */
+    hideSaveButton() {
+        this.$(this.progress.displayConfig.ui.save.target).hide();
+    }
+
+    /**
+     * Hide the load button.
+     */
+    hideLoadButton() {
+        this.$(this.progress.displayConfig.ui.load.target).hide();
     }
 
     /**
@@ -923,34 +988,33 @@ class Scenario {
       * @param {number} auto Time from the last letter displaying to next direction being executed.
       */
     changeButtonDuringDisplaying(wait, auto = null) {
-        this.$(this.progress.displayConfig.ui.next).off('click');
+        this.$(this.progress.displayConfig.ui.next.target).off('click');
         let transitionEnd;
         if (wait) {
             if (auto) {
                 transitionEnd = () => {
-                    this.$(this.progress.displayConfig.ui.next).off('click');
+                    this.$(this.progress.displayConfig.ui.next.target).off('click');
                     this.autoDisplay = setTimeout(() => {
-                        this.enableNextDirectionButton();
+                        this.updateButtons();
                         this.flush();
                         this.display(++this.progress.pos);
                     }, auto);
                 };
             } else {
                 transitionEnd = () => {
-                    this.$(this.progress.displayConfig.ui.next).off('click');
-                    this.enableNextDirectionButton();
+                    this.$(this.progress.displayConfig.ui.next.target).off('click');
+                    this.updateButtons();
                 };
             }
         } else {
-            this.$(this.progress.displayConfig.ui.next).click(() => {
-                this.skipDisplayingLetters();
-                this.enableNextDirectionButton();
-            });
+            if (this.progress.displayConfig.ui.next.status === 'available') {
+                this.enableSkipButton();
+            }
             if (auto || auto === 0) {
                 transitionEnd = () => {
-                    this.$(this.progress.displayConfig.ui.next).off('click');
+                    this.$(this.progress.displayConfig.ui.next.target).off('click');
                     this.autoDisplay = setTimeout(() => {
-                        this.enableNextDirectionButton();
+                        this.updateButtons();
                         this.flush();
                         this.display(++this.progress.pos);
                     }, auto);
@@ -958,8 +1022,8 @@ class Scenario {
 
             } else {
                 transitionEnd = () => {
-                    this.$(this.progress.displayConfig.ui.next).off('click');
-                    this.enableNextDirectionButton();
+                    this.$(this.progress.displayConfig.ui.next.target).off('click');
+                    this.updateButtons();
                 };
             }
         }
@@ -1019,6 +1083,7 @@ class Scenario {
         this.progress.update(JSON.parse(this.window.localStorage.progress));
         this.changeMessageWindowColor();
         this.moveMessageWindow();
+        this.updateButtons();
         this.$.get({
             url: this.progress.scenarioUrl,
             success: data => {

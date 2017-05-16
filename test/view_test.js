@@ -2030,6 +2030,368 @@ describe('ItSoundsNovel View', function () {
         })
     });
 
+    describe('Disable a button', function () {
+
+        /**
+         * The path to the tested view.
+         */
+        const PATH = 'disable_a_button.html';
+
+        /**
+         * The first sentence in the sequence.
+         */
+        const FIRST_SENTENCE = "Do you want to disable the next button?";
+
+        /**
+         * The second sentence in the sequence.
+         */
+        const SECOND_SENTENCE = "Can you utilize the next button?";
+
+        /**
+         * The third sentence in the sequence.
+         */
+        const THIRD_SENTENCE = "Do you want to disable the save button?";
+
+        /**
+         * The fourth sentence in the sequence.
+         */
+        const FOURTH_SENTENCE = "Do you want to disable the load button?";
+
+        /**
+         * The fifth sentence in the sequence.
+         */
+        const FIFTH_SENTENCE = "Can you utilize the buttons?";
+
+        /**
+         * The timeout for displaying the sentences.
+         * The last letter of the first sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] * 39 + 500 [ms] = 2450 [ms] < 5000 [ms] (= timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
+
+        /**
+         * The sleep time for clicking the next button, the save button or
+         * the load button after waiting for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_BUTTONS = 1000;
+
+        /**
+         * @param browserDriverName {string} The browser name of WebDriver.
+         * @returns {Thenable} The WebDriver test sequence.
+         */
+        const TEST_SEQUENCE_OF = browserDriverName => {
+            let driver = browserDrivers.get(browserDriverName);
+            return driver.get(BASE_URL + PATH)
+                .then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIRST_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'button1' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'saveButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.get(BASE_URL + PATH)
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'loadButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.get(BASE_URL + PATH)
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIRST_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'button2' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, THIRD_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'saveButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'button1' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FOURTH_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'saveButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'loadButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, THIRD_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'button2' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FOURTH_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'button1' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIFTH_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.findElement({ id: 'loadButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIFTH_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                );
+        }
+
+        it('should be performed in Firefox', function () {
+            return TEST_SEQUENCE_OF('firefox');
+        });
+        it('should be performed in Chrome', function () {
+            return TEST_SEQUENCE_OF('chrome');
+        })
+        it('should be performed in IE', function () {
+            return TEST_SEQUENCE_OF('ie');
+        })
+        it('should be performed in Edge', function () {
+            return TEST_SEQUENCE_OF('MicrosoftEdge');
+        })
+    });
+
+    describe('Hide a button', function () {
+
+        /**
+         * The path to the tested view.
+         */
+        const PATH = 'hide_a_button.html';
+
+        /**
+         * The first sentence in the sequence.
+         */
+        const FIRST_SENTENCE = "I hide the next button...";
+
+        /**
+         * The second sentence in the sequence.
+         */
+        const SECOND_SENTENCE = "Do you want to hide the save button?";
+
+        /**
+         * The third sentence in the sequence.
+         */
+        const THIRD_SENTENCE = "Do you want to hide the load button?";
+
+        /**
+         * The fourth sentence in the sequence.
+         */
+        const FOURTH_SENTENCE = "Can you utilize the buttons?";
+
+        /**
+         * The timeout for displaying the sentences.
+         * The last letter of the first sentence will be displayed in
+         *   delay [ms] * #letters + duration [ms]
+         *   = 50 [ms] * 36 + 500 [ms] = 2300 [ms] < 5000 [ms] (= timeout),
+         * so the test should be done before its timeout.
+         */
+        const TIMEOUT_FOR_DISPLAYING_SENTENCE = 5000;
+
+        /**
+         * The sleep time for clicking the next button, the save button or
+         * the load button after waiting for displaying a sentence.
+         */
+        const SLEEP_TIME_FOR_CLICKING_BUTTONS = 1000;
+
+        /**
+         * @param browserDriverName {string} The browser name of WebDriver.
+         * @returns {Thenable} The WebDriver test sequence.
+         */
+        const TEST_SEQUENCE_OF = browserDriverName => {
+            let driver = browserDrivers.get(browserDriverName);
+            return driver.get(BASE_URL + PATH)
+                .then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FIRST_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, SECOND_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'nextButton' })
+                ).then(element => {
+                    assert.isNotTrue(element.isDisplayed());
+                    return driver.findElement({ id: 'button1' })
+                }).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, THIRD_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'saveButton' })
+                ).then(element => {
+                    assert.isNotTrue(element.isDisplayed());
+                    return driver.findElement({ id: 'button1' })
+                }).then(element =>
+                    element.click()
+                ).then(() =>
+                    driver.findElement({ id: 'messageWindow' })
+                ).then(element =>
+                    driver.wait(
+                        until.elementTextIs(element, FOURTH_SENTENCE),
+                        TIMEOUT_FOR_DISPLAYING_SENTENCE
+                    )
+                ).then(() =>
+                    driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
+                ).then(() =>
+                    driver.findElement({ id: 'loadButton' })
+                ).then(element => {
+                    assert.isNotTrue(element.isDisplayed());
+                });
+        }
+
+        it('should be performed in Firefox', function () {
+            return TEST_SEQUENCE_OF('firefox');
+        });
+        it('should be performed in Chrome', function () {
+            return TEST_SEQUENCE_OF('chrome');
+        })
+        it('should be performed in IE', function () {
+            return TEST_SEQUENCE_OF('ie');
+        })
+        it('should be performed in Edge', function () {
+            return TEST_SEQUENCE_OF('MicrosoftEdge');
+        })
+    });
+
     after(function () {
         let stopAppServer = new Promise(resolve => {
             appServer.close(resolve);
