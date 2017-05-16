@@ -40,6 +40,14 @@ class Flag {
             this.target = flag.target;
         }
     }
+    copy() {
+        return new Flag(
+            this.name,
+            this.value,
+            this.display,
+            this.target
+        );
+    }
 }
 
 const RANDOM_BETWEEN = (min, max) =>

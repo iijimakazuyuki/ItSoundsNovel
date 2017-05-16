@@ -37,6 +37,23 @@ class Image {
         if (image.rotateY) this.rotateY = image.rotateY;
         if (image.rotateZ) this.rotateZ = image.rotateZ;
     }
+    copy() {
+        return new Image({
+            name: this.name,
+            source: this.source,
+            control: this.control,
+            x: this.x,
+            y: this.y,
+            z: this.z,
+            width: this.width,
+            height: this.height,
+            scaleX: this.scaleX,
+            scaleY: this.scaleY,
+            rotateX: this.rotateX,
+            rotateY: this.rotateY,
+            rotateZ: this.rotateZ,
+        });
+    }
     static defaultWidth() {
         return DEFAULT_WIDTH;
     }

@@ -19,6 +19,12 @@ class Overlay {
             this.color = overlay.color;
         }
     }
+    copy() {
+        return new Overlay({
+            color: this.color,
+            opacity: this.opacity,
+        });
+    }
 }
 
 module.exports = Overlay;

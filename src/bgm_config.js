@@ -32,6 +32,17 @@ class BgmConfig {
             else this.head = DEFAULT_LOOP_CONFIG.head;
         }
     }
+    copy() {
+        let ret = new BgmConfig();
+        for (let i in this.sources) {
+            ret.sources[i] = this.sources[i];
+        }
+        ret.control = this.control;
+        ret.duration = this.duration;
+        ret.loop = this.loop;
+        ret.head = this.head;
+        return ret;
+    }
 
     /**
      * Default loop configuration.

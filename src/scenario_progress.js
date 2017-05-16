@@ -82,6 +82,23 @@ class ScenarioProgress {
             this.status[name] = progress.status[name];
         }
     }
+
+    copy() {
+        let ret = new ScenarioProgress();
+        ret.pos = this.pos;
+        ret.scenarioUrl = this.scenarioUrl;
+        ret.displayConfig = this.displayConfig.copy();
+        for (let key in this.images) {
+            ret.images[key] = this.images[key].copy();
+        }
+        if (this.bgmConfig) ret.bgmConfig = this.bgmConfig.copy();
+        ret.background = this.background.copy();
+        ret.overlay = this.overlay.copy();
+        for (let key in this.status) {
+            ret.status[key] = this.status[key].copy();
+        }
+        return ret;
+    }
 }
 
 module.exports = ScenarioProgress;
