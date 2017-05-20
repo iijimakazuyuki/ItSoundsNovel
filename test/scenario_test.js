@@ -31,6 +31,12 @@ const mockOfMessageWindowToDisplay = () => ({
     text: sinon.stub().returnsThis(),
 });
 
+const mockOfButton = () => ({
+    off: sinon.stub().returnsThis(),
+    show: sinon.stub().returnsThis(),
+    click: sinon.stub().returnsThis(),
+});
+
 describe('Scenario', function () {
     let scenario;
 
@@ -1947,11 +1953,7 @@ describe('Scenario', function () {
         });
         it('should bind click on next button', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy()
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
@@ -2486,9 +2488,7 @@ describe('Scenario', function () {
     describe('#waitForSeconds()', function () {
         it('should off click on the next button', function () {
             // arrange
-            let nextButtonStub = {
-                off: sinon.spy(),
-            };
+            let nextButtonStub = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonStub);
@@ -2920,21 +2920,15 @@ describe('Scenario', function () {
     describe('#disableUI()', function () {
         it('should off bindings', function () {
             // arrange
-            let nextButtonStub = {
-                off: sinon.spy(),
-            };
+            let nextButtonStub = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonStub);
-            let saveButtonStub = {
-                off: sinon.spy(),
-            };
+            let saveButtonStub = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.save.target
             ).returns(saveButtonStub);
-            let loadButtonStub = {
-                off: sinon.spy(),
-            };
+            let loadButtonStub = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.load.target
             ).returns(loadButtonStub);
@@ -2952,27 +2946,15 @@ describe('Scenario', function () {
     describe('#updateButtons()', function () {
         it('should bind click on buttons', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let saveButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy(),
-            };
+            let saveButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.save.target
             ).returns(saveButtonMock);
-            let loadButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy(),
-            };
+            let loadButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.load.target
             ).returns(loadButtonMock);
@@ -2990,11 +2972,7 @@ describe('Scenario', function () {
     describe('#enableNextDirectionButton()', function () {
         it('should bind click on next button', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
@@ -3010,11 +2988,7 @@ describe('Scenario', function () {
     describe('#changeButtonDuringDisplaying()', function () {
         it('should off and bind click on next button and the last letter element', function () {
             // arrange
-            let nextButtonMock = {
-                show: sinon.stub().returnsThis(),
-                off: sinon.spy(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
@@ -3033,10 +3007,7 @@ describe('Scenario', function () {
         });
         it('should off click on next button and bind function on the last letter element', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.spy(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
@@ -3055,11 +3026,7 @@ describe('Scenario', function () {
         });
         it('should off and bind click on next button and the last letter element with automatic displaying', function () {
             // arrange
-            let nextButtonMock = {
-                show: sinon.stub().returnsThis(),
-                off: sinon.spy(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
@@ -3078,10 +3045,7 @@ describe('Scenario', function () {
         });
         it('should off click on next button and bind function on the last letter element with automatic displaying', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.spy(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
