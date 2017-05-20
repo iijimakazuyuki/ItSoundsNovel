@@ -50,6 +50,14 @@ const mockOfBackgroundImageElement = () => ({
     one: sinon.stub().returnsThis(),
 });
 
+const mockOfOverlayElement = () => ({
+    css: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
 const mockOfImageElement = () => ({
     css: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -2252,12 +2260,7 @@ describe('Scenario', function () {
     describe('#displayOverlay()', function () {
         it('should display an overlay in the background window', function () {
             // arrange
-            let stub = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
+            let stub = mockOfOverlayElement();
             let backgroundMock = mockOfBackgroundElement();
             scenario.$.withArgs('<div>', {
                 class: 'overlay',
@@ -2421,9 +2424,7 @@ describe('Scenario', function () {
     describe('#waitForOverlay()', function () {
         it('should bind transitionend on an overlay', function () {
             // arrange
-            let overlayElementMock = {
-                one: sinon.spy(),
-            };
+            let overlayElementMock = mockOfOverlayElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.overlay.target + ' .overlay'
             ).returns(overlayElementMock);
