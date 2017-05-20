@@ -19,6 +19,13 @@ const sleepControlCharacterOf = v => new Character('sleep', 'sleep', v);
 
 const rubyControlCharacterOf = (k, v) => new Character('ruby', k, v);
 
+const mockOfLetterElement = () => ({
+    css: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
 const mockOfMessageWindowToDisplay = () => ({
     append: sinon.stub().returnsThis(),
     text: sinon.stub().returnsThis(),
@@ -57,21 +64,9 @@ describe('Scenario', function () {
                 ].join('\n')
             );
             let url = '';
-            let aStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let bStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let cStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
+            let aStub = mockOfLetterElement();
+            let bStub = mockOfLetterElement();
+            let cStub = mockOfLetterElement();
             scenario.$.withArgs('<span>a</span>').returns(aStub);
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
@@ -1972,16 +1967,8 @@ describe('Scenario', function () {
     describe('#display()', function () {
         it('should display all letters in the sentence', function () {
             // arrange
-            let bStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let cStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
+            let bStub = mockOfLetterElement();
+            let cStub = mockOfLetterElement();
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
             let displayMock = mockOfMessageWindowToDisplay();
@@ -2139,21 +2126,9 @@ describe('Scenario', function () {
         });
         it('should display all letters in the sentence only if a condition is satisfied', function () {
             // arrange
-            let bStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let cStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let dStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
+            let bStub = mockOfLetterElement();
+            let cStub = mockOfLetterElement();
+            let dStub = mockOfLetterElement();
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
             scenario.$.withArgs('<span>d</span>').returns(cStub);
@@ -2560,21 +2535,9 @@ describe('Scenario', function () {
     describe('#displayMessage()', function () {
         it('should append letters in the given sentence', function () {
             // arrange
-            let aStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let bStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let cStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
+            let aStub = mockOfLetterElement();
+            let bStub = mockOfLetterElement();
+            let cStub = mockOfLetterElement();
             scenario.$.withArgs('<span>a</span>').returns(aStub);
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
@@ -2647,22 +2610,10 @@ describe('Scenario', function () {
                     ['d', 'e', 'f']
                 )),
             };
-            let xStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let yStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let zStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
             let displayMock = mockOfMessageWindowToDisplay();
+            let xStub = mockOfLetterElement()
+            let yStub = mockOfLetterElement();
+            let zStub = mockOfLetterElement();
             scenario.$.withArgs('<a>', { href: 'yyy' }).returns(displayMock);
             scenario.$.withArgs('<span>x</span>').returns(xStub);
             scenario.$.withArgs('<span>y</span>').returns(yStub);
@@ -3067,9 +3018,7 @@ describe('Scenario', function () {
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let letterElementMock = {
-                one: sinon.spy(),
-            };
+            let letterElementMock = mockOfLetterElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
@@ -3091,9 +3040,7 @@ describe('Scenario', function () {
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let letterElementMock = {
-                one: sinon.spy(),
-            };
+            let letterElementMock = mockOfLetterElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
@@ -3116,9 +3063,7 @@ describe('Scenario', function () {
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let letterElementMock = {
-                one: sinon.spy(),
-            };
+            let letterElementMock = mockOfLetterElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
@@ -3140,9 +3085,7 @@ describe('Scenario', function () {
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let letterElementMock = {
-                one: sinon.spy(),
-            };
+            let letterElementMock = mockOfLetterElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
