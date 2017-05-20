@@ -1987,11 +1987,7 @@ describe('Scenario', function () {
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
-            let aLetterStub = {
-                value: 'b',
-                isKeyValue: sinon.stub().returns(false),
-                isHyperlink: sinon.stub().returns(false),
-            };
+            let aLetterStub = normalCharacterOf('b');
             scenario.directions = [
                 {
                     message: {
@@ -2000,49 +1996,12 @@ describe('Scenario', function () {
                 },
                 {
                     message: {
-                        letters: [
-                            {
-                                type: null, key: null, value: 'b',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'c',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                        ]
+                        letters: normalCharacterArrayOf(['b', 'c'])
                     }
                 },
                 {
                     message: {
-                        letters: [
-                            {
-                                type: null, key: null, value: 'd',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'e',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'f',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                        ]
+                        letters: normalCharacterArrayOf(['d', 'e', 'f'])
                     }
                 },
             ];
@@ -2207,12 +2166,7 @@ describe('Scenario', function () {
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
-            let aLetterStub = {
-                value: 'b',
-                isKeyValue: sinon.stub().returns(false),
-                isHyperlink: sinon.stub().returns(false),
-                isSleep: sinon.stub().returns(false),
-            };
+            let aLetterStub = normalCharacterOf('b');
             scenario.progress.status['flag1'] = { value: 'on' };
             scenario.progress.status['flag2'] = { value: 'on' };
             scenario.progress.status['flag3'] = { value: 'off' };
@@ -2234,22 +2188,7 @@ describe('Scenario', function () {
                         },
                     ],
                     message: {
-                        letters: [
-                            {
-                                type: null, key: null, value: 'b',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'c',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                        ]
+                        letters: normalCharacterArrayOf(['b', 'c'])
                     }
                 },
                 {
@@ -2268,29 +2207,7 @@ describe('Scenario', function () {
                         },
                     ],
                     message: {
-                        letters: [
-                            {
-                                type: null, key: null, value: 'd',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'e',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'f',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                        ]
+                        letters: normalCharacterArrayOf(['d', 'e', 'f'])
                     }
                 },
             ];
