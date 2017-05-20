@@ -98,6 +98,10 @@ const mockOfFlagElement = () => ({
     appendTo: sinon.stub().returnsThis(),
 });
 
+const stubOfStatusWindowElement = () => ({
+    attr: sinon.stub().returns('statusWindow'),
+});
+
 describe('Scenario', function () {
     let scenario;
 
@@ -2834,9 +2838,7 @@ describe('Scenario', function () {
             let name = 'flag1';
             let display = 'flag1 is set';
             let target = 'statusWindow';
-            let statusWindowStub = {
-                attr: sinon.stub().returns('statusWindow'),
-            };
+            let statusWindowStub = stubOfStatusWindowElement();
             let flag1Stub = mockOfFlagElement();
             flag1Stub.parent = sinon.stub().returns(statusWindowStub);
             scenario.$.withArgs('#flag1').returns(flag1Stub);
@@ -2861,9 +2863,7 @@ describe('Scenario', function () {
             let name = 'flag1';
             let display = 'flag1 is set';
             let target = 'anotherStatusWindow';
-            let statusWindowStub = {
-                attr: sinon.stub().returns('statusWindow'),
-            };
+            let statusWindowStub = stubOfStatusWindowElement();
             let flag1Stub = mockOfFlagElement();
             flag1Stub.parent = sinon.stub().returns(statusWindowStub);
             scenario.$.withArgs('#flag1').returns(flag1Stub);
