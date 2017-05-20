@@ -882,11 +882,6 @@ describe('ItSoundsNovel View', function () {
         const FLAG3_STATUS_MESSAGE = "flag3 is set";
 
         /**
-         * The a status message for cleared flag1 and cleared flag2.
-         */
-        const CLEARED_FLAG_STATUS_MESSAGE = "";
-
-        /**
          * The timeout for displaying the sentences.
          * The last letter of the third sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
