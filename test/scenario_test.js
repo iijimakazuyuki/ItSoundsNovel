@@ -58,6 +58,14 @@ const mockOfOverlayElement = () => ({
     one: sinon.stub().returnsThis(),
 });
 
+const mockOfBackgroundColorElement = () => ({
+    css: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
 const mockOfImageElement = () => ({
     css: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -2280,12 +2288,7 @@ describe('Scenario', function () {
     describe('#changeBackgroundColor()', function () {
         it('should change background color of the background window', function () {
             // arrange
-            let stub = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
+            let stub = mockOfBackgroundColorElement();
             let backgroundMock = mockOfBackgroundElement();
             scenario.$.withArgs('<div>', {
                 class: 'backgroundColor',
@@ -2440,9 +2443,7 @@ describe('Scenario', function () {
     describe('#waitForBackgroundColor()', function () {
         it('should bind transitionend on a background window', function () {
             // arrange
-            let backgroundElementMock = {
-                one: sinon.spy(),
-            };
+            let backgroundElementMock = mockOfBackgroundColorElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target + ' .backgroundColor'
             ).returns(backgroundElementMock);
