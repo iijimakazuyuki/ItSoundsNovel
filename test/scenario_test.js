@@ -37,6 +37,11 @@ const mockOfButton = () => ({
     click: sinon.stub().returnsThis(),
 });
 
+const mockOfBackgroundElement = () => ({
+    append: sinon.spy(),
+    css: sinon.spy(),
+});
+
 const mockOfImageElement = () => ({
     css: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -2224,10 +2229,7 @@ describe('Scenario', function () {
                 delay: sinon.stub().returnsThis(),
                 queue: sinon.stub().returnsThis(),
             };
-            let backgroundMock = {
-                append: sinon.spy(),
-                css: sinon.spy(),
-            };
+            let backgroundMock = mockOfBackgroundElement();
             scenario.$.withArgs('<img>', {
                 src: 'a.jpg',
                 class: 'backgroundImage active',
@@ -2253,10 +2255,7 @@ describe('Scenario', function () {
                 delay: sinon.stub().returnsThis(),
                 queue: sinon.stub().returnsThis(),
             };
-            let backgroundMock = {
-                append: sinon.spy(),
-                css: sinon.spy(),
-            };
+            let backgroundMock = mockOfBackgroundElement();
             scenario.$.withArgs('<div>', {
                 class: 'overlay',
             }).returns(stub);
@@ -2281,10 +2280,7 @@ describe('Scenario', function () {
                 delay: sinon.stub().returnsThis(),
                 queue: sinon.stub().returnsThis(),
             };
-            let backgroundMock = {
-                append: sinon.spy(),
-                css: sinon.spy(),
-            };
+            let backgroundMock = mockOfBackgroundElement();
             scenario.$.withArgs('<div>', {
                 class: 'backgroundColor',
             }).returns(stub);
@@ -2362,10 +2358,8 @@ describe('Scenario', function () {
     describe('#displayImage()', function () {
         it('should display an image in the background window', function () {
             // arrange
-            let backgroundMock = {
-                append: sinon.spy()
-            };
             let stub = mockOfImageElement();
+            let backgroundMock = mockOfBackgroundElement();
             let image = new Image({
                 name: 'a',
                 source: 'a.jpg',
