@@ -432,12 +432,7 @@ class Scenario {
                 this.progress.status
             );
         } else {
-            this.progress.status[status.name] = new Flag(
-                status.name,
-                status.value,
-                status.display,
-                status.target
-            );
+            this.progress.status[status.name] = new Flag(status);
         }
     }
 
@@ -1109,12 +1104,7 @@ class Scenario {
                 }
                 for (let key in this.progress.status) {
                     let flag = this.progress.status[key];
-                    this.progress.status[key] = new Flag(
-                        flag.name,
-                        flag.value,
-                        flag.display,
-                        flag.target
-                    );
+                    this.progress.status[key] = new Flag(flag);
                     if (this.progress.status[key].display) {
                         this.displayStatusMessage(this.progress.status[key]);
                     }

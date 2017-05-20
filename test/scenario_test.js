@@ -2150,7 +2150,9 @@ describe('Scenario', function () {
         });
         it('should set a flag', function () {
             // arrange
-            scenario.progress.status['flag1'] = new Flag('flag1', 'off');
+            scenario.progress.status['flag1'] = new Flag({
+                name: 'flag1', value: 'off'
+            });
             scenario.directions = [
                 {
                     status: { name: 'flag1', value: 'on', display: 'flag1 is on' },
