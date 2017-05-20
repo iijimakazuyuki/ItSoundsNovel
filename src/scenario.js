@@ -6,7 +6,6 @@ const yaml = require('js-yaml');
 const $ = require('jquery');
 const ScenarioProgress = require('./scenario_progress.js');
 const Direction = require('./direction.js');
-const Image = require('./image.js');
 const BgmConfig = require('./bgm_config.js');
 const Character = require('./character.js');
 const Flag = require('./flag.js');

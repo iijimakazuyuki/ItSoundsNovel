@@ -2,7 +2,6 @@ const assert = require('chai').assert;
 const Scenario = require('../src/scenario.js');
 const sinon = require('sinon');
 
-const Message = require('../src/message.js');
 const Character = require('../src/character.js');
 const Image = require('../src/image.js');
 const Flag = require('../src/flag.js');
