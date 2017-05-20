@@ -31,6 +31,10 @@ const mockOfMessageWindowToDisplay = () => ({
     text: sinon.stub().returnsThis(),
 });
 
+const mockOfStatusWindowToDisplay = () => ({
+    append: sinon.stub().returnsThis(),
+});
+
 const mockOfButton = () => ({
     off: sinon.stub().returnsThis(),
     show: sinon.stub().returnsThis(),
@@ -2792,9 +2796,7 @@ describe('Scenario', function () {
             let flag1Stub = mockOfFlagElement();
             scenario.$.withArgs('#flag1').returns({ length: 0 });
             scenario.$.withArgs('<div>', { id: name }).returns(flag1Stub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfStatusWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.status.target
             ).returns(displayMock);
@@ -2817,9 +2819,7 @@ describe('Scenario', function () {
             let flag1Stub = mockOfFlagElement();
             scenario.$.withArgs('#flag1').returns({ length: 0 });
             scenario.$.withArgs('<div>', { id: name }).returns(flag1Stub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfStatusWindowToDisplay();
             scenario.$.withArgs(target).returns(displayMock);
 
             // act
@@ -2842,9 +2842,7 @@ describe('Scenario', function () {
             let flag1Stub = mockOfFlagElement();
             flag1Stub.parent = sinon.stub().returns(statusWindowStub);
             scenario.$.withArgs('#flag1').returns(flag1Stub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfStatusWindowToDisplay();
             scenario.$.withArgs(target).returns(displayMock);
 
             // act
@@ -2867,9 +2865,7 @@ describe('Scenario', function () {
             let flag1Stub = mockOfFlagElement();
             flag1Stub.parent = sinon.stub().returns(statusWindowStub);
             scenario.$.withArgs('#flag1').returns(flag1Stub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfStatusWindowToDisplay();
             scenario.$.withArgs(target).returns(displayMock);
 
             // act
