@@ -91,6 +91,13 @@ const mockOfAudio = () => ({
     },
 });
 
+const mockOfFlagElement = () => ({
+    text: sinon.spy(),
+    length: 1,
+    detach: sinon.stub().returnsThis(),
+    appendTo: sinon.stub().returnsThis(),
+});
+
 describe('Scenario', function () {
     let scenario;
 
@@ -2778,9 +2785,7 @@ describe('Scenario', function () {
             // arrange
             let name = 'flag1';
             let display = 'flag1 is set';
-            let flag1Stub = {
-                text: sinon.spy(),
-            };
+            let flag1Stub = mockOfFlagElement();
             scenario.$.withArgs('#flag1').returns({ length: 0 });
             scenario.$.withArgs('<div>', { id: name }).returns(flag1Stub);
             let displayMock = {
@@ -2805,9 +2810,7 @@ describe('Scenario', function () {
             let name = 'flag1';
             let display = 'flag1 is set';
             let target = '#anotherStatusWindow';
-            let flag1Stub = {
-                text: sinon.spy(),
-            };
+            let flag1Stub = mockOfFlagElement();
             scenario.$.withArgs('#flag1').returns({ length: 0 });
             scenario.$.withArgs('<div>', { id: name }).returns(flag1Stub);
             let displayMock = {
@@ -2834,13 +2837,8 @@ describe('Scenario', function () {
             let statusWindowStub = {
                 attr: sinon.stub().returns('statusWindow'),
             };
-            let flag1Stub = {
-                text: sinon.spy(),
-                length: 1,
-                detach: sinon.stub().returnsThis(),
-                appendTo: sinon.spy(),
-                parent: sinon.stub().returns(statusWindowStub),
-            };
+            let flag1Stub = mockOfFlagElement();
+            flag1Stub.parent = sinon.stub().returns(statusWindowStub);
             scenario.$.withArgs('#flag1').returns(flag1Stub);
             let displayMock = {
                 append: sinon.spy()
@@ -2866,13 +2864,8 @@ describe('Scenario', function () {
             let statusWindowStub = {
                 attr: sinon.stub().returns('statusWindow'),
             };
-            let flag1Stub = {
-                text: sinon.spy(),
-                length: 1,
-                detach: sinon.stub().returnsThis(),
-                appendTo: sinon.spy(),
-                parent: sinon.stub().returns(statusWindowStub),
-            };
+            let flag1Stub = mockOfFlagElement();
+            flag1Stub.parent = sinon.stub().returns(statusWindowStub);
             scenario.$.withArgs('#flag1').returns(flag1Stub);
             let displayMock = {
                 append: sinon.spy()
