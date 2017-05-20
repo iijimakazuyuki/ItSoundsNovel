@@ -42,6 +42,14 @@ const mockOfBackgroundElement = () => ({
     css: sinon.spy(),
 });
 
+const mockOfBackgroundImageElement = () => ({
+    css: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
 const mockOfImageElement = () => ({
     css: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -2223,12 +2231,7 @@ describe('Scenario', function () {
     describe('#displayBackgroundImage()', function () {
         it('should display an image in the background window', function () {
             // arrange
-            let stub = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
+            let stub = mockOfBackgroundImageElement();
             let backgroundMock = mockOfBackgroundElement();
             scenario.$.withArgs('<img>', {
                 src: 'a.jpg',
@@ -2338,10 +2341,7 @@ describe('Scenario', function () {
     describe('#removeBackground()', function () {
         it('should remove a background image', function () {
             // arrange
-            let backgroundMock = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.spy(),
-            };
+            let backgroundMock = mockOfBackgroundImageElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target
                 + ' .backgroundImage.active'
@@ -2405,9 +2405,7 @@ describe('Scenario', function () {
     describe('#waitForBackgroundImage()', function () {
         it('should bind transitionend on a background image', function () {
             // arrange
-            let imageElementMock = {
-                one: sinon.spy(),
-            };
+            let imageElementMock = mockOfBackgroundImageElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target + ' .backgroundImage.active'
             ).returns(imageElementMock);
