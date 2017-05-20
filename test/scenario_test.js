@@ -37,6 +37,15 @@ const mockOfButton = () => ({
     click: sinon.stub().returnsThis(),
 });
 
+const mockOfImageElement = () => ({
+    css: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+    remove: sinon.stub().returnsThis(),
+});
+
 const mockOfAudio = () => ({
     append: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -2353,15 +2362,10 @@ describe('Scenario', function () {
     describe('#displayImage()', function () {
         it('should display an image in the background window', function () {
             // arrange
-            let stub = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
             let backgroundMock = {
                 append: sinon.spy()
             };
+            let stub = mockOfImageElement();
             let image = new Image({
                 name: 'a',
                 source: 'a.jpg',
@@ -2387,9 +2391,7 @@ describe('Scenario', function () {
     describe('#waitForImage()', function () {
         it('should bind transitionend on an image', function () {
             // arrange
-            let imageElementMock = {
-                one: sinon.spy(),
-            };
+            let imageElementMock = mockOfImageElement();
             let image = {
                 name: 'abc',
                 source: 'abc.jpg',
@@ -3059,9 +3061,7 @@ describe('Scenario', function () {
                     source: 'def.jpg',
                 },
             };
-            let imageStubFirst = {
-                remove: sinon.spy(),
-            };
+            let imageStubFirst = mockOfImageElement();
             scenario.$.withArgs('#abc').returns(imageStubFirst);
             let imageStubSecond = {
                 remove: sinon.spy(),
@@ -3080,9 +3080,7 @@ describe('Scenario', function () {
     describe('#removeBackgroundImage()', function () {
         it('should remove a background image', function () {
             // arrange
-            let backgroundImageStub = {
-                remove: sinon.spy(),
-            };
+            let backgroundImageStub = mockOfImageElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target + ' .backgroundImage'
             ).returns(backgroundImageStub);
