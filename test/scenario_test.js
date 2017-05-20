@@ -37,6 +37,17 @@ const mockOfButton = () => ({
     click: sinon.stub().returnsThis(),
 });
 
+const mockOfAudio = () => ({
+    append: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    remove: sinon.stub().returnsThis(),
+    length: 1,
+    0: {
+        play: sinon.spy(),
+        pause: sinon.spy(),
+    },
+});
+
 describe('Scenario', function () {
     let scenario;
 
@@ -2654,13 +2665,7 @@ describe('Scenario', function () {
     describe('#playBgm()', function () {
         it('should create an audio element which repeats', function () {
             // arrange
-            let audioStub = {
-                append: sinon.spy(),
-                on: sinon.spy(),
-            };
-            audioStub[0] = {
-                play: sinon.spy(),
-            }
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('<audio>').returns(audioStub);
             scenario.$.withArgs('<audio>');
             let oggStub = sinon.stub();
@@ -2688,13 +2693,7 @@ describe('Scenario', function () {
         });
         it('should create an audio element which does not repeat', function () {
             // arrange
-            let audioStub = {
-                append: sinon.spy(),
-                on: sinon.spy(),
-            };
-            audioStub[0] = {
-                play: sinon.spy(),
-            }
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('<audio>').returns(audioStub);
             scenario.$.withArgs('<audio>');
             let oggStub = sinon.stub();
@@ -2725,12 +2724,7 @@ describe('Scenario', function () {
     describe('#stopBgm()', function () {
         it('should pause and remove an audio element', function () {
             // arrange
-            let audioStub = {
-                remove: sinon.spy(),
-            };
-            audioStub[0] = {
-                pause: sinon.spy(),
-            }
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('.backgroundMusic').returns(audioStub);
 
             // act
@@ -2747,13 +2741,7 @@ describe('Scenario', function () {
     describe('#playSound()', function () {
         it('should create an audio element', function () {
             // arrange
-            let audioStub = {
-                append: sinon.spy(),
-                on: sinon.spy(),
-            };
-            audioStub[0] = {
-                play: sinon.spy(),
-            };
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('<audio>').returns(audioStub);
             scenario.$.withArgs('<audio>');
             let oggStub = sinon.stub();
@@ -2780,13 +2768,7 @@ describe('Scenario', function () {
     describe('#stopSound()', function () {
         it('should pause and remove an audio element', function () {
             // arrange
-            let audioStub = {
-                remove: sinon.spy(),
-                length: 1,
-            };
-            audioStub[0] = {
-                pause: sinon.spy(),
-            };
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('.sound').returns(audioStub);
 
             // act
