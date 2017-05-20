@@ -19,6 +19,93 @@ const sleepControlCharacterOf = v => new Character('sleep', 'sleep', v);
 
 const rubyControlCharacterOf = (k, v) => new Character('ruby', k, v);
 
+const mockOfLetterElement = () => ({
+    css: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
+const mockOfMessageWindowToDisplay = () => ({
+    append: sinon.stub().returnsThis(),
+    text: sinon.stub().returnsThis(),
+});
+
+const mockOfStatusWindowToDisplay = () => ({
+    append: sinon.stub().returnsThis(),
+});
+
+const mockOfButton = () => ({
+    off: sinon.stub().returnsThis(),
+    show: sinon.stub().returnsThis(),
+    click: sinon.stub().returnsThis(),
+});
+
+const mockOfBackgroundElement = () => ({
+    append: sinon.spy(),
+    css: sinon.spy(),
+});
+
+const mockOfBackgroundImageElement = () => ({
+    css: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
+const mockOfOverlayElement = () => ({
+    css: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
+const mockOfBackgroundColorElement = () => ({
+    css: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
+const mockOfMessageWindowToChangeStyle = () => ({
+    css: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
+const mockOfImageElement = () => ({
+    css: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    delay: sinon.stub().returnsThis(),
+    queue: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+    remove: sinon.stub().returnsThis(),
+});
+
+const mockOfAudio = () => ({
+    append: sinon.stub().returnsThis(),
+    on: sinon.stub().returnsThis(),
+    remove: sinon.stub().returnsThis(),
+    length: 1,
+    0: {
+        play: sinon.spy(),
+        pause: sinon.spy(),
+    },
+});
+
+const mockOfFlagElement = () => ({
+    text: sinon.spy(),
+    length: 1,
+    detach: sinon.stub().returnsThis(),
+    appendTo: sinon.stub().returnsThis(),
+});
+
+const stubOfStatusWindowElement = () => ({
+    attr: sinon.stub().returns('statusWindow'),
+});
+
 describe('Scenario', function () {
     let scenario;
 
@@ -52,27 +139,13 @@ describe('Scenario', function () {
                 ].join('\n')
             );
             let url = '';
-            let aStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let bStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let cStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
+            let aStub = mockOfLetterElement();
+            let bStub = mockOfLetterElement();
+            let cStub = mockOfLetterElement();
             scenario.$.withArgs('<span>a</span>').returns(aStub);
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock)
@@ -1949,11 +2022,7 @@ describe('Scenario', function () {
         });
         it('should bind click on next button', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy()
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
@@ -1969,29 +2038,15 @@ describe('Scenario', function () {
     describe('#display()', function () {
         it('should display all letters in the sentence', function () {
             // arrange
-            let bStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let cStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
+            let bStub = mockOfLetterElement();
+            let cStub = mockOfLetterElement();
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
-            let aLetterStub = {
-                value: 'b',
-                isKeyValue: sinon.stub().returns(false),
-                isHyperlink: sinon.stub().returns(false),
-            };
+            let aLetterStub = normalCharacterOf('b');
             scenario.directions = [
                 {
                     message: {
@@ -2000,49 +2055,12 @@ describe('Scenario', function () {
                 },
                 {
                     message: {
-                        letters: [
-                            {
-                                type: null, key: null, value: 'b',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'c',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                        ]
+                        letters: normalCharacterArrayOf(['b', 'c'])
                     }
                 },
                 {
                     message: {
-                        letters: [
-                            {
-                                type: null, key: null, value: 'd',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'e',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'f',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                        ]
+                        letters: normalCharacterArrayOf(['d', 'e', 'f'])
                     }
                 },
             ];
@@ -2076,9 +2094,7 @@ describe('Scenario', function () {
                     },
                 },
             ];
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2118,9 +2134,7 @@ describe('Scenario', function () {
                     },
                 },
             ];
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2183,36 +2197,17 @@ describe('Scenario', function () {
         });
         it('should display all letters in the sentence only if a condition is satisfied', function () {
             // arrange
-            let bStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let cStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let dStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
+            let bStub = mockOfLetterElement();
+            let cStub = mockOfLetterElement();
+            let dStub = mockOfLetterElement();
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
             scenario.$.withArgs('<span>d</span>').returns(cStub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
-            let aLetterStub = {
-                value: 'b',
-                isKeyValue: sinon.stub().returns(false),
-                isHyperlink: sinon.stub().returns(false),
-                isSleep: sinon.stub().returns(false),
-            };
+            let aLetterStub = normalCharacterOf('b');
             scenario.progress.status['flag1'] = { value: 'on' };
             scenario.progress.status['flag2'] = { value: 'on' };
             scenario.progress.status['flag3'] = { value: 'off' };
@@ -2234,22 +2229,7 @@ describe('Scenario', function () {
                         },
                     ],
                     message: {
-                        letters: [
-                            {
-                                type: null, key: null, value: 'b',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'c',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                        ]
+                        letters: normalCharacterArrayOf(['b', 'c'])
                     }
                 },
                 {
@@ -2268,29 +2248,7 @@ describe('Scenario', function () {
                         },
                     ],
                     message: {
-                        letters: [
-                            {
-                                type: null, key: null, value: 'd',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'e',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                            {
-                                type: null, key: null, value: 'f',
-                                isKeyValue: () => false,
-                                isHyperlink: () => false,
-                                isSleep: () => false,
-                                isRuby: () => false,
-                            },
-                        ]
+                        letters: normalCharacterArrayOf(['d', 'e', 'f'])
                     }
                 },
             ];
@@ -2309,16 +2267,8 @@ describe('Scenario', function () {
     describe('#displayBackgroundImage()', function () {
         it('should display an image in the background window', function () {
             // arrange
-            let stub = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let backgroundMock = {
-                append: sinon.spy(),
-                css: sinon.spy(),
-            };
+            let stub = mockOfBackgroundImageElement();
+            let backgroundMock = mockOfBackgroundElement();
             scenario.$.withArgs('<img>', {
                 src: 'a.jpg',
                 class: 'backgroundImage active',
@@ -2338,16 +2288,8 @@ describe('Scenario', function () {
     describe('#displayOverlay()', function () {
         it('should display an overlay in the background window', function () {
             // arrange
-            let stub = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let backgroundMock = {
-                append: sinon.spy(),
-                css: sinon.spy(),
-            };
+            let stub = mockOfOverlayElement();
+            let backgroundMock = mockOfBackgroundElement();
             scenario.$.withArgs('<div>', {
                 class: 'overlay',
             }).returns(stub);
@@ -2366,16 +2308,8 @@ describe('Scenario', function () {
     describe('#changeBackgroundColor()', function () {
         it('should change background color of the background window', function () {
             // arrange
-            let stub = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let backgroundMock = {
-                append: sinon.spy(),
-                css: sinon.spy(),
-            };
+            let stub = mockOfBackgroundColorElement();
+            let backgroundMock = mockOfBackgroundElement();
             scenario.$.withArgs('<div>', {
                 class: 'backgroundColor',
             }).returns(stub);
@@ -2394,9 +2328,7 @@ describe('Scenario', function () {
     describe('#changeMessageWindowColor()', function () {
         it('should change background color of the message window', function () {
             // arrange
-            let messageWindowMock = {
-                css: sinon.spy(),
-            };
+            let messageWindowMock = mockOfMessageWindowToChangeStyle();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(messageWindowMock);
@@ -2413,9 +2345,7 @@ describe('Scenario', function () {
     describe('#moveMessageWindow()', function () {
         it('should change the position of a message window', function () {
             // arrange
-            let messageWindowMock = {
-                css: sinon.spy(),
-            };
+            let messageWindowMock = mockOfMessageWindowToChangeStyle();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(messageWindowMock);
@@ -2433,10 +2363,7 @@ describe('Scenario', function () {
     describe('#removeBackground()', function () {
         it('should remove a background image', function () {
             // arrange
-            let backgroundMock = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.spy(),
-            };
+            let backgroundMock = mockOfBackgroundImageElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target
                 + ' .backgroundImage.active'
@@ -2453,15 +2380,8 @@ describe('Scenario', function () {
     describe('#displayImage()', function () {
         it('should display an image in the background window', function () {
             // arrange
-            let stub = {
-                css: sinon.stub().returnsThis(),
-                on: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let backgroundMock = {
-                append: sinon.spy()
-            };
+            let stub = mockOfImageElement();
+            let backgroundMock = mockOfBackgroundElement();
             let image = new Image({
                 name: 'a',
                 source: 'a.jpg',
@@ -2487,9 +2407,7 @@ describe('Scenario', function () {
     describe('#waitForImage()', function () {
         it('should bind transitionend on an image', function () {
             // arrange
-            let imageElementMock = {
-                one: sinon.spy(),
-            };
+            let imageElementMock = mockOfImageElement();
             let image = {
                 name: 'abc',
                 source: 'abc.jpg',
@@ -2509,9 +2427,7 @@ describe('Scenario', function () {
     describe('#waitForBackgroundImage()', function () {
         it('should bind transitionend on a background image', function () {
             // arrange
-            let imageElementMock = {
-                one: sinon.spy(),
-            };
+            let imageElementMock = mockOfBackgroundImageElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target + ' .backgroundImage.active'
             ).returns(imageElementMock);
@@ -2527,9 +2443,7 @@ describe('Scenario', function () {
     describe('#waitForOverlay()', function () {
         it('should bind transitionend on an overlay', function () {
             // arrange
-            let overlayElementMock = {
-                one: sinon.spy(),
-            };
+            let overlayElementMock = mockOfOverlayElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.overlay.target + ' .overlay'
             ).returns(overlayElementMock);
@@ -2545,9 +2459,7 @@ describe('Scenario', function () {
     describe('#waitForBackgroundColor()', function () {
         it('should bind transitionend on a background window', function () {
             // arrange
-            let backgroundElementMock = {
-                one: sinon.spy(),
-            };
+            let backgroundElementMock = mockOfBackgroundColorElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target + ' .backgroundColor'
             ).returns(backgroundElementMock);
@@ -2563,9 +2475,7 @@ describe('Scenario', function () {
     describe('#waitForChangingMessageWindowColor()', function () {
         it('should bind transitionend on a message window', function () {
             // arrange
-            let messageWindowElementMock = {
-                one: sinon.spy(),
-            };
+            let messageWindowElementMock = mockOfMessageWindowToChangeStyle();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(messageWindowElementMock);
@@ -2581,9 +2491,7 @@ describe('Scenario', function () {
     describe('#waitForMovingMessageWindow()', function () {
         it('should bind transitionend on a message window', function () {
             // arrange
-            let messageWindowElementMock = {
-                one: sinon.spy(),
-            };
+            let messageWindowElementMock = mockOfMessageWindowToChangeStyle();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(messageWindowElementMock);
@@ -2599,9 +2507,7 @@ describe('Scenario', function () {
     describe('#waitForSeconds()', function () {
         it('should off click on the next button', function () {
             // arrange
-            let nextButtonStub = {
-                off: sinon.spy(),
-            };
+            let nextButtonStub = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonStub);
@@ -2617,9 +2523,7 @@ describe('Scenario', function () {
     describe('#flush()', function () {
         it('should flush display', function () {
             // arrange
-            let displayMock = {
-                text: sinon.spy()
-            }
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2632,9 +2536,7 @@ describe('Scenario', function () {
         });
         it('should not flush display if willFlush is false', function () {
             // arrange
-            let displayMock = {
-                text: sinon.spy()
-            }
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2652,27 +2554,13 @@ describe('Scenario', function () {
     describe('#displayMessage()', function () {
         it('should append letters in the given sentence', function () {
             // arrange
-            let aStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let bStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
-            let cStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            }
+            let aStub = mockOfLetterElement();
+            let bStub = mockOfLetterElement();
+            let cStub = mockOfLetterElement();
             scenario.$.withArgs('<span>a</span>').returns(aStub);
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock)
@@ -2741,24 +2629,10 @@ describe('Scenario', function () {
                     ['d', 'e', 'f']
                 )),
             };
-            let displayMock = {
-                append: sinon.spy()
-            };
-            let xStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let yStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
-            let zStub = {
-                css: sinon.stub().returnsThis(),
-                delay: sinon.stub().returnsThis(),
-                queue: sinon.stub().returnsThis(),
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
+            let xStub = mockOfLetterElement()
+            let yStub = mockOfLetterElement();
+            let zStub = mockOfLetterElement();
             scenario.$.withArgs('<a>', { href: 'yyy' }).returns(displayMock);
             scenario.$.withArgs('<span>x</span>').returns(xStub);
             scenario.$.withArgs('<span>y</span>').returns(yStub);
@@ -2799,13 +2673,7 @@ describe('Scenario', function () {
     describe('#playBgm()', function () {
         it('should create an audio element which repeats', function () {
             // arrange
-            let audioStub = {
-                append: sinon.spy(),
-                on: sinon.spy(),
-            };
-            audioStub[0] = {
-                play: sinon.spy(),
-            }
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('<audio>').returns(audioStub);
             scenario.$.withArgs('<audio>');
             let oggStub = sinon.stub();
@@ -2833,13 +2701,7 @@ describe('Scenario', function () {
         });
         it('should create an audio element which does not repeat', function () {
             // arrange
-            let audioStub = {
-                append: sinon.spy(),
-                on: sinon.spy(),
-            };
-            audioStub[0] = {
-                play: sinon.spy(),
-            }
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('<audio>').returns(audioStub);
             scenario.$.withArgs('<audio>');
             let oggStub = sinon.stub();
@@ -2870,12 +2732,7 @@ describe('Scenario', function () {
     describe('#stopBgm()', function () {
         it('should pause and remove an audio element', function () {
             // arrange
-            let audioStub = {
-                remove: sinon.spy(),
-            };
-            audioStub[0] = {
-                pause: sinon.spy(),
-            }
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('.backgroundMusic').returns(audioStub);
 
             // act
@@ -2892,13 +2749,7 @@ describe('Scenario', function () {
     describe('#playSound()', function () {
         it('should create an audio element', function () {
             // arrange
-            let audioStub = {
-                append: sinon.spy(),
-                on: sinon.spy(),
-            };
-            audioStub[0] = {
-                play: sinon.spy(),
-            };
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('<audio>').returns(audioStub);
             scenario.$.withArgs('<audio>');
             let oggStub = sinon.stub();
@@ -2925,13 +2776,7 @@ describe('Scenario', function () {
     describe('#stopSound()', function () {
         it('should pause and remove an audio element', function () {
             // arrange
-            let audioStub = {
-                remove: sinon.spy(),
-                length: 1,
-            };
-            audioStub[0] = {
-                pause: sinon.spy(),
-            };
+            let audioStub = mockOfAudio();
             scenario.$.withArgs('.sound').returns(audioStub);
 
             // act
@@ -2948,14 +2793,10 @@ describe('Scenario', function () {
             // arrange
             let name = 'flag1';
             let display = 'flag1 is set';
-            let flag1Stub = {
-                text: sinon.spy(),
-            };
+            let flag1Stub = mockOfFlagElement();
             scenario.$.withArgs('#flag1').returns({ length: 0 });
             scenario.$.withArgs('<div>', { id: name }).returns(flag1Stub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfStatusWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.status.target
             ).returns(displayMock);
@@ -2975,14 +2816,10 @@ describe('Scenario', function () {
             let name = 'flag1';
             let display = 'flag1 is set';
             let target = '#anotherStatusWindow';
-            let flag1Stub = {
-                text: sinon.spy(),
-            };
+            let flag1Stub = mockOfFlagElement();
             scenario.$.withArgs('#flag1').returns({ length: 0 });
             scenario.$.withArgs('<div>', { id: name }).returns(flag1Stub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfStatusWindowToDisplay();
             scenario.$.withArgs(target).returns(displayMock);
 
             // act
@@ -3001,20 +2838,11 @@ describe('Scenario', function () {
             let name = 'flag1';
             let display = 'flag1 is set';
             let target = 'statusWindow';
-            let statusWindowStub = {
-                attr: sinon.stub().returns('statusWindow'),
-            };
-            let flag1Stub = {
-                text: sinon.spy(),
-                length: 1,
-                detach: sinon.stub().returnsThis(),
-                appendTo: sinon.spy(),
-                parent: sinon.stub().returns(statusWindowStub),
-            };
+            let statusWindowStub = stubOfStatusWindowElement();
+            let flag1Stub = mockOfFlagElement();
+            flag1Stub.parent = sinon.stub().returns(statusWindowStub);
             scenario.$.withArgs('#flag1').returns(flag1Stub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfStatusWindowToDisplay();
             scenario.$.withArgs(target).returns(displayMock);
 
             // act
@@ -3033,20 +2861,11 @@ describe('Scenario', function () {
             let name = 'flag1';
             let display = 'flag1 is set';
             let target = 'anotherStatusWindow';
-            let statusWindowStub = {
-                attr: sinon.stub().returns('statusWindow'),
-            };
-            let flag1Stub = {
-                text: sinon.spy(),
-                length: 1,
-                detach: sinon.stub().returnsThis(),
-                appendTo: sinon.spy(),
-                parent: sinon.stub().returns(statusWindowStub),
-            };
+            let statusWindowStub = stubOfStatusWindowElement();
+            let flag1Stub = mockOfFlagElement();
+            flag1Stub.parent = sinon.stub().returns(statusWindowStub);
             scenario.$.withArgs('#flag1').returns(flag1Stub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfStatusWindowToDisplay();
             scenario.$.withArgs(target).returns(displayMock);
 
             // act
@@ -3065,21 +2884,15 @@ describe('Scenario', function () {
     describe('#disableUI()', function () {
         it('should off bindings', function () {
             // arrange
-            let nextButtonStub = {
-                off: sinon.spy(),
-            };
+            let nextButtonStub = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonStub);
-            let saveButtonStub = {
-                off: sinon.spy(),
-            };
+            let saveButtonStub = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.save.target
             ).returns(saveButtonStub);
-            let loadButtonStub = {
-                off: sinon.spy(),
-            };
+            let loadButtonStub = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.load.target
             ).returns(loadButtonStub);
@@ -3097,27 +2910,15 @@ describe('Scenario', function () {
     describe('#updateButtons()', function () {
         it('should bind click on buttons', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let saveButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy(),
-            };
+            let saveButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.save.target
             ).returns(saveButtonMock);
-            let loadButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy(),
-            };
+            let loadButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.load.target
             ).returns(loadButtonMock);
@@ -3135,11 +2936,7 @@ describe('Scenario', function () {
     describe('#enableNextDirectionButton()', function () {
         it('should bind click on next button', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.stub().returnsThis(),
-                show: sinon.stub().returnsThis(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
@@ -3155,17 +2952,11 @@ describe('Scenario', function () {
     describe('#changeButtonDuringDisplaying()', function () {
         it('should off and bind click on next button and the last letter element', function () {
             // arrange
-            let nextButtonMock = {
-                show: sinon.stub().returnsThis(),
-                off: sinon.spy(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let letterElementMock = {
-                one: sinon.spy(),
-            };
+            let letterElementMock = mockOfLetterElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
@@ -3180,16 +2971,11 @@ describe('Scenario', function () {
         });
         it('should off click on next button and bind function on the last letter element', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.spy(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let letterElementMock = {
-                one: sinon.spy(),
-            };
+            let letterElementMock = mockOfLetterElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
@@ -3204,17 +2990,11 @@ describe('Scenario', function () {
         });
         it('should off and bind click on next button and the last letter element with automatic displaying', function () {
             // arrange
-            let nextButtonMock = {
-                show: sinon.stub().returnsThis(),
-                off: sinon.spy(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let letterElementMock = {
-                one: sinon.spy(),
-            };
+            let letterElementMock = mockOfLetterElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
@@ -3229,16 +3009,11 @@ describe('Scenario', function () {
         });
         it('should off click on next button and bind function on the last letter element with automatic displaying', function () {
             // arrange
-            let nextButtonMock = {
-                off: sinon.spy(),
-                click: sinon.spy(),
-            };
+            let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.ui.next.target
             ).returns(nextButtonMock);
-            let letterElementMock = {
-                one: sinon.spy(),
-            };
+            let letterElementMock = mockOfLetterElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target + ' > :last'
             ).returns(letterElementMock);
@@ -3266,9 +3041,7 @@ describe('Scenario', function () {
                     source: 'def.jpg',
                 },
             };
-            let imageStubFirst = {
-                remove: sinon.spy(),
-            };
+            let imageStubFirst = mockOfImageElement();
             scenario.$.withArgs('#abc').returns(imageStubFirst);
             let imageStubSecond = {
                 remove: sinon.spy(),
@@ -3287,9 +3060,7 @@ describe('Scenario', function () {
     describe('#removeBackgroundImage()', function () {
         it('should remove a background image', function () {
             // arrange
-            let backgroundImageStub = {
-                remove: sinon.spy(),
-            };
+            let backgroundImageStub = mockOfImageElement();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.background.target + ' .backgroundImage'
             ).returns(backgroundImageStub);
