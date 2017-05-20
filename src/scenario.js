@@ -428,7 +428,10 @@ class Scenario {
      */
     updateStatus(status) {
         if (this.progress.status[status.name]) {
-            this.progress.status[status.name].update(status);
+            this.progress.status[status.name].update(
+                status,
+                this.progress.status
+            );
         } else {
             this.progress.status[status.name] = new Flag(
                 status.name,

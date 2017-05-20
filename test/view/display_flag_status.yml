@@ -36,9 +36,20 @@
 - status:
     name: add
     value:
-      type: add
+      type: multiply
       by: -1
     display: ${value}
+- status:
+    name: add
+    value:
+      type: add
+      by: ${multiply}
+    display: ${value}
+- status:
+    name: add
+    value:
+      type: multiply
+      by: -1
 - status:
     name: multiply
     value:
