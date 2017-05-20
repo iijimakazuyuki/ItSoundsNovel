@@ -66,6 +66,11 @@ const mockOfBackgroundColorElement = () => ({
     one: sinon.stub().returnsThis(),
 });
 
+const mockOfMessageWindowToChangeStyle = () => ({
+    css: sinon.stub().returnsThis(),
+    one: sinon.stub().returnsThis(),
+});
+
 const mockOfImageElement = () => ({
     css: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -2308,9 +2313,7 @@ describe('Scenario', function () {
     describe('#changeMessageWindowColor()', function () {
         it('should change background color of the message window', function () {
             // arrange
-            let messageWindowMock = {
-                css: sinon.spy(),
-            };
+            let messageWindowMock = mockOfMessageWindowToChangeStyle();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(messageWindowMock);
@@ -2327,9 +2330,7 @@ describe('Scenario', function () {
     describe('#moveMessageWindow()', function () {
         it('should change the position of a message window', function () {
             // arrange
-            let messageWindowMock = {
-                css: sinon.spy(),
-            };
+            let messageWindowMock = mockOfMessageWindowToChangeStyle();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(messageWindowMock);
@@ -2459,9 +2460,7 @@ describe('Scenario', function () {
     describe('#waitForChangingMessageWindowColor()', function () {
         it('should bind transitionend on a message window', function () {
             // arrange
-            let messageWindowElementMock = {
-                one: sinon.spy(),
-            };
+            let messageWindowElementMock = mockOfMessageWindowToChangeStyle();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(messageWindowElementMock);
@@ -2477,9 +2476,7 @@ describe('Scenario', function () {
     describe('#waitForMovingMessageWindow()', function () {
         it('should bind transitionend on a message window', function () {
             // arrange
-            let messageWindowElementMock = {
-                one: sinon.spy(),
-            };
+            let messageWindowElementMock = mockOfMessageWindowToChangeStyle();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(messageWindowElementMock);
