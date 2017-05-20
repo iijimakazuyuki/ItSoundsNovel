@@ -3,22 +3,22 @@
  */
 
 class Flag {
-    constructor(name, value, display, target) {
-        this.name = name;
-        if (typeof value === 'object') {
-            if (value.type === 'random') {
-                this.value = RANDOM_BETWEEN(value.min, value.max);
+    constructor(flag) {
+        this.name = flag.name;
+        if (typeof flag.value === 'object') {
+            if (flag.value.type === 'random') {
+                this.value = RANDOM_BETWEEN(flag.value.min, flag.value.max);
             }
         } else {
-            this.value = value;
+            this.value = flag.value;
         }
-        if (display) {
-            this.display = display;
+        if (flag.display) {
+            this.display = flag.display;
         } else {
             this.display = 'none';
         }
-        if (target) {
-            this.target = target;
+        if (flag.target) {
+            this.target = flag.target;
         }
     }
     update(flag, status = {}) {
@@ -51,12 +51,12 @@ class Flag {
         }
     }
     copy() {
-        return new Flag(
-            this.name,
-            this.value,
-            this.display,
-            this.target
-        );
+        return new Flag({
+            name: this.name,
+            value: this.value,
+            display: this.display,
+            target: this.target,
+        });
     }
 }
 

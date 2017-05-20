@@ -3,9 +3,9 @@
  */
 
 class Background {
-    constructor(image, color) {
-        this.image = image;
-        this.color = color;
+    constructor(background) {
+        this.image = background.image;
+        this.color = background.color;
     }
     update(background) {
         if (background.image) {
@@ -16,10 +16,10 @@ class Background {
         }
     }
     copy() {
-        return new Background(
-            this.image,
-            this.color
-        );
+        return new Background({
+            image: this.image,
+            color: this.color,
+        });
     }
 }
 
