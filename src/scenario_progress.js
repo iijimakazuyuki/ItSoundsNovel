@@ -54,7 +54,10 @@ class ScenarioProgress {
          * The overlay.
          * @type {Overlay}
          */
-        this.overlay = new Overlay('transparent', '1.0');
+        this.overlay = new Overlay({
+            color: 'transparent',
+            opacity: '1.0',
+        });
 
         /**
          * The status.
