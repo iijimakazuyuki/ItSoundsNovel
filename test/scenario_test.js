@@ -19,6 +19,11 @@ const sleepControlCharacterOf = v => new Character('sleep', 'sleep', v);
 
 const rubyControlCharacterOf = (k, v) => new Character('ruby', k, v);
 
+const mockOfMessageWindowToDisplay = () => ({
+    append: sinon.stub().returnsThis(),
+    text: sinon.stub().returnsThis(),
+});
+
 describe('Scenario', function () {
     let scenario;
 
@@ -70,9 +75,7 @@ describe('Scenario', function () {
             scenario.$.withArgs('<span>a</span>').returns(aStub);
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock)
@@ -1981,9 +1984,7 @@ describe('Scenario', function () {
             }
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2035,9 +2036,7 @@ describe('Scenario', function () {
                     },
                 },
             ];
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2077,9 +2076,7 @@ describe('Scenario', function () {
                     },
                 },
             ];
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2160,9 +2157,7 @@ describe('Scenario', function () {
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
             scenario.$.withArgs('<span>d</span>').returns(cStub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2534,9 +2529,7 @@ describe('Scenario', function () {
     describe('#flush()', function () {
         it('should flush display', function () {
             // arrange
-            let displayMock = {
-                text: sinon.spy()
-            }
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2549,9 +2542,7 @@ describe('Scenario', function () {
         });
         it('should not flush display if willFlush is false', function () {
             // arrange
-            let displayMock = {
-                text: sinon.spy()
-            }
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock);
@@ -2587,9 +2578,7 @@ describe('Scenario', function () {
             scenario.$.withArgs('<span>a</span>').returns(aStub);
             scenario.$.withArgs('<span>b</span>').returns(bStub);
             scenario.$.withArgs('<span>c</span>').returns(cStub);
-            let displayMock = {
-                append: sinon.spy()
-            };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs(
                 scenario.progress.displayConfig.message.target
             ).returns(displayMock)
@@ -2658,9 +2647,6 @@ describe('Scenario', function () {
                     ['d', 'e', 'f']
                 )),
             };
-            let displayMock = {
-                append: sinon.spy()
-            };
             let xStub = {
                 css: sinon.stub().returnsThis(),
                 delay: sinon.stub().returnsThis(),
@@ -2676,6 +2662,7 @@ describe('Scenario', function () {
                 delay: sinon.stub().returnsThis(),
                 queue: sinon.stub().returnsThis(),
             };
+            let displayMock = mockOfMessageWindowToDisplay();
             scenario.$.withArgs('<a>', { href: 'yyy' }).returns(displayMock);
             scenario.$.withArgs('<span>x</span>').returns(xStub);
             scenario.$.withArgs('<span>y</span>').returns(yStub);
