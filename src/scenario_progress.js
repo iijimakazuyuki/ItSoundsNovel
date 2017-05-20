@@ -45,7 +45,10 @@ class ScenarioProgress {
          * The background.
          * @type {Background}
          */
-        this.background = new Background(null, 'transparent');
+        this.background = new Background({
+            image: null,
+            color: 'transparent',
+        });
 
         /**
          * The overlay.
