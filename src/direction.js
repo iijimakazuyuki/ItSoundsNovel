@@ -29,6 +29,8 @@ class Direction {
         } else if (direction.image) {
             this.image = new Image(direction.image);
             if (direction.config) this.config = new DisplayConfig({ image: direction.config });
+        } else if (direction.message) {
+            if (direction.config) this.config = new DisplayConfig({ message: direction.config });
         } else {
             if (direction.config) this.config = new DisplayConfig(direction.config);
         }

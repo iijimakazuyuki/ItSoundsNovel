@@ -27,9 +27,10 @@ is different from that of the first sentence.
 ```yaml
 - I am a cat. I don't have my name yet.
 - config:
-    delay: 10
-    duration: 100
-    timingFunction: ease-in-out
+    message:
+      delay: 10
+      duration: 100
+      timingFunction: ease-in-out
 - I don't know where I was born.
 - I only remember that I was meowing in dim and wet place.
 ```

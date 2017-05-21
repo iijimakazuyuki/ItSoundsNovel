@@ -13,7 +13,6 @@ const NORMALIZE_POSITION = x => {
 class DisplayConfig {
     constructor(config) {
         this.message = {};
-        this.updateMessageConfig(config);
         if (config.message) {
             this.updateMessageConfig(config.message);
             if (config.message.background) {
