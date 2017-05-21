@@ -9,6 +9,7 @@ const Direction = require('./direction.js');
 const BgmConfig = require('./bgm_config.js');
 const Character = require('./character.js');
 const Flag = require('./flag.js');
+const DisplayConfig = require('./config/display_config.js');
 
 const BACKGROUND_IMAGE_DEFAULT_Z = -1000;
 const OVERLAY_DEFAULT_Z = 1000;
@@ -218,7 +219,8 @@ class Scenario {
         }
         if (!direction.message) {
             this.progress.displayConfig.update(direction.config);
-            if (direction.config.message.background) {
+            if (direction.config.message.isDefined &&
+                direction.config.message.background.isDefined) {
                 this.changeMessageWindowColor();
                 if (direction.next === 'wait') {
                     this.disableUI();
@@ -226,7 +228,8 @@ class Scenario {
                     return;
                 }
             }
-            if (direction.config.message.position) {
+            if (direction.config.message.isDefined &&
+                direction.config.message.position.isDefined) {
                 this.moveMessageWindow();
                 if (direction.next === 'wait') {
                     this.disableUI();
@@ -288,7 +291,7 @@ class Scenario {
      */
     resetBackgroundColor() {
         let config = this.progress.displayConfig.copy();
-        config.update({ background: { duration: 0 } });
+        config.update(new DisplayConfig({ background: { duration: 0 } }));
         this.changeBackgroundColor('transparent', config);
     }
 
@@ -362,7 +365,7 @@ class Scenario {
      */
     removeOverlay() {
         let config = this.progress.displayConfig.copy();
-        config.update({ overlay: { duration: 0 } });
+        config.update(new DisplayConfig({ overlay: { duration: 0 } }));
         this.displayOverlay('transparent', config);
     }
 

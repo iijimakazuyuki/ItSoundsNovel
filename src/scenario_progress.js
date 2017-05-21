@@ -2,7 +2,7 @@
  * @module scenario-progress
  */
 
-const DisplayConfig = require('./display_config.js');
+const DisplayConfig = require('./config/display_config.js');
 const Image = require('./image.js');
 const BgmConfig = require('./bgm_config.js');
 const Background = require('./background.js');
