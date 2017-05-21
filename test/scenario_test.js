@@ -389,9 +389,10 @@ describe('Scenario', function () {
                 'success',
                 [
                     '- config:',
-                    '    delay: 10',
-                    '    duration: 100',
-                    '    timingFunction: ease',
+                    '    message:',
+                    '      delay: 10',
+                    '      duration: 100',
+                    '      timingFunction: ease',
                     '- config:',
                     '    message:',
                     '      delay: 10',
