@@ -5,6 +5,15 @@ const sinon = require('sinon');
 const Character = require('../src/character.js');
 const Image = require('../src/image.js');
 const Flag = require('../src/flag.js');
+const MessageConfig = require('../src/config/message_config.js');
+const AreaConfig = require('../src/config/area_config.js');
+const BackgroundConfig = require('../src/config/background_config.js');
+const ButtonConfig = require('../src/config/button_config.js');
+const DisplayConfig = require('../src/config/display_config.js');
+const MessageBackgroundConfig = require('../src/config/message_background_config.js');
+const OverlayConfig = require('../src/config/overlay_config.js');
+const StatusConfig = require('../src/config/status_config.js');
+const UIConfig = require('../src/config/ui_config.js');
 
 const normalCharacterOf = v => new Character(null, null, v);
 
@@ -426,20 +435,16 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        config: {
+                        config: new DisplayConfig({
                             message: {
                                 delay: 10,
                                 duration: 100,
                                 timingFunction: 'ease',
                             },
-                            background: {},
-                            overlay: {},
-                            image: {},
-                            status: {},
-                        }
+                        }),
                     },
                     {
-                        config: {
+                        config: new DisplayConfig({
                             message: {
                                 delay: 10,
                                 duration: 100,
@@ -463,11 +468,7 @@ describe('Scenario', function () {
                                     timingFunction: 'ease-out',
                                 },
                             },
-                            background: {},
-                            overlay: {},
-                            image: {},
-                            status: {},
-                        }
+                        }),
                     },
                 ]
             );
@@ -497,17 +498,13 @@ describe('Scenario', function () {
                         message: {
                             letters: normalCharacterArrayOf(['m', 'n', 'o']),
                         },
-                        config: {
+                        config: new DisplayConfig({
                             message: {
                                 delay: 10,
                                 duration: 100,
                                 timingFunction: 'ease'
                             },
-                            background: {},
-                            overlay: {},
-                            image: {},
-                            status: {},
-                        }
+                        }),
                     },
                 ]
             );
@@ -1155,13 +1152,9 @@ describe('Scenario', function () {
                         background: {
                             image: 'abc.jpg',
                         },
-                        config: {
+                        config: new DisplayConfig({
                             background: { duration: 100 },
-                            message: {},
-                            overlay: {},
-                            image: {},
-                            status: {},
-                        }
+                        }),
                     },
                 ]
             );
@@ -1298,13 +1291,9 @@ describe('Scenario', function () {
                         background: {
                             color: 'black',
                         },
-                        config: {
+                        config: new DisplayConfig({
                             background: { duration: 100 },
-                            overlay: {},
-                            message: {},
-                            image: {},
-                            status: {},
-                        }
+                        }),
                     },
                 ]
             );
@@ -1390,13 +1379,9 @@ describe('Scenario', function () {
                             color: 'black',
                             opacity: '1.0',
                         },
-                        config: {
-                            background: {},
-                            message: {},
+                        config: new DisplayConfig({
                             overlay: { duration: 100 },
-                            image: {},
-                            status: {},
-                        }
+                        }),
                     },
                 ]
             );
@@ -1692,15 +1677,11 @@ describe('Scenario', function () {
                             x: '10px',
                             y: '10px',
                         },
-                        config: {
+                        config: new DisplayConfig({
                             image: {
                                 duration: 100,
                             },
-                            background: {},
-                            message: {},
-                            overlay: {},
-                            status: {},
-                        }
+                        }),
                     },
                 ]
             );
@@ -1759,15 +1740,11 @@ describe('Scenario', function () {
                             name: 'abc',
                             scaleY: 0.1,
                         },
-                        config: {
+                        config: new DisplayConfig({
                             image: {
                                 duration: 100,
                             },
-                            background: {},
-                            message: {},
-                            overlay: {},
-                            status: {},
-                        }
+                        }),
                     },
                 ]
             );
@@ -1826,15 +1803,11 @@ describe('Scenario', function () {
                             name: 'abc',
                             rotateY: '180deg',
                         },
-                        config: {
+                        config: new DisplayConfig({
                             image: {
                                 duration: 100,
                             },
-                            background: {},
-                            message: {},
-                            overlay: {},
-                            status: {},
-                        }
+                        }),
                     },
                 ]
             );
@@ -3096,7 +3069,7 @@ describe('Scenario', function () {
             // arrange
             let progress = {
                 pos: 1,
-                displayConfig: {
+                displayConfig: new DisplayConfig({
                     message: {
                         target: '#messageWindow',
                         delay: 50,
@@ -3155,7 +3128,8 @@ describe('Scenario', function () {
                             status: 'available',
                         },
                     }
-                }, images: {
+                }),
+                images: {
                     abc: {
                         name: 'abc',
                         source: 'abc.png',

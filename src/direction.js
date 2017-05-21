@@ -2,7 +2,7 @@
  * @module direction
  */
 
-const DisplayConfig = require('./display_config.js');
+const DisplayConfig = require('./config/display_config.js');
 const BgmConfig = require('./bgm_config.js');
 const Image = require('./image.js');
 const Sound = require('./sound.js');
