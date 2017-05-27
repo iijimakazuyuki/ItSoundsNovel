@@ -24,7 +24,9 @@ class Message {
                 let character = new Character(null, null, v);
                 this.letters.push(character);
             });
-            let keyValueResultArray = keyValueControlCharacterRegex.exec(resultArray[1]);
+            let controlCharacter = resultArray[1];
+            let keyValueResultArray
+                = keyValueControlCharacterRegex.exec(controlCharacter);
             if (keyValueResultArray) {
                 let key = keyValueResultArray[1];
                 let value = keyValueResultArray[2];
@@ -36,14 +38,21 @@ class Message {
                     this.letters.push(character);
                 }
             } else {
-                let hyperlinkResultArray = hyperlinkControlCharacterRegex.exec(resultArray[1]);
+                let hyperlinkResultArray
+                    = hyperlinkControlCharacterRegex.exec(controlCharacter);
                 if (hyperlinkResultArray) {
-                    let character = new Character('hyperlink', hyperlinkResultArray[1], hyperlinkResultArray[2]);
+                    let key = hyperlinkResultArray[1];
+                    let value = hyperlinkResultArray[2];
+                    let character
+                        = new Character('hyperlink', key, value);
                     this.letters.push(character);
                 } else {
-                    let rubyResultArray = rubyControlCharacterRegex.exec(resultArray[1]);
+                    let rubyResultArray
+                        = rubyControlCharacterRegex.exec(controlCharacter);
                     if (rubyResultArray) {
-                        let character = new Character('ruby', rubyResultArray[1], rubyResultArray[2]);
+                        let key = rubyResultArray[1];
+                        let value = rubyResultArray[2];
+                        let character = new Character('ruby', key, value);
                         this.letters.push(character);
                     }
                 }

@@ -125,15 +125,13 @@ describe('ItSoundsNovel View', function () {
                 .then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextContains(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextContains(
+                        element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextContains(element, RUBY_FOR_FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextContains(
+                        element, RUBY_FOR_FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -143,10 +141,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -156,10 +153,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, THIRD_AND_FOURTH_SENTENCES),
-                        TIMEOUT_FOR_DISPLAYING_THIRD_AND_FOURTH_SENTENCES
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, THIRD_AND_FOURTH_SENTENCES
+                    ), TIMEOUT_FOR_DISPLAYING_THIRD_AND_FOURTH_SENTENCES)
                 );
         }
 
@@ -243,10 +239,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(element => {
                     // Measure the time how long first sentence is displayed.
                     startTime = new Date();
-                    return driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        DEFAULT_TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    );
+                    return driver.wait(until.elementTextIs(
+                        element, FIRST_SENTENCE
+                    ), DEFAULT_TIMEOUT_FOR_DISPLAYING_SENTENCE);
                 }).then(() => {
                     let endTime = new Date();
                     // The first sentence will be displayed more slowly
@@ -263,10 +258,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -278,10 +272,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(element => {
                     // Measure the time how long third sentence is displayed.
                     startTime = new Date();
-                    return driver.wait(
-                        until.elementTextIs(element, THIRD_SENTENCE),
-                        DEFAULT_TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    );
+                    return driver.wait(until.elementTextIs(
+                        element, THIRD_SENTENCE
+                    ), DEFAULT_TIMEOUT_FOR_DISPLAYING_SENTENCE);
                 }).then(() => {
                     let endTime = new Date();
                     // The third sentence will be displayed more slowly
@@ -298,10 +291,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FOURTH_SENTENCE),
-                        DEFAULT_TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FOURTH_SENTENCE
+                    ), DEFAULT_TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 );
         }
 
@@ -368,10 +360,9 @@ describe('ItSoundsNovel View', function () {
                 .then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -381,10 +372,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -394,10 +384,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, THIRD_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, THIRD_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 );
         }
 
@@ -467,10 +456,12 @@ describe('ItSoundsNovel View', function () {
          * The timeout for displaying the third and fourth sentence.
          * The last letter of the fourth sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
-         *   = 50 [ms] *  60 + 500 [ms] = 3500 [ms] < 5000 [ms] (+ LONG_TIMEOUT_FOR_DISPLAYING_IMAGE = timeout),
+         *   = 50 [ms] *  60 + 500 [ms] = 3500 [ms] < 5000 [ms]
+         *     (+ LONG_TIMEOUT_FOR_DISPLAYING_IMAGE = timeout),
          * so the test should be done before its timeout.
          */
-        const TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE = 5000 + LONG_TIMEOUT_FOR_DISPLAYING_IMAGE;
+        const TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE
+            = 5000 + LONG_TIMEOUT_FOR_DISPLAYING_IMAGE;
 
         /**
          * The sleep time for clicking next button after waiting
@@ -486,17 +477,15 @@ describe('ItSoundsNovel View', function () {
             let driver = browserDrivers.get(browserDriverName);
             return driver.get(BASE_URL + PATH)
                 .then(() =>
-                    driver.wait(
-                        until.elementLocated({ className: 'backgroundImage' }),
-                        TIMEOUT_FOR_DISPLAYING_IMAGE
-                    )
+                    driver.wait(until.elementLocated(
+                        { className: 'backgroundImage' }
+                    ), TIMEOUT_FOR_DISPLAYING_IMAGE)
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -506,10 +495,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -519,10 +507,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, THIRD_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, THIRD_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -532,10 +519,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FOURTH_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FOURTH_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE)
                 ).then(() =>
                     driver.findElements({ className: 'backgroundImage' })
                 ).then(elements => {
@@ -605,10 +591,9 @@ describe('ItSoundsNovel View', function () {
                 .then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -618,10 +603,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -631,10 +615,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, THIRD_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, THIRD_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 );
         }
 
@@ -703,22 +686,19 @@ describe('ItSoundsNovel View', function () {
             let driver = browserDrivers.get(browserDriverName);
             return driver.get(BASE_URL + PATH)
                 .then(() =>
-                    driver.wait(
-                        until.elementLocated({ id: 'cat1' }),
-                        TIMEOUT_FOR_DISPLAYING_IMAGE
-                    )
+                    driver.wait(until.elementLocated(
+                        { id: 'cat1' }
+                    ), TIMEOUT_FOR_DISPLAYING_IMAGE)
                 ).then(() =>
-                    driver.wait(
-                        until.elementLocated({ id: 'cat2' }),
-                        TIMEOUT_FOR_DISPLAYING_IMAGE
-                    )
+                    driver.wait(until.elementLocated(
+                        { id: 'cat2' }
+                    ), TIMEOUT_FOR_DISPLAYING_IMAGE)
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -728,10 +708,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -741,10 +720,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, THIRD_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, THIRD_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.findElements({ id: 'cat1' })
                 ).then(elements => {
@@ -808,10 +786,9 @@ describe('ItSoundsNovel View', function () {
                 .then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -821,10 +798,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 );
         }
 
@@ -906,10 +882,9 @@ describe('ItSoundsNovel View', function () {
                 .then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.findElement({ id: 'saveButton' })
                 ).then(element =>
@@ -925,22 +900,21 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.findElement({ id: 'statusWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextContains(element, FLAG1_STATUS_MESSAGE)
-                    )
+                    driver.wait(until.elementTextContains(
+                        element, FLAG1_STATUS_MESSAGE
+                    ))
                 ).then(() =>
                     driver.findElement({ id: 'anotherStatusWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FLAG3_STATUS_MESSAGE)
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FLAG3_STATUS_MESSAGE
+                    ))
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
                 ).then(() =>
@@ -950,10 +924,8 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.findElement({ id: 'saveButton' })
                 ).then(element =>
@@ -969,16 +941,15 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.findElement({ id: 'statusWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FLAG2_STATUS_MESSAGE)
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FLAG2_STATUS_MESSAGE
+                    ))
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
                 ).then(() =>
@@ -988,10 +959,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_AND_THIRD_SENTENCES),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_AND_THIRD_SENTENCES
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.findElement({ id: 'saveButton' })
                 ).then(element =>
@@ -1007,10 +977,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 );
         }
 
@@ -1059,7 +1028,8 @@ describe('ItSoundsNovel View', function () {
          * The timeout for displaying the first sentence.
          * The last letter of the first sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
-         *   = 50 [ms] * 37 + 500 [ms] = 2350 [ms] < 5000 [ms] (+ SLEEP_TIME = timeout),
+         *   = 50 [ms] * 37 + 500 [ms] = 2350 [ms] < 5000 [ms]
+         *     (+ SLEEP_TIME = timeout),
          * so the test should be done before its timeout.
          */
         const TIMEOUT_FOR_DISPLAYING_FIRST_SENTENCE = 5000 + SLEEP_TIME;
@@ -1068,7 +1038,8 @@ describe('ItSoundsNovel View', function () {
          * The timeout for displaying the second sentence.
          * The last letter of the second sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
-         *   = 50 [ms] * 30 + 500 [ms] = 2000 [ms] < 5000 [ms] (+ WAIT_SECONDS = timeout),
+         *   = 50 [ms] * 30 + 500 [ms] = 2000 [ms] < 5000 [ms]
+         *     (+ WAIT_SECONDS = timeout),
          * so the test should be done before its timeout.
          */
         const TIMEOUT_FOR_DISPLAYING_SECOND_SENTENCE = 5000 + WAIT_SECONDS;
@@ -1092,10 +1063,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(element => {
                     // Measure the time how long first sentence is displayed.
                     startTime = new Date();
-                    return driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_FIRST_SENTENCE
-                    );
+                    return driver.wait(until.elementTextIs(
+                        element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_FIRST_SENTENCE);
                 }).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -1105,10 +1075,9 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SECOND_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SECOND_SENTENCE)
                 ).then(() => {
                     let endTime = new Date();
                     // The first sentence will be displayed more slowly
@@ -1475,22 +1444,20 @@ describe('ItSoundsNovel View', function () {
                 .then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FIRST_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(element, FIRST_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.findElement({ id: 'flag1' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FLAG1_STATUS_MESSAGE)
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FLAG1_STATUS_MESSAGE
+                    ))
                 ).then(() =>
                     driver.findElement({ id: 'anotherStatusWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FLAG3_STATUS_MESSAGE)
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FLAG3_STATUS_MESSAGE
+                    ))
                 ).then(() =>
                     driver.findElements({ id: 'flag2' })
                 ).then(elements => {
@@ -1499,21 +1466,21 @@ describe('ItSoundsNovel View', function () {
                 }).then(() =>
                     driver.findElement({ id: 'variable' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextContains(element, VARIABLE_STATUS_MESSAGE)
-                    )
+                    driver.wait(until.elementTextContains(
+                        element, VARIABLE_STATUS_MESSAGE
+                    ))
                 ).then(() =>
                     driver.findElement({ id: 'add' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, STATUS_MESSAGE_BEFORE_ADDITION)
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, STATUS_MESSAGE_BEFORE_ADDITION
+                    ))
                 ).then(() =>
                     driver.findElement({ id: 'multiply' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, STATUS_MESSAGE_BEFORE_MULTIPLICATION)
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, STATUS_MESSAGE_BEFORE_MULTIPLICATION
+                    ))
                 ).then(() =>
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_NEXT_BUTTON)
                 ).then(() =>
@@ -1523,28 +1490,27 @@ describe('ItSoundsNovel View', function () {
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, SECOND_SENTENCE
+                    ), TIMEOUT_FOR_DISPLAYING_SENTENCE)
                 ).then(() =>
                     driver.findElement({ id: 'flag2' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, FLAG2_STATUS_MESSAGE)
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, FLAG2_STATUS_MESSAGE
+                    ))
                 ).then(() =>
                     driver.findElement({ id: 'add' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, STATUS_MESSAGE_AFTER_ADDITION)
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, STATUS_MESSAGE_AFTER_ADDITION
+                    ))
                 ).then(() =>
                     driver.findElement({ id: 'multiply' })
                 ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, STATUS_MESSAGE_AFTER_MULTIPLICATION)
-                    )
+                    driver.wait(until.elementTextIs(
+                        element, STATUS_MESSAGE_AFTER_MULTIPLICATION
+                    ))
                 );
         }
 
@@ -1595,7 +1561,8 @@ describe('ItSoundsNovel View', function () {
          * The fourth sentence in the sequence.
          */
         const FIFTH_SENTENCE =
-            "In addition, it turned out that it was a student, which is the most ferocious species of human beings.";
+            "In addition, it turned out that it was a student,"
+            + " which is the most ferocious species of human beings.";
 
         /**
          * The timeout for displaying the background image.
@@ -1615,10 +1582,12 @@ describe('ItSoundsNovel View', function () {
          * The timeout for displaying the third and fourth sentence.
          * The last letter of the fourth sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
-         *   = 50 [ms] *  60 + 500 [ms] = 3500 [ms] < 5000 [ms] (+ LONG_TIMEOUT_FOR_DISPLAYING_IMAGE = timeout),
+         *   = 50 [ms] *  60 + 500 [ms] = 3500 [ms] < 5000 [ms]
+         *     (+ LONG_TIMEOUT_FOR_DISPLAYING_IMAGE = timeout),
          * so the test should be done before its timeout.
          */
-        const TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE = 5000 + LONG_TIMEOUT_FOR_DISPLAYING_IMAGE;
+        const TIMEOUT_FOR_DISPLAYING_IMAGE_AND_SENTENCE
+            = 5000 + LONG_TIMEOUT_FOR_DISPLAYING_IMAGE;
 
         /**
          * The sleep time for clicking next button after waiting
@@ -1754,10 +1723,12 @@ describe('ItSoundsNovel View', function () {
          * The timeout for displaying the third sentence.
          * The last letter of the third sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
-         *   = 50 [ms] *  56 + 500 [ms] = 3300 [ms] < 5000 [ms] (+ LONG_TIMEOUT_FOR_DISPLAYING_OVERLAY = timeout),
+         *   = 50 [ms] *  56 + 500 [ms] = 3300 [ms] < 5000 [ms]
+         *     (+ LONG_TIMEOUT_FOR_DISPLAYING_OVERLAY = timeout),
          * so the test should be done before its timeout.
          */
-        const TIMEOUT_FOR_DISPLAYING_OVERLAY_AND_SENTENCE = 5000 + LONG_TIMEOUT_FOR_DISPLAYING_OVERLAY;
+        const TIMEOUT_FOR_DISPLAYING_OVERLAY_AND_SENTENCE
+            = 5000 + LONG_TIMEOUT_FOR_DISPLAYING_OVERLAY;
 
         /**
          * The sleep time for clicking next button after waiting
@@ -1863,7 +1834,8 @@ describe('ItSoundsNovel View', function () {
          * The timeout for displaying the second sentence.
          * The last letter of the second sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
-         *   = 50 [ms] * 30 + 500 [ms] = 2000 [ms] < 5000 [ms] (+ TIMEOUT_FOR_CHANGING_COLOR = timeout),
+         *   = 50 [ms] * 30 + 500 [ms] = 2000 [ms] < 5000 [ms]
+         *     (+ TIMEOUT_FOR_CHANGING_COLOR = timeout),
          * so the test should be done before its timeout.
          */
         const TIMEOUT_FOR_CHANGING_COLOR_AND_DISPLAYING_SENTENCE
@@ -1967,7 +1939,8 @@ describe('ItSoundsNovel View', function () {
          * The timeout for displaying the second sentence.
          * The last letter of the second sentence will be displayed in
          *   delay [ms] * #letters + duration [ms]
-         *   = 50 [ms] * 30 + 500 [ms] = 2000 [ms] < 5000 [ms] (+ TIMEOUT_FOR_CHANGING_COLOR = timeout),
+         *   = 50 [ms] * 30 + 500 [ms] = 2000 [ms] < 5000 [ms]
+         *     (+ TIMEOUT_FOR_CHANGING_COLOR = timeout),
          * so the test should be done before its timeout.
          */
         const TIMEOUT_FOR_MOVING_WINDOW_AND_DISPLAYING_SENTENCE

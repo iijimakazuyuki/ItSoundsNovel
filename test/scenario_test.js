@@ -10,7 +10,8 @@ const AreaConfig = require('../src/config/area_config.js');
 const BackgroundConfig = require('../src/config/background_config.js');
 const ButtonConfig = require('../src/config/button_config.js');
 const DisplayConfig = require('../src/config/display_config.js');
-const MessageBackgroundConfig = require('../src/config/message_background_config.js');
+const MessageBackgroundConfig
+    = require('../src/config/message_background_config.js');
 const OverlayConfig = require('../src/config/overlay_config.js');
 const StatusConfig = require('../src/config/status_config.js');
 const UIConfig = require('../src/config/ui_config.js');
@@ -136,7 +137,7 @@ describe('Scenario', function () {
     });
 
     describe('#load()', function () {
-        it('should get content with $ as yaml and start a scenario automatically', function () {
+        it('should get content with $ as yaml and start a scenario automatically', function () { // eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -245,7 +246,11 @@ describe('Scenario', function () {
                 [
                     {
                         message: {
-                            letters: normalCharacterArrayOf(['a', 'b', 'c', '\n', 'd', 'e', 'f', '\n', 'g', 'h', 'i']),
+                            letters: normalCharacterArrayOf([
+                                'a', 'b', 'c', '\n',
+                                'd', 'e', 'f', '\n',
+                                'g', 'h', 'i'
+                            ]),
                         }
                     },
                 ]
@@ -520,7 +525,7 @@ describe('Scenario', function () {
                     '- abcdef${[aaa](bbb)}',
                     '- ${aaa(bbb)}abcdef',
                     '- abcdef${aaa(bbb)}',
-                    '- abc${delay=100}def${duration=200}ghi${[jkl](/mno)}pqr${stu(vwx)}yz',
+                    '- abc${delay=100}def${duration=200}ghi${[jkl](/mno)}pqr${stu(vwx)}yz', //eslint-disable-line max-len
                 ].join('\n')
             );
             let url = '';
@@ -612,7 +617,7 @@ describe('Scenario', function () {
                 ]
             );
         });
-        it('should set a control character to change a delay time in messages', function () {
+        it('should set a control character to change a delay time in messages', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -639,7 +644,7 @@ describe('Scenario', function () {
                 ]
             );
         });
-        it('should set a control character to change a display duration in messages', function () {
+        it('should set a control character to change a display duration in messages', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -666,7 +671,7 @@ describe('Scenario', function () {
                 ]
             );
         });
-        it('should set a control character to change a time function in messages', function () {
+        it('should set a control character to change a time function in messages', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -686,14 +691,16 @@ describe('Scenario', function () {
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('timeFunction', 'ease')
+                                keyValueControlCharacterOf(
+                                    'timeFunction', 'ease'
+                                )
                             ],
                         },
                     },
                 ]
             );
         });
-        it('should set a control character to change font size in messages', function () {
+        it('should set a control character to change font size in messages', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -716,35 +723,43 @@ describe('Scenario', function () {
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontSize', '10px'),
+                                keyValueControlCharacterOf(
+                                    'fontSize', '10px'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontSize', 'medium'),
+                                keyValueControlCharacterOf(
+                                    'fontSize', 'medium'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontSize', 'small'),
+                                keyValueControlCharacterOf(
+                                    'fontSize', 'small'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontSize', 'large'),
+                                keyValueControlCharacterOf(
+                                    'fontSize', 'large'
+                                ),
                             ],
                         }
                     },
                 ]
             );
         });
-        it('should set a control character to change font style in messages', function () {
+        it('should set a control character to change font style in messages', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -765,21 +780,25 @@ describe('Scenario', function () {
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontStyle', 'normal'),
+                                keyValueControlCharacterOf(
+                                    'fontStyle', 'normal'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontStyle', 'italic'),
+                                keyValueControlCharacterOf(
+                                    'fontStyle', 'italic'
+                                ),
                             ],
                         }
                     },
                 ]
             );
         });
-        it('should set a control character to change a font family in messages', function () {
+        it('should set a control character to change a font family in messages', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -800,21 +819,25 @@ describe('Scenario', function () {
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontFamily', 'sans-serif'),
+                                keyValueControlCharacterOf(
+                                    'fontFamily', 'sans-serif'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontFamily', ''),
+                                keyValueControlCharacterOf(
+                                    'fontFamily', ''
+                                ),
                             ],
                         }
                     },
                 ]
             );
         });
-        it('should set a control character to change font weight in messages', function () {
+        it('should set a control character to change font weight in messages', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -835,21 +858,25 @@ describe('Scenario', function () {
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontWeight', 'normal'),
+                                keyValueControlCharacterOf(
+                                    'fontWeight', 'normal'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('fontWeight', 'bold'),
+                                keyValueControlCharacterOf(
+                                    'fontWeight', 'bold'
+                                ),
                             ],
                         }
                     },
                 ]
             );
         });
-        it('should set a control character to change font color in messages', function () {
+        it('should set a control character to change font color in messages', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -871,21 +898,27 @@ describe('Scenario', function () {
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('color', '#000000'),
+                                keyValueControlCharacterOf(
+                                    'color', '#000000'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('color', '000000'),
+                                keyValueControlCharacterOf(
+                                    'color', '000000'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                keyValueControlCharacterOf('color', 'red'),
+                                keyValueControlCharacterOf(
+                                    'color', 'red'
+                                ),
                             ],
                         }
                     },
@@ -916,42 +949,52 @@ describe('Scenario', function () {
                     {
                         message: {
                             letters: [
-                                hyperlinkControlCharacterOf('aaa', '../bbb/'),
+                                hyperlinkControlCharacterOf(
+                                    'aaa', '../bbb/'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                hyperlinkControlCharacterOf('aaa', 'bbb/ccc'),
+                                hyperlinkControlCharacterOf(
+                                    'aaa', 'bbb/ccc'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                hyperlinkControlCharacterOf('aaa', '/bbb/ccc.html'),
+                                hyperlinkControlCharacterOf(
+                                    'aaa', '/bbb/ccc.html'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                hyperlinkControlCharacterOf('aaa', 'http://example.com/'),
+                                hyperlinkControlCharacterOf(
+                                    'aaa', 'http://example.com/'
+                                ),
                             ],
                         }
                     },
                     {
                         message: {
                             letters: [
-                                hyperlinkControlCharacterOf('aaa', 'https://example.com/bbb/ccc'),
+                                hyperlinkControlCharacterOf(
+                                    'aaa', 'https://example.com/bbb/ccc'
+                                ),
                             ],
                         }
                     },
                 ]
             );
         });
-        it('should set a control character to delay messages displaying', function () {
+        it('should set a control character to delay messages displaying', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -1128,7 +1171,7 @@ describe('Scenario', function () {
                 ]
             );
         });
-        it('should set a background image with a display configuration', function () {
+        it('should set a background image with a display configuration', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -1185,7 +1228,7 @@ describe('Scenario', function () {
                 ]
             );
         });
-        it('should set event to remove a background image with wait', function () {
+        it('should set event to remove a background image with wait', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -1267,7 +1310,7 @@ describe('Scenario', function () {
                 ]
             );
         });
-        it('should set background color with a display configuration', function () {
+        it('should set background color with a display configuration', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -1649,7 +1692,7 @@ describe('Scenario', function () {
                 ]
             );
         });
-        it('should set an event to move an image with a configuration', function () {
+        it('should set an event to move an image with a configuration', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -1714,7 +1757,7 @@ describe('Scenario', function () {
                 ]
             );
         });
-        it('should set an event to scale an image with a configuration', function () {
+        it('should set an event to scale an image with a configuration', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -1777,7 +1820,7 @@ describe('Scenario', function () {
                 ]
             );
         });
-        it('should set an event to rotate an image with a configuration', function () {
+        it('should set an event to rotate an image with a configuration', function () { //eslint-disable-line max-len
             // arrange
             scenario.$.get = sinon.stub().yieldsTo(
                 'success',
@@ -2087,7 +2130,7 @@ describe('Scenario', function () {
             // assert
             assert(displayMock.append.withArgs(concatStub).called);
         });
-        it('should not change font style after a message whose font style is changed', function () {
+        it('should not change font style after a message whose font style is changed', function () { //eslint-disable-line max-len
             // arrange
             scenario.progress.displayConfig.message.duration = 500;
             scenario.progress.displayConfig.message.delay = 50;
@@ -2117,10 +2160,22 @@ describe('Scenario', function () {
             scenario.display(1);
 
             // assert
-            assert.equal(scenario.progress.displayConfig.message.duration, 500);
-            assert.equal(scenario.progress.displayConfig.message.delay, 50);
-            assert.equal(scenario.progress.displayConfig.message.fontSize, 'medium');
-            assert.equal(scenario.progress.displayConfig.message.fontStyle, 'normal');
+            assert.equal(
+                scenario.progress.displayConfig.message.duration,
+                500
+            );
+            assert.equal(
+                scenario.progress.displayConfig.message.delay,
+                50
+            );
+            assert.equal(
+                scenario.progress.displayConfig.message.fontSize,
+                'medium'
+            );
+            assert.equal(
+                scenario.progress.displayConfig.message.fontStyle,
+                'normal'
+            );
         });
         it('should set a flag', function () {
             // arrange
@@ -2129,22 +2184,34 @@ describe('Scenario', function () {
             });
             scenario.directions = [
                 {
-                    status: { name: 'flag1', value: 'on', display: 'flag1 is on' },
+                    status: {
+                        name: 'flag1', value: 'on', display: 'flag1 is on'
+                    },
                 },
                 {
-                    status: { name: 'flag2', value: 'off' },
+                    status: {
+                        name: 'flag2', value: 'off'
+                    },
                 },
                 {
-                    status: { name: 'add', value: 1 },
+                    status: {
+                        name: 'add', value: 1
+                    },
                 },
                 {
-                    status: { name: 'multiply', value: 1 },
+                    status: {
+                        name: 'multiply', value: 1
+                    },
                 },
                 {
-                    status: { name: 'add', value: { type: 'add', by: 1 } },
+                    status: {
+                        name: 'add', value: { type: 'add', by: 1 }
+                    },
                 },
                 {
-                    status: { name: 'multiply', value: { type: 'multiply', by: 3 } },
+                    status: {
+                        name: 'multiply', value: { type: 'multiply', by: 3 }
+                    },
                 },
             ];
             scenario.progress.pos = 0;
@@ -2170,7 +2237,7 @@ describe('Scenario', function () {
                 { name: 'multiply', value: 3, display: 'none' }
             );
         });
-        it('should display all letters in the sentence only if a condition is satisfied', function () {
+        it('should display all letters in the sentence only if a condition is satisfied', function () { //eslint-disable-line max-len
             // arrange
             let bStub = mockOfLetterElement();
             let cStub = mockOfLetterElement();
@@ -2281,7 +2348,7 @@ describe('Scenario', function () {
     });
 
     describe('#changeBackgroundColor()', function () {
-        it('should change background color of the background window', function () {
+        it('should change background color of the background window', function () { //eslint-disable-line max-len
             // arrange
             let stub = mockOfBackgroundColorElement();
             let backgroundMock = mockOfBackgroundElement();
@@ -2404,7 +2471,8 @@ describe('Scenario', function () {
             // arrange
             let imageElementMock = mockOfBackgroundImageElement();
             scenario.$.withArgs(
-                scenario.progress.displayConfig.background.target + ' .backgroundImage.active'
+                scenario.progress.displayConfig.background.target
+                + ' .backgroundImage.active'
             ).returns(imageElementMock);
 
             // act
@@ -2436,7 +2504,8 @@ describe('Scenario', function () {
             // arrange
             let backgroundElementMock = mockOfBackgroundColorElement();
             scenario.$.withArgs(
-                scenario.progress.displayConfig.background.target + ' .backgroundColor'
+                scenario.progress.displayConfig.background.target
+                + ' .backgroundColor'
             ).returns(backgroundElementMock);
 
             // act
@@ -2551,7 +2620,7 @@ describe('Scenario', function () {
             assert(displayMock.append.withArgs(bStub).called);
             assert(displayMock.append.withArgs(cStub).called);
         });
-        it('should change display configuration with a control character', function () {
+        it('should change display configuration with a control character', function () { //eslint-disable-line max-len
             // arrange
             let config = { message: { duration: 100, delay: 10 } };
             let message = {
@@ -2572,9 +2641,16 @@ describe('Scenario', function () {
             assert.equal(config.message.duration, 200);
             assert.equal(config.message.delay, 20);
         });
-        it('should change display configuration with a control character', function () {
+        it('should change display configuration with a control character', function () { //eslint-disable-line max-len
             // arrange
-            let config = { message: { duration: 100, delay: 10, fontWeight: 'normal', fontSize: 'medium' } };
+            let config = {
+                message: {
+                    duration: 100,
+                    delay: 10,
+                    fontWeight: 'normal',
+                    fontSize: 'medium',
+                },
+            };
             let message = {
                 letters: normalCharacterArrayOf(
                     ['a', 'b', 'c']
@@ -2652,9 +2728,13 @@ describe('Scenario', function () {
             scenario.$.withArgs('<audio>').returns(audioStub);
             scenario.$.withArgs('<audio>');
             let oggStub = sinon.stub();
-            scenario.$.withArgs('<source>', { src: 'bgm.ogg' }).returns(oggStub);
+            scenario.$
+                .withArgs('<source>', { src: 'bgm.ogg' })
+                .returns(oggStub);
             let mp3Stub = sinon.stub();
-            scenario.$.withArgs('<source>', { src: 'bgm.mp3' }).returns(mp3Stub);
+            scenario.$
+                .withArgs('<source>', { src: 'bgm.mp3' })
+                .returns(mp3Stub);
 
             // act
             scenario.playBgm({
@@ -2680,9 +2760,13 @@ describe('Scenario', function () {
             scenario.$.withArgs('<audio>').returns(audioStub);
             scenario.$.withArgs('<audio>');
             let oggStub = sinon.stub();
-            scenario.$.withArgs('<source>', { src: 'bgm.ogg' }).returns(oggStub);
+            scenario.$
+                .withArgs('<source>', { src: 'bgm.ogg' })
+                .returns(oggStub);
             let mp3Stub = sinon.stub();
-            scenario.$.withArgs('<source>', { src: 'bgm.mp3' }).returns(mp3Stub);
+            scenario.$
+                .withArgs('<source>', { src: 'bgm.mp3' })
+                .returns(mp3Stub);
 
             // act
             scenario.playBgm({
@@ -2728,21 +2812,30 @@ describe('Scenario', function () {
             scenario.$.withArgs('<audio>').returns(audioStub);
             scenario.$.withArgs('<audio>');
             let oggStub = sinon.stub();
-            scenario.$.withArgs('<source>', { src: 'sound.ogg' }).returns(oggStub);
+            scenario.$
+                .withArgs('<source>', { src: 'sound.ogg' })
+                .returns(oggStub);
             let mp3Stub = sinon.stub();
-            scenario.$.withArgs('<source>', { src: 'sound.mp3' }).returns(mp3Stub);
+            scenario.$
+                .withArgs('<source>', { src: 'sound.mp3' })
+                .returns(mp3Stub);
 
             // act
             scenario.playSound({ source: ['sound.ogg', 'sound.mp3'] });
 
             // assert
-            assert(scenario.$.withArgs('<audio>').called);
-            assert(scenario.$.withArgs('<source>', { src: 'sound.ogg' }).called);
-            assert(scenario.$.withArgs('<source>', { src: 'sound.mp3' }).called);
-            assert(audioStub.append.withArgs([
-                oggStub,
-                mp3Stub,
-            ]).called);
+            assert(
+                scenario.$.withArgs('<audio>').called
+            );
+            assert(
+                scenario.$.withArgs('<source>', { src: 'sound.ogg' }).called
+            );
+            assert(
+                scenario.$.withArgs('<source>', { src: 'sound.mp3' }).called
+            );
+            assert(
+                audioStub.append.withArgs([oggStub, mp3Stub,]).called
+            );
             assert(audioStub.on.withArgs('ended').called);
             assert(audioStub[0].play.called);
         });
@@ -2764,7 +2857,7 @@ describe('Scenario', function () {
     });
 
     describe('#displayStatusMessage()', function () {
-        it('should display a status message in the default status window', function () {
+        it('should display a status message in the default status window', function () { //eslint-disable-line max-len
             // arrange
             let name = 'flag1';
             let display = 'flag1 is set';
@@ -2786,7 +2879,7 @@ describe('Scenario', function () {
             assert(displayMock.append.called);
             assert(flag1Stub.text.calledWith(display));
         });
-        it('should display a status message in the given status window', function () {
+        it('should display a status message in the given status window', function () { //eslint-disable-line max-len
             // arrange
             let name = 'flag1';
             let display = 'flag1 is set';
@@ -2831,7 +2924,7 @@ describe('Scenario', function () {
             assert(flag1Stub.text.calledWith(display));
             assert(flag1Stub.appendTo.notCalled);
         });
-        it('should change a status window to display a status message', function () {
+        it('should change a status window to display a status message', function () { //eslint-disable-line max-len
             // arrange
             let name = 'flag1';
             let display = 'flag1 is set';
@@ -2925,7 +3018,7 @@ describe('Scenario', function () {
     });
 
     describe('#changeButtonDuringDisplaying()', function () {
-        it('should off and bind click on next button and the last letter element', function () {
+        it('should off and bind click on next button and the last letter element', function () { //eslint-disable-line max-len
             // arrange
             let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
@@ -2944,7 +3037,7 @@ describe('Scenario', function () {
             assert(nextButtonMock.click.called);
             assert(letterElementMock.one.called);
         });
-        it('should off click on next button and bind function on the last letter element', function () {
+        it('should off click on next button and bind function on the last letter element', function () { //eslint-disable-line max-len
             // arrange
             let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
@@ -2963,7 +3056,7 @@ describe('Scenario', function () {
             assert(nextButtonMock.click.notCalled);
             assert(letterElementMock.one.called);
         });
-        it('should off and bind click on next button and the last letter element with automatic displaying', function () {
+        it('should off and bind click on next button and the last letter element with automatic displaying', function () { //eslint-disable-line max-len
             // arrange
             let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
@@ -2982,7 +3075,7 @@ describe('Scenario', function () {
             assert(nextButtonMock.click.called);
             assert(letterElementMock.one.called);
         });
-        it('should off click on next button and bind function on the last letter element with automatic displaying', function () {
+        it('should off click on next button and bind function on the last letter element with automatic displaying', function () { //eslint-disable-line max-len
             // arrange
             let nextButtonMock = mockOfButton();
             scenario.$.withArgs(
@@ -3037,7 +3130,8 @@ describe('Scenario', function () {
             // arrange
             let backgroundImageStub = mockOfImageElement();
             scenario.$.withArgs(
-                scenario.progress.displayConfig.background.target + ' .backgroundImage'
+                scenario.progress.displayConfig.background.target
+                + ' .backgroundImage'
             ).returns(backgroundImageStub);
 
             // act
