@@ -278,7 +278,7 @@ class Scenario {
             top: 0,
             left: 0,
             zIndex: BACKGROUND_IMAGE_DEFAULT_Z,
-            transition: TRANSITION_OF(config.background),
+            transition: transitionOf(config.background),
             opacity: 0,
         }).delay(100).queue(() => {
             image.css({
@@ -325,7 +325,7 @@ class Scenario {
         background.delay(100).queue(function (next) {
             background.css({
                 backgroundColor: color,
-                transition: TRANSITION_OF(config.background),
+                transition: transitionOf(config.background),
             });
             next();
         });
@@ -359,7 +359,7 @@ class Scenario {
             overlayElement.css({
                 backgroundColor: overlay.color,
                 opacity: overlay.opacity,
-                transition: TRANSITION_OF(config.overlay),
+                transition: transitionOf(config.overlay),
             });
             next();
         });
@@ -383,7 +383,7 @@ class Scenario {
         let messageWindow = this.$(config.message.target);
         messageWindow.css({
             backgroundColor: config.message.background.color,
-            transition: TRANSITION_OF(config.message.background),
+            transition: transitionOf(config.message.background),
         });
     }
 
@@ -396,8 +396,8 @@ class Scenario {
         messageWindow.css({
             width: config.message.position.width,
             height: config.message.position.height,
-            transform: TRANSFORM_OF(config.message.position),
-            transition: TRANSITION_OF(config.message.position),
+            transform: transformOf(config.message.position),
+            transition: transitionOf(config.message.position),
         });
     }
 
@@ -476,7 +476,7 @@ class Scenario {
         let previousImage =
             this.$(config.background.target + ' .backgroundImage.active');
         previousImage.css({
-            transition: TRANSITION_OF(config.background),
+            transition: transitionOf(config.background),
             opacity: 0,
         }).on('transitionend', () => {
             previousImage.remove();
@@ -493,7 +493,7 @@ class Scenario {
         let existingImage = this.$('#' + image.name);
         if (existingImage.length === 0) {
             image.default();
-            let transform = TRANSFORM_OF(image);
+            let transform = transformOf(image);
             let imageElement = this.$('<img>', {
                 id: image.name,
                 src: image.source,
@@ -504,7 +504,7 @@ class Scenario {
                 width: image.width,
                 height: image.height,
                 transform: transform,
-                transition: TRANSITION_OF(config.image),
+                transition: transitionOf(config.image),
                 zIndex: image.z,
                 opacity: 0,
             }).delay(100).queue(() => {
@@ -516,7 +516,7 @@ class Scenario {
             this.progress.images[image.name] = image;
         } else {
             let newCss = {
-                transition: TRANSITION_OF(config.image),
+                transition: transitionOf(config.image),
             };
             if (image.control === 'remove') {
                 delete this.progress.images[image.name];
@@ -529,7 +529,7 @@ class Scenario {
                 prevImage.update(image);
                 newCss.width = prevImage.width;
                 newCss.height = prevImage.height;
-                newCss.transform = TRANSFORM_OF(prevImage);
+                newCss.transform = transformOf(prevImage);
                 newCss.zIndex = prevImage.z;
             }
             existingImage.css(newCss);
@@ -749,7 +749,7 @@ class Scenario {
             .css({
                 visibility: 'hidden',
                 display: 'inline',
-                transition: TRANSITION_OF(config.message),
+                transition: transitionOf(config.message),
                 opacity: 0,
                 fontSize: config.message.fontSize,
                 fontStyle: config.message.fontStyle,
@@ -1174,21 +1174,21 @@ class Scenario {
     }
 }
 
-const TRANSFORM_OF = element =>
-    [TRANSLATE_OF, SCALE_OF, ROTATE_OF].map(f => f(element)).join(' ');
+const transformOf = element =>
+    [translateOf, scaleOf, rotateOf].map(f => f(element)).join(' ');
 
-const TRANSLATE_OF = element =>
+const translateOf = element =>
     'translate(' + element.x + ',' + element.y + ')';
 
-const SCALE_OF = element =>
+const scaleOf = element =>
     'scale(' + element.scaleX + ', ' + element.scaleY + ')';
 
-const ROTATE_OF = element =>
+const rotateOf = element =>
     ' rotateX(' + element.rotateX + ')'
     + ' rotateY(' + element.rotateY + ')'
     + ' rotateZ(' + element.rotateZ + ')';
 
-const TRANSITION_OF = element =>
+const transitionOf = element =>
     element.duration / 1000 + 's ' + element.timingFunction;
 
 module.exports = Scenario;
