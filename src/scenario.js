@@ -11,7 +11,13 @@ const Character = require('./character.js');
 const Flag = require('./flag.js');
 const DisplayConfig = require('./config/display_config.js');
 
+/**
+ * The default value of z-index of a background image.
+ */
 const BACKGROUND_IMAGE_DEFAULT_Z = -1000;
+/**
+ * The default value of z-index of an overaly.
+ */
 const OVERLAY_DEFAULT_Z = 1000;
 
 /**
@@ -24,7 +30,7 @@ class Scenario {
     constructor(window = null) {
         /**
          * The directions of the loading scenario.
-         * @type {Direction[]}
+         * @type {Direction[]} directions
          */
         this.directions = [];
 
@@ -52,6 +58,7 @@ class Scenario {
         /**
          * If a displayed message is not flushed,
          * this string will be appended the head of the next sentence.
+         * @type {string}
          */
         this.concat = '';
 
@@ -74,6 +81,9 @@ class Scenario {
         this.$.get({
             url: url,
             success: data => {
+                /**
+                 * @type {Direction[]} directions
+                 */
                 this.directions = yaml
                     .safeLoad(data)
                     .map(direction => new Direction(direction));
@@ -104,6 +114,9 @@ class Scenario {
      */
     display(n) {
         clearTimeout(this.autoDisplay);
+        /**
+         * @type {Direction} direction
+         */
         let direction = this.directions[n];
         if (!direction) return;
         if (direction.if) {
@@ -248,6 +261,9 @@ class Scenario {
             this.concat = '';
         }
         if (direction.concat) {
+            /**
+             * @type {string}
+             */
             this.concat = direction.concat;
         }
         if (direction.flush) {
@@ -1130,6 +1146,9 @@ class Scenario {
         this.$.get({
             url: this.progress.scenarioUrl,
             success: data => {
+                /**
+                 * @type {Direction[]}
+                 */
                 this.directions = yaml
                     .safeLoad(data)
                     .map(direction => new Direction(direction));
@@ -1174,20 +1193,35 @@ class Scenario {
     }
 }
 
+/**
+ * @param {{x: string, y:string, scaleX: string, scaleY: string, rotateX: string, rotateY: string, rotateZ: string}} element
+ */
 const transformOf = element =>
     [translateOf, scaleOf, rotateOf].map(f => f(element)).join(' ');
 
+/**
+ * @param {{x: string, y: string}} element
+ */
 const translateOf = element =>
     'translate(' + element.x + ',' + element.y + ')';
 
+/**
+ * @param {{scaleX: string, scaleY: string}} element
+ */
 const scaleOf = element =>
     'scale(' + element.scaleX + ', ' + element.scaleY + ')';
 
+/**
+ * @param {{rotateX: string, rotateY: string, rotateZ: string}} element
+ */
 const rotateOf = element =>
     ' rotateX(' + element.rotateX + ')'
     + ' rotateY(' + element.rotateY + ')'
     + ' rotateZ(' + element.rotateZ + ')';
 
+/**
+ * @param {{duration: number, timingFunction: string}} element
+ */
 const transitionOf = element =>
     element.duration / 1000 + 's ' + element.timingFunction;
 

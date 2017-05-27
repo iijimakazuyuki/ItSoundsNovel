@@ -7,6 +7,9 @@ const MessageBackgroundConfig = require('./message_background_config.js');
 const AreaConfig = require('./area_config.js');
 
 class MessageConfig extends Config {
+    /**
+     * @param {{target: string, delay: number, duration: number, timingFunction: string, fontSize: string, fontStyle: string, fontWeight: string, fontFamily: string, color: string, background: {color: string, duration: number, timingFunction: string}, position: {x: string|number, y: string|number, width: string|number, height: string|number, scaleX: number, scaleY: number, rotateX: string, rotateY: string, rotateZ: string, duration: number, timingFunction: string}}} config
+     */
     constructor(config) {
         super();
         if (!config) return;
@@ -65,20 +68,55 @@ class MessageConfig extends Config {
          */
         this.position = new AreaConfig(config.position);
     }
+    /**
+     * Update properties with given instance's properties.
+     * @param {MessageConfig} config
+     */
     update(config) {
         if (!config.isDefined) return;
+        /**
+         * @type {string}
+         */
         this.target = config.target || this.target;
+        /**
+         * @type {number}
+         */
         this.delay = config.delay || this.delay;
+        /**
+         * @type {number}
+         */
         this.duration = config.duration || this.duration;
+        /**
+         * @type {string}
+         */
         this.timingFunction = config.timingFunction || this.timingFunction;
+        /**
+         * @type {string}
+         */
         this.fontSize = config.fontSize || this.fontSize;
+        /**
+         * @type {string}
+         */
         this.fontStyle = config.fontStyle || this.fontStyle;
+        /**
+         * @type {string}
+         */
         this.fontWeight = config.fontWeight || this.fontWeight;
+        /**
+         * @type {string}
+         */
         this.fontFamily = config.fontFamily || this.fontFamily;
+        /**
+         * @type {string}
+         */
         this.color = config.color || this.color;
         this.background.update(config.background);
         this.position.update(config.position);
     }
+    /**
+     * Returns a copy of this.
+     * @returns {MessageConfig}
+     */
     copy() {
         if (!this.isDefined) return new MessageConfig();
         return new MessageConfig({

@@ -7,18 +7,48 @@ const Image = require('../src/image.js');
 const Flag = require('../src/flag.js');
 const DisplayConfig = require('../src/config/display_config.js');
 
+/**
+ * Returns a character instance of a given letter.
+ * @param {string} v
+ */
 const normalCharacterOf = v => new Character(null, null, v);
 
+/**
+ * Returns an array of character instances of given letters.
+ * @param {string[]} a
+ */
 const normalCharacterArrayOf = a => a.map(v => normalCharacterOf(v));
 
+/**
+ * Returns a key-value control character instance of given key and value.
+ * @param {string} k
+ * @param {string} v
+ */
 const keyValueControlCharacterOf = (k, v) => new Character('keyValue', k, v);
 
+/**
+ * Returns a hyperlink control character instance of given key and value.
+ * @param {string} k
+ * @param {string} v
+ */
 const hyperlinkControlCharacterOf = (k, v) => new Character('hyperlink', k, v);
 
+/**
+ * Returns a sleep control character instance of given duration.
+ * @param {string} v
+ */
 const sleepControlCharacterOf = v => new Character('sleep', 'sleep', v);
 
+/**
+ * Returns a ruby control character instance of given key and value.
+ * @param {string} k
+ * @param {string} v
+ */
 const rubyControlCharacterOf = (k, v) => new Character('ruby', k, v);
 
+/**
+ * Returns a mock of a letter element.
+ */
 const mockOfLetterElement = () => ({
     css: sinon.stub().returnsThis(),
     delay: sinon.stub().returnsThis(),
@@ -26,26 +56,41 @@ const mockOfLetterElement = () => ({
     one: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a mock of a message window to display messages.
+ */
 const mockOfMessageWindowToDisplay = () => ({
     append: sinon.stub().returnsThis(),
     text: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a mock of a status window to display messages.
+ */
 const mockOfStatusWindowToDisplay = () => ({
     append: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a mock of a button.
+ */
 const mockOfButton = () => ({
     off: sinon.stub().returnsThis(),
     show: sinon.stub().returnsThis(),
     click: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a mock of background window element.
+ */
 const mockOfBackgroundElement = () => ({
     append: sinon.spy(),
     css: sinon.spy(),
 });
 
+/**
+ * Returns a mock of a background image element.
+ */
 const mockOfBackgroundImageElement = () => ({
     css: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -54,6 +99,9 @@ const mockOfBackgroundImageElement = () => ({
     one: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a mock of a overlay element.
+ */
 const mockOfOverlayElement = () => ({
     css: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -62,6 +110,9 @@ const mockOfOverlayElement = () => ({
     one: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a mock of background color element.
+ */
 const mockOfBackgroundColorElement = () => ({
     css: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -70,11 +121,17 @@ const mockOfBackgroundColorElement = () => ({
     one: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a mock of message window to change its style.
+ */
 const mockOfMessageWindowToChangeStyle = () => ({
     css: sinon.stub().returnsThis(),
     one: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a mock of an image element.
+ */
 const mockOfImageElement = () => ({
     css: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -84,6 +141,9 @@ const mockOfImageElement = () => ({
     remove: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a mock of an audio element.
+ */
 const mockOfAudio = () => ({
     append: sinon.stub().returnsThis(),
     on: sinon.stub().returnsThis(),
@@ -95,6 +155,9 @@ const mockOfAudio = () => ({
     },
 });
 
+/**
+ * Returns a mock of a flag status message element.
+ */
 const mockOfFlagElement = () => ({
     text: sinon.spy(),
     length: 1,
@@ -102,6 +165,9 @@ const mockOfFlagElement = () => ({
     appendTo: sinon.stub().returnsThis(),
 });
 
+/**
+ * Returns a stub of status window element.
+ */
 const stubOfStatusWindowElement = () => ({
     attr: sinon.stub().returns('statusWindow'),
 });
@@ -1609,15 +1675,15 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             source: 'abc.jpg',
                             x: '10px',
                             y: '10px',
-                        }
+                        }),
                     },
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             source: 'abc.jpg',
                             x: '10px',
@@ -1625,10 +1691,10 @@ describe('Scenario', function () {
                             width: '10px',
                             height: '10px',
                             z: -5,
-                        }
+                        }),
                     },
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             source: 'abc.jpg',
                             x: '10%',
@@ -1637,18 +1703,18 @@ describe('Scenario', function () {
                             height: '100%',
                             scaleX: 0.1,
                             scaleY: 0.1,
-                        }
+                        }),
                     },
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             source: 'abc.jpg',
-                            x: '0',
-                            y: '0',
+                            x: 0,
+                            y: 0,
                             rotateX: '60deg',
                             rotateY: '-60deg',
                             rotateZ: '180deg',
-                        }
+                        }),
                     },
                 ]
             );
@@ -1674,11 +1740,11 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             x: '10px',
                             y: '10px',
-                        }
+                        }),
                     },
                 ]
             );
@@ -1706,11 +1772,11 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             x: '10px',
                             y: '10px',
-                        },
+                        }),
                         config: new DisplayConfig({
                             image: {
                                 duration: 100,
@@ -1740,10 +1806,10 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             scaleX: 0.1,
-                        }
+                        }),
                     },
                 ]
             );
@@ -1770,10 +1836,10 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             scaleY: 0.1,
-                        },
+                        }),
                         config: new DisplayConfig({
                             image: {
                                 duration: 100,
@@ -1803,10 +1869,10 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             rotateX: '180deg',
-                        }
+                        }),
                     },
                 ]
             );
@@ -1833,10 +1899,10 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             rotateY: '180deg',
-                        },
+                        }),
                         config: new DisplayConfig({
                             image: {
                                 duration: 100,
@@ -1866,10 +1932,10 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             control: 'remove',
-                        }
+                        }),
                     },
                 ]
             );
@@ -1896,11 +1962,11 @@ describe('Scenario', function () {
                 scenario.directions,
                 [
                     {
-                        image: {
+                        image: new Image({
                             name: 'abc',
                             x: '10px',
                             y: '10px',
-                        },
+                        }),
                         next: 'wait',
                     },
                 ]
@@ -2213,19 +2279,19 @@ describe('Scenario', function () {
             // assert
             assert.deepEqual(
                 scenario.progress.status['flag1'],
-                { name: 'flag1', value: 'on', display: 'flag1 is on' }
+                new Flag({ name: 'flag1', value: 'on', display: 'flag1 is on' })
             );
             assert.deepEqual(
                 scenario.progress.status['flag2'],
-                { name: 'flag2', value: 'off', display: 'none' }
+                new Flag({ name: 'flag2', value: 'off', display: 'none' })
             );
             assert.deepEqual(
                 scenario.progress.status['add'],
-                { name: 'add', value: 2, display: 'none' }
+                new Flag({ name: 'add', value: 2, display: 'none' })
             );
             assert.deepEqual(
                 scenario.progress.status['multiply'],
-                { name: 'multiply', value: 3, display: 'none' }
+                new Flag({ name: 'multiply', value: 3, display: 'none' })
             );
         });
         it('should display all letters in the sentence only if a condition is satisfied', function () { //eslint-disable-line max-len
@@ -3215,13 +3281,13 @@ describe('Scenario', function () {
                     }
                 }),
                 images: {
-                    abc: {
+                    abc: new Image({
                         name: 'abc',
                         source: 'abc.png',
                         x: '10px',
                         y: '10px',
                         z: -2,
-                    }
+                    }),
                 },
                 bgmConfig: {
                     sources: ['abc.mp3'],

@@ -3,6 +3,11 @@
  */
 
 class Character {
+    /**
+     * @param {string} type
+     * @param {string} key
+     * @param {string} value
+     */
     constructor(type, key, value) {
         this.type = type;
         this.key = key;

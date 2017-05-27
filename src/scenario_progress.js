@@ -64,6 +64,10 @@ class ScenarioProgress {
          */
         this.status = {};
     }
+    /**
+     * Update properties with given instance's properties.
+     * @param {ScenarioProgress} progress
+     */
     update(progress) {
         if (progress.pos) {
             this.pos = progress.pos;
@@ -94,7 +98,9 @@ class ScenarioProgress {
             this.status[name] = progress.status[name];
         }
     }
-
+    /**
+     * Returns a copy of this.
+     */
     copy() {
         let ret = new ScenarioProgress();
         ret.pos = this.pos;
