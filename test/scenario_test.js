@@ -5,16 +5,7 @@ const sinon = require('sinon');
 const Character = require('../src/character.js');
 const Image = require('../src/image.js');
 const Flag = require('../src/flag.js');
-const MessageConfig = require('../src/config/message_config.js');
-const AreaConfig = require('../src/config/area_config.js');
-const BackgroundConfig = require('../src/config/background_config.js');
-const ButtonConfig = require('../src/config/button_config.js');
 const DisplayConfig = require('../src/config/display_config.js');
-const MessageBackgroundConfig
-    = require('../src/config/message_background_config.js');
-const OverlayConfig = require('../src/config/overlay_config.js');
-const StatusConfig = require('../src/config/status_config.js');
-const UIConfig = require('../src/config/ui_config.js');
 
 const normalCharacterOf = v => new Character(null, null, v);
 
