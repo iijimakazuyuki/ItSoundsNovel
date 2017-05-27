@@ -11,8 +11,8 @@ class Image {
         }
         if (image.name) this.name = image.name;
         if (image.control) this.control = image.control;
-        if (image.x || image.x === 0) this.x = NORMALIZE_POSITION(image.x);
-        if (image.y || image.y === 0) this.y = NORMALIZE_POSITION(image.y);
+        if (image.x || image.x === 0) this.x = normalizePosition(image.x);
+        if (image.y || image.y === 0) this.y = normalizePosition(image.y);
         if (image.z || image.z === 0) this.z = image.z;
         if (image.width || image.width === 0) this.width = image.width;
         if (image.height || image.height === 0) this.height = image.height;
@@ -90,7 +90,7 @@ class Image {
     }
 }
 
-const NORMALIZE_POSITION = x => {
+const normalizePosition = x => {
     if (isFinite(x)) if (x !== 0) return x + 'px';
     return String(x);
 };
