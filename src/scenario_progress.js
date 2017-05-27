@@ -65,9 +65,15 @@ class ScenarioProgress {
         this.status = {};
     }
     update(progress) {
-        if (progress.pos) this.pos = progress.pos;
-        if (progress.scenarioUrl) this.scenarioUrl = progress.scenarioUrl;
-        if (progress.displayConfig) this.displayConfig.update(progress.displayConfig);
+        if (progress.pos) {
+            this.pos = progress.pos;
+        }
+        if (progress.scenarioUrl) {
+            this.scenarioUrl = progress.scenarioUrl;
+        }
+        if (progress.displayConfig) {
+            this.displayConfig.update(progress.displayConfig);
+        }
         for (let key in progress.images) {
             this.images[key] = new Image(progress.images[key]);
         }

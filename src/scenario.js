@@ -44,7 +44,8 @@ class Scenario {
         this.progressToSave = null;
 
         /**
-         * True if a displayed message is flushed when the next button is clicked.
+         * True if a displayed message is flushed when the next button is
+         * clicked.
          */
         this.willFlush = true;
 
@@ -241,7 +242,9 @@ class Scenario {
             return;
         }
         if (this.concat) {
-            direction.message.letters.unshift(new Character(null, null, this.concat));
+            direction.message.letters.unshift(
+                new Character(null, null, this.concat)
+            );
             this.concat = '';
         }
         if (direction.concat) {
@@ -252,7 +255,10 @@ class Scenario {
             if (!this.willFlush) this.progressToSave = this.progress.copy();
         }
         this.displayMessage(direction.message, config);
-        this.changeButtonDuringDisplaying(direction.next === 'wait', direction.auto);
+        this.changeButtonDuringDisplaying(
+            direction.next === 'wait',
+            direction.auto
+        );
     }
 
     /**
@@ -559,7 +565,8 @@ class Scenario {
      * @param {DisplayConfig} config The display configuration.
      */
     waitForBackgroundColor(config = this.progress.displayConfig) {
-        let backgroundElement = this.$(config.background.target + ' .backgroundColor');
+        let backgroundElement
+            = this.$(config.background.target + ' .backgroundColor');
         backgroundElement.one('transitionend', () => {
             this.updateButtons();
             this.display(++this.progress.pos);
@@ -655,7 +662,12 @@ class Scenario {
             } else if (c.isHyperlink()) {
                 let hyperlink = this.$('<a>', { href: c.value });
                 c.key.split('').forEach(letter => {
-                    let elementLetter = this.createLetterElement(letter, delayTime, config);
+                    let elementLetter
+                        = this.createLetterElement(
+                            letter,
+                            delayTime,
+                            config
+                        );
                     hyperlink.append(elementLetter);
                     delayTime += config.message.delay;
                 });
@@ -674,11 +686,13 @@ class Scenario {
                 let configForRuby = config.copy();
                 configForRuby.message.fontSize = '';
                 c.key.split('').forEach((letter, index) => {
-                    let elementLetter = this.createLetterElement(
-                        letter,
-                        delayTime + config.message.delay * index,
-                        configForRuby
-                    );
+                    let elementLetter
+                        = this.createLetterElement(
+                            letter,
+                            delayTime
+                            + config.message.delay * index,
+                            configForRuby
+                        );
                     ruby.append(elementLetter);
                 });
                 this.$('<rp>').append(this.createLetterElement(
@@ -689,11 +703,14 @@ class Scenario {
                 let rt = this.$('<rt>');
                 ruby.append(rt);
                 c.value.split('').forEach((letter, index) => {
-                    let elementLetter = this.createLetterElement(
-                        letter,
-                        delayTime + config.message.delay * c.key.length * index / c.value.length,
-                        configForRuby
-                    );
+                    let elementLetter
+                        = this.createLetterElement(
+                            letter,
+                            delayTime
+                            + (config.message.delay * index
+                                * c.key.length / c.value.length),
+                            configForRuby
+                        );
                     rt.append(elementLetter);
                 });
                 this.$('<rp>').append(this.createLetterElement(
@@ -704,7 +721,12 @@ class Scenario {
                 delayTime += config.message.delay * c.key.length;
                 this.$(config.message.target).append(ruby);
             } else {
-                let elementLetter = this.createLetterElement(c.value, delayTime, config);
+                let elementLetter =
+                    this.createLetterElement(
+                        c.value,
+                        delayTime,
+                        config
+                    );
                 this.$(config.message.target).append(elementLetter);
                 delayTime += config.message.delay;
             }
@@ -714,10 +736,12 @@ class Scenario {
     /**
      * Create one letter in the sentence.
      * @param {string} letter The letter in the sentence.
-     * @param {number} delayTime The delay time (seconds) of displaying the letter.
+     * @param {number} delayTime The delay time (seconds) of displaying the
+     * letter.
      * @param {DisplayConfig} config The display configuration.
      */
-    createLetterElement(letter, delayTime, config = this.progress.displayConfig) {
+    createLetterElement(letter, delayTime,
+        config = this.progress.displayConfig) {
         if (letter === '\n') {
             return this.$('<br />');
         }
@@ -784,7 +808,8 @@ class Scenario {
             let startTime = new Date();
             let intervalId = setInterval(() => {
                 let currentTime = new Date();
-                let targetVolume = 1 - (currentTime - startTime) / config.duration;
+                let targetVolume
+                    = 1 - (currentTime - startTime) / config.duration;
                 if (targetVolume <= 0) {
                     previousBgm[0].pause();
                     previousBgm.remove();
@@ -862,7 +887,8 @@ class Scenario {
             }
             message += flag.display.slice(index);
             if (existingMessage.length === 0) {
-                let statusMessage = this.$('<div>', { id: flag.name, }).text(message);
+                let statusMessage =
+                    this.$('<div>', { id: flag.name, }).text(message);
                 if (flag.target) {
                     this.$(flag.target).append(statusMessage);
                 } else {
@@ -873,11 +899,15 @@ class Scenario {
                 let parentId = existingMessage.parent().attr('id');
                 if (flag.target) {
                     if (parentId !== flag.target) {
-                        existingMessage.detach().appendTo(this.$(flag.target));
+                        existingMessage
+                            .detach()
+                            .appendTo(this.$(flag.target));
                     }
                 } else {
                     if (parentId !== config.status.target) {
-                        existingMessage.detach().appendTo(this.$(config.status.target));
+                        existingMessage
+                            .detach()
+                            .appendTo(this.$(config.status.target));
                     }
                 }
             }
@@ -984,8 +1014,10 @@ class Scenario {
 
     /**
       * Enable the next button to skip displaying.
-      * @param {boolean} wait If the next button is disabled to wait for displaying.
-      * @param {number} auto Time from the last letter displaying to next direction being executed.
+      * @param {boolean} wait If the next button is disabled to wait for
+      * displaying.
+      * @param {number} auto Time from the last letter displaying to next
+      * direction being executed.
       */
     changeButtonDuringDisplaying(wait, auto = null) {
         this.$(this.progress.displayConfig.ui.next.target).off('click');
@@ -993,7 +1025,8 @@ class Scenario {
         if (wait) {
             if (auto) {
                 transitionEnd = () => {
-                    this.$(this.progress.displayConfig.ui.next.target).off('click');
+                    this.$(this.progress.displayConfig.ui.next.target)
+                        .off('click');
                     this.autoDisplay = setTimeout(() => {
                         this.updateButtons();
                         this.flush();
@@ -1002,7 +1035,8 @@ class Scenario {
                 };
             } else {
                 transitionEnd = () => {
-                    this.$(this.progress.displayConfig.ui.next.target).off('click');
+                    this.$(this.progress.displayConfig.ui.next.target)
+                        .off('click');
                     this.updateButtons();
                 };
             }
@@ -1012,7 +1046,8 @@ class Scenario {
             }
             if (auto || auto === 0) {
                 transitionEnd = () => {
-                    this.$(this.progress.displayConfig.ui.next.target).off('click');
+                    this.$(this.progress.displayConfig.ui.next.target)
+                        .off('click');
                     this.autoDisplay = setTimeout(() => {
                         this.updateButtons();
                         this.flush();
@@ -1022,7 +1057,8 @@ class Scenario {
 
             } else {
                 transitionEnd = () => {
-                    this.$(this.progress.displayConfig.ui.next.target).off('click');
+                    this.$(this.progress.displayConfig.ui.next.target)
+                        .off('click');
                     this.updateButtons();
                 };
             }
@@ -1035,7 +1071,9 @@ class Scenario {
      * Skip displaying letters.
      */
     skipDisplayingLetters() {
-        let elementLetters = this.$(this.progress.displayConfig.message.target + ' span');
+        let elementLetters = this.$(
+            this.progress.displayConfig.message.target + ' span'
+        );
         elementLetters
             .clearQueue()
             .css({
@@ -1050,9 +1088,11 @@ class Scenario {
      */
     saveProgress() {
         if (this.progressToSave) {
-            this.window.localStorage.progress = JSON.stringify(this.progressToSave);
+            this.window.localStorage.progress
+                = JSON.stringify(this.progressToSave);
         } else {
-            this.window.localStorage.progress = JSON.stringify(this.progress);
+            this.window.localStorage.progress
+                = JSON.stringify(this.progress);
         }
     }
 
@@ -1063,7 +1103,10 @@ class Scenario {
     }
 
     removeBackgroundImage() {
-        this.$(this.progress.displayConfig.background.target + ' .backgroundImage').remove();
+        this.$(
+            this.progress.displayConfig.background.target
+            + ' .backgroundImage'
+        ).remove();
     }
 
     /**
@@ -1091,25 +1134,37 @@ class Scenario {
                     .safeLoad(data)
                     .map(direction => new Direction(direction));
                 for (let key in this.progress.images) {
-                    this.displayImage(this.progress.images[key]);
+                    this.displayImage(
+                        this.progress.images[key]
+                    );
                 }
                 if (this.progress.background) {
                     if (this.progress.background.image) {
-                        this.displayBackgroundImage(this.progress.background.image);
+                        this.displayBackgroundImage(
+                            this.progress.background.image
+                        );
                     }
-                    this.changeBackgroundColor(this.progress.background.color);
+                    this.changeBackgroundColor(
+                        this.progress.background.color
+                    );
                 }
                 if (this.progress.bgmConfig) {
-                    this.playBgm(this.progress.bgmConfig);
+                    this.playBgm(
+                        this.progress.bgmConfig
+                    );
                 }
                 if (this.progress.overlay) {
-                    this.displayOverlay(this.progress.overlay);
+                    this.displayOverlay(
+                        this.progress.overlay
+                    );
                 }
                 for (let key in this.progress.status) {
                     let flag = this.progress.status[key];
                     this.progress.status[key] = new Flag(flag);
                     if (this.progress.status[key].display) {
-                        this.displayStatusMessage(this.progress.status[key]);
+                        this.displayStatusMessage(
+                            this.progress.status[key]
+                        );
                     }
                 }
                 this.init(this.progress.pos);

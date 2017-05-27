@@ -3,3 +3,7 @@ env:
   mocha: true
   node: true
 extends: eslint:recommended
+rules:
+  max-len:
+  - error
+  - 80

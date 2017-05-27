@@ -15,24 +15,45 @@ const Overlay = require('./overlay.js');
  */
 class Direction {
     constructor(direction) {
-        if (typeof direction === 'string' || typeof direction === 'number') {
+        if (typeof direction === 'string'
+            || typeof direction === 'number') {
             this.message = new Message(String(direction));
             return;
         }
-        if (direction.message) this.message = new Message(String(direction.message));
+        if (direction.message) {
+            this.message = new Message(String(direction.message));
+        }
         if (direction.background) {
             this.background = direction.background;
-            if (direction.config) this.config = new DisplayConfig({ background: direction.config });
+            if (direction.config) {
+                this.config = new DisplayConfig({
+                    background: direction.config
+                });
+            }
         } else if (direction.overlay) {
             this.overlay = new Overlay(direction.overlay);
-            if (direction.config) this.config = new DisplayConfig({ overlay: direction.config });
+            if (direction.config) {
+                this.config = new DisplayConfig({
+                    overlay: direction.config
+                });
+            }
         } else if (direction.image) {
             this.image = new Image(direction.image);
-            if (direction.config) this.config = new DisplayConfig({ image: direction.config });
+            if (direction.config) {
+                this.config = new DisplayConfig({
+                    image: direction.config
+                });
+            }
         } else if (direction.message) {
-            if (direction.config) this.config = new DisplayConfig({ message: direction.config });
+            if (direction.config) {
+                this.config = new DisplayConfig({
+                    message: direction.config
+                });
+            }
         } else {
-            if (direction.config) this.config = new DisplayConfig(direction.config);
+            if (direction.config) {
+                this.config = new DisplayConfig(direction.config);
+            }
         }
         if (direction.sound) {
             this.sound = new Sound(direction.sound);
