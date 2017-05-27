@@ -5,6 +5,9 @@
 const Config = require('./config.js');
 
 class BackgroundConfig extends Config {
+    /**
+     * @param {{target: string, duration :number, timingFunction: string}} config
+     */
     constructor(config) {
         super(config);
         if (!config) return;
@@ -25,12 +28,29 @@ class BackgroundConfig extends Config {
          */
         this.timingFunction = config.timingFunction;
     }
+    /**
+     * Update properties with given instance's properties.
+     * @param {BackgroundConfig} config
+     */
     update(config) {
         if (!config.isDefined) return;
+        /**
+         * @type {string}
+         */
         this.target = config.target || this.target;
+        /**
+         * @type {number}
+         */
         this.duration = config.duration || this.duratino;
+        /**
+         * @type {string}
+         */
         this.timingFunction = config.timingFunction || this.timingFunction;
     }
+    /**
+     * Returns a copy of this.
+     * @returns {BackgroundConfig}
+     */
     copy() {
         if (!this.isDefined) return new BackgroundConfig();
         return new BackgroundConfig({

@@ -5,6 +5,9 @@
 const Config = require('./config.js');
 
 class AreaConfig extends Config {
+    /**
+     * @param {{x: string|number, y: string|number, width: string|number, height: string|number, scaleX: number, scaleY: number, rotateX: string, rotateY: string, rotateZ: string, duration: number, timingFunction: string}} config
+     */
     constructor(config) {
         super();
         if (!config) return;
@@ -63,20 +66,61 @@ class AreaConfig extends Config {
          */
         this.timingFunction = config.timingFunction;
     }
+    /**
+     * Update properties with given instance's properties.
+     * @param {AreaConfig} config
+     */
     update(config) {
         if (!config.isDefined) return;
+        /**
+         * @type {string}
+         */
         this.x = config.x || this.x;
+        /**
+         * @type {string}
+         */
         this.y = config.y || this.y;
+        /**
+         * @type {string}
+         */
         this.width = config.width || this.width;
+        /**
+         * @type {string}
+         */
         this.height = config.height || this.height;
+        /**
+         * @type {number}
+         */
         this.scaleX = config.scaleX || this.scaleX;
+        /**
+         * @type {number}
+         */
         this.scaleY = config.scaleY || this.scaleY;
+        /**
+         * @type {string}
+         */
         this.rotateX = config.rotateX || this.rotateX;
+        /**
+         * @type {string}
+         */
         this.rotateY = config.rotateY || this.rotateY;
+        /**
+         * @type {string}
+         */
         this.rotateZ = config.rotateZ || this.rotateZ;
+        /**
+         * @type {number}
+         */
         this.duration = config.duration || this.duration;
+        /**
+         * @type {string}
+         */
         this.timingFunction = config.timingFunction || this.timingFunction;
     }
+    /**
+     * Returns a copy of this.
+     * @returns {AreaConfig}
+     */
     copy() {
         if (!this.isDefined) return new AreaConfig();
         return new AreaConfig({
@@ -95,6 +139,9 @@ class AreaConfig extends Config {
     }
 }
 
+/**
+ * @param {number|string} x
+ */
 const normalizePosition = x => {
     if (isFinite(x) && x !== 0) return x + 'px';
     return String(x);

@@ -5,6 +5,9 @@
 const Config = require('./config.js');
 
 class MessageBackgroundConfig extends Config {
+    /**
+     * @param {{color: string, duration: number, timingFunction: string}} config
+     */
     constructor(config) {
         super();
         if (!config) return;
@@ -26,12 +29,29 @@ class MessageBackgroundConfig extends Config {
          */
         this.timingFunction = config.timingFunction;
     }
+    /**
+     * Update properties with given instance's properties.
+     * @param {MessageBackgroundConfig} config
+     */
     update(config) {
         if (!config.isDefined) return;
+        /**
+         * @type {string}
+         */
         this.color = config.color || this.color;
+        /**
+         * @type {number}
+         */
         this.duration = config.duration || this.duration;
+        /**
+         * @type {string}
+         */
         this.timingFunction = config.timingFunction || this.timingFunction;
     }
+    /**
+     * Returns a copy of this.
+     * @returns {MessageBackgroundConfig}
+     */
     copy() {
         if (!this.isDefined) return new MessageBackgroundConfig();
         return new MessageBackgroundConfig({

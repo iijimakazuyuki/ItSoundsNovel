@@ -6,6 +6,9 @@
  * Configuration for background music.
  */
 class BgmConfig {
+    /**
+     * @param {{loop: string|{head: number}, bgm: string|string[], duration: number}} direction
+     */
     constructor(direction) {
         /**
          * The urls of background music.
@@ -13,25 +16,37 @@ class BgmConfig {
          */
         this.sources = [];
 
-        let loopConfig = direction.loop || DEFAULT_LOOP_CONFIG;
         let bgm = direction.bgm;
         if (bgm === 'stop') {
             this.control = 'stop';
             this.duration = direction.duration || 0;
-        } else if (typeof bgm === 'string') {
-            this.sources = [bgm];
         } else {
-            this.sources = bgm;
+            if (typeof bgm === 'string') {
+                this.sources = [bgm];
+            } else {
+                this.sources = bgm;
+            }
         }
-        if (typeof loopConfig === 'string') {
-            this.loop = loopConfig !== 'none';
+        if (typeof direction.loop === 'string') {
+            this.loop = direction.loop !== 'none';
         } else {
-            if (loopConfig.loop) this.loop = loopConfig.loop;
-            else this.loop = DEFAULT_LOOP_CONFIG.loop;
-            if (loopConfig.head) this.head = loopConfig.head;
-            else this.head = DEFAULT_LOOP_CONFIG.head;
+            this.loop = true;
+        }
+        if (this.loop) {
+            if (direction.loop) {
+                /**
+                 * @type {number}
+                 */
+                this.head = direction.loop.head || DEFAULT_LOOP_CONFIG.head;
+            } else {
+                this.head = DEFAULT_LOOP_CONFIG.head;
+            }
         }
     }
+    /**
+     * Returns a copy of this.
+     * @returns {BgmConfig}
+     */
     copy() {
         let ret = new BgmConfig();
         for (let i in this.sources) {
