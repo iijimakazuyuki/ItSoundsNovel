@@ -966,7 +966,7 @@ class Scenario {
 
     /**
      * Enable the next button to execute next direction.
-      */
+     */
     enableNextDirectionButton() {
         this.$(this.progress.displayConfig.ui.next.target)
             .show()
@@ -987,7 +987,7 @@ class Scenario {
 
     /**
      * Enable the save button.
-      */
+     */
     enableSaveButton() {
         this.$(this.progress.displayConfig.ui.save.target)
             .show()
@@ -998,7 +998,7 @@ class Scenario {
 
     /**
      * Enable the load button.
-      */
+     */
     enableLoadButton() {
         this.$(this.progress.displayConfig.ui.load.target)
             .show()
@@ -1029,12 +1029,12 @@ class Scenario {
     }
 
     /**
-      * Enable the next button to skip displaying.
-      * @param {boolean} wait If the next button is disabled to wait for
-      * displaying.
-      * @param {number} auto Time from the last letter displaying to next
-      * direction being executed.
-      */
+     * Enable the next button to skip displaying.
+     * @param {boolean} wait If the next button is disabled to wait for
+     * displaying.
+     * @param {number} auto Time from the last letter displaying to next
+     * direction being executed.
+     */
     changeButtonDuringDisplaying(wait, auto = null) {
         this.$(this.progress.displayConfig.ui.next.target).off('click');
         let transitionEnd;
