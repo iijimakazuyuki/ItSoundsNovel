@@ -438,7 +438,9 @@ class Scenario {
                         }
                     });
                     buttons.forEach(b => {
-                        this.$('#' + b.name).hide().off('click');
+                        let buttonElement = this.$('#' + b.name);
+                        if (b.hide !== 'none') buttonElement.hide();
+                        buttonElement.off('click');
                     });
                     this.flush();
                     this.display(++this.progress.pos);

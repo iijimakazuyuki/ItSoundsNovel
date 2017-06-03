@@ -63,6 +63,7 @@
   button:
   - name: button1
     message: Mike
+    hide: none
     status:
     - name: mike
       value: on
@@ -70,6 +71,7 @@
       value: off
   - name: button2
     message: Kuro
+    hide: none
     status:
     - name: mike
       value: off

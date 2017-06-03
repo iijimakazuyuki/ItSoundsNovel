@@ -26,3 +26,15 @@ otherwise no buttons will be displayed.
     - name: flag
       value: off
 ```
+
+If `hide: none` is specified, the button will not be hidden when it is clicked.
+
+```yaml
+- button:
+  - name: button1
+    message: Yes
+    hide: none
+    status:
+    - name: flag
+      value: on
+```
