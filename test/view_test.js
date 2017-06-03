@@ -1345,7 +1345,11 @@ describe('ItSoundsNovel View', function () {
                         until.elementTextIs(element, SIXTH_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE
                     )
-                );
+                ).then(() =>
+                    driver.findElement({ id: 'button2' })
+                ).then(element => {
+                    assert(element.isDisplayed)
+                });
         }
 
         it('should be performed in Firefox', function () {
