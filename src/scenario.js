@@ -427,6 +427,7 @@ class Scenario {
             let buttonElement = this.$('#' + button.name);
             buttonElement.text(button.message)
                 .show()
+                .prop('disabled', false)
                 .off('click')
                 .click(() => {
                     button.status.forEach(entry => {
@@ -441,6 +442,7 @@ class Scenario {
                         let buttonElement = this.$('#' + b.name);
                         if (b.hide !== 'none') buttonElement.hide();
                         buttonElement.off('click');
+                        buttonElement.prop('disabled', true);
                     });
                     this.flush();
                     this.display(++this.progress.pos);
@@ -949,21 +951,27 @@ class Scenario {
      * Disable the next button.
      */
     disableNextButton() {
-        this.$(this.progress.displayConfig.ui.next.target).off('click');
+        this.$(this.progress.displayConfig.ui.next.target)
+            .off('click')
+            .prop('disabled', true);
     }
 
     /**
      * Disable the save button.
      */
     disableSaveButton() {
-        this.$(this.progress.displayConfig.ui.save.target).off('click');
+        this.$(this.progress.displayConfig.ui.save.target)
+            .off('click')
+            .prop('disabled', true);
     }
 
     /**
      * Disable the load button.
      */
     disableLoadButton() {
-        this.$(this.progress.displayConfig.ui.load.target).off('click');
+        this.$(this.progress.displayConfig.ui.load.target)
+            .off('click')
+            .prop('disabled', true);
     }
 
     /**
@@ -972,6 +980,7 @@ class Scenario {
     enableNextDirectionButton() {
         this.$(this.progress.displayConfig.ui.next.target)
             .show()
+            .prop('disabled', false)
             .click(() => {
                 this.flush();
                 this.display(++this.progress.pos);
@@ -981,6 +990,7 @@ class Scenario {
     enableSkipButton() {
         this.$(this.progress.displayConfig.ui.next.target)
             .show()
+            .prop('disabled', false)
             .click(() => {
                 this.skipDisplayingLetters();
                 this.updateButtons();
@@ -993,6 +1003,7 @@ class Scenario {
     enableSaveButton() {
         this.$(this.progress.displayConfig.ui.save.target)
             .show()
+            .prop('disabled', false)
             .click(() => {
                 this.saveProgress();
             });
@@ -1004,6 +1015,7 @@ class Scenario {
     enableLoadButton() {
         this.$(this.progress.displayConfig.ui.load.target)
             .show()
+            .prop('disabled', false)
             .click(() => {
                 this.loadProgress();
             });
