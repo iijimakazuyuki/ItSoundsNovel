@@ -2110,18 +2110,10 @@ describe('ItSoundsNovel View', function () {
                     driver.sleep(SLEEP_TIME_FOR_CLICKING_BUTTONS)
                 ).then(() =>
                     driver.findElement({ id: 'nextButton' })
-                ).then(element =>
-                    element.click()
-                ).then(() =>
-                    driver.findElement({ id: 'messageWindow' })
-                ).then(element =>
-                    driver.wait(
-                        until.elementTextIs(element, SECOND_SENTENCE),
-                        TIMEOUT_FOR_DISPLAYING_SENTENCE
-                    )
-                ).then(() =>
-                    driver.get(BASE_URL + PATH)
-                ).then(() =>
+                ).then(element => {
+                    assert.isNotTrue(element.isEnabled())
+                    return driver.get(BASE_URL + PATH)
+                }).then(() =>
                     driver.findElement({ id: 'messageWindow' })
                 ).then(element =>
                     driver.wait(
@@ -2173,11 +2165,10 @@ describe('ItSoundsNovel View', function () {
                     )
                 ).then(() =>
                     driver.findElement({ id: 'saveButton' })
-                ).then(element =>
-                    element.click()
-                ).then(() =>
-                    driver.findElement({ id: 'loadButton' })
-                ).then(element =>
+                ).then(element => {
+                    assert.isNotTrue(element.isEnabled());
+                    return driver.findElement({ id: 'loadButton' })
+                }).then(element =>
                     element.click()
                 ).then(() =>
                     driver.findElement({ id: 'messageWindow' })
@@ -2214,11 +2205,10 @@ describe('ItSoundsNovel View', function () {
                     )
                 ).then(() =>
                     driver.findElement({ id: 'loadButton' })
-                ).then(element =>
-                    element.click()
-                ).then(() =>
-                    driver.findElement({ id: 'messageWindow' })
-                ).then(element =>
+                ).then(element => {
+                    assert.isNotTrue(element.isEnabled());
+                    return driver.findElement({ id: 'messageWindow' });
+                }).then(element =>
                     driver.wait(
                         until.elementTextIs(element, FIFTH_SENTENCE),
                         TIMEOUT_FOR_DISPLAYING_SENTENCE

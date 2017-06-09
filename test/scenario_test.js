@@ -78,6 +78,7 @@ const mockOfButton = () => ({
     off: sinon.stub().returnsThis(),
     show: sinon.stub().returnsThis(),
     click: sinon.stub().returnsThis(),
+    prop: sinon.stub().returnsThis(),
 });
 
 /**
@@ -191,6 +192,7 @@ describe('Scenario', function () {
         scenario.$.removeClass = sinon.stub().returnsThis();
         scenario.$.one = sinon.stub().returnsThis();
         scenario.$.show = sinon.stub().returnsThis();
+        scenario.$.prop = sinon.stub().returnsThis();
     });
 
     describe('#load()', function () {
