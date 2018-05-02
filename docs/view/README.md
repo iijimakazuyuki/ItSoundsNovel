@@ -1,4 +1,4 @@
-How to make HTML using it-sounds-novel
+How to make HTML using visual-novel
 ================================================================================
 
 [Load a scenario](load_a_scenario.md)

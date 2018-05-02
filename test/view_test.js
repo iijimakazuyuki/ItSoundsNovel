@@ -39,7 +39,7 @@ const promiseBuildWebDriver = browser => new Promise(
         .then(resolve, reject)
 );
 
-describe('ItSoundsNovel View', function () {
+describe('VisualNovel View', function () {
     this.timeout(TEST_TIMEOUT);
     let appServer;
     let browserDrivers = new Map();

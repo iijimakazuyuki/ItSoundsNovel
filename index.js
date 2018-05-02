@@ -1,5 +1,5 @@
 /**
- * @module it-sounds-novel
+ * @module visual-novel
  */
 
 module.exports = {

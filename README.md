@@ -1,13 +1,13 @@
-It Sounds Novel
+Visual Novel
 ================================================================================
 
-Sound Novel Maker.
+Visual Novel Maker.
 
 Usage
 --------------------------------------------------------------------------------
 
 1. Create your [scenario](docs/scenario/README.md).
-1. Make your [HTML using `it-sounds-novel.js`](docs/view/README.md).
+1. Make your [HTML using `visual-novel.js`](docs/view/README.md).
 1. Publish your HTML to web.
 
 Build
@@ -20,7 +20,7 @@ npm install
 npm run build
 ```
 
-will make `it-sounds-novel.js`.
+will make `visual-novel.js`.
 
 Test
 --------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ End-to-end tests work on Windows.
 
 End-to-end tests require
 
-- `it-sounds-novel.js` (before test, build).
+- `visual-novel.js` (before test, build).
 - Browsers:
   - Mozilla Firefox
   - Google Chrome

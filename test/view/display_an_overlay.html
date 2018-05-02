@@ -9,7 +9,7 @@
             top: 0;
             left: 0;
         }
-        
+
         #messageWindow {
             border: solid 1px #000;
             width: auto;
@@ -18,7 +18,7 @@
             background-color: #fff;
             padding: 10px;
         }
-        
+
         #nextButton {
             position: absolute;
             right: 60px;
@@ -32,10 +32,10 @@
         <div id="messageWindow"></div>
         <button id="nextButton">Next</button>
     </div>
-    <script src="../../it-sounds-novel.js"></script>
+    <script src="../../visual-novel.js"></script>
     <script type="text/javascript">
-        var ItSoundsNovel = require('it-sounds-novel');
-        var scenario = new ItSoundsNovel.Scenario();
+        var VisualNovel = require('visual-novel');
+        var scenario = new VisualNovel.Scenario();
         scenario.load('display_an_overlay.yml');
     </script>
 </body>

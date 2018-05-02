@@ -1,10 +1,10 @@
 const assert = require('chai').assert;
-const ItSoundsNovel = require('../index.js');
+const VisualNovel = require('../index.js');
 
-describe('ItSoundsNovel', function () {
+describe('VisualNovel', function () {
     describe('Scenario', function () {
         it('should have Scenario module', function () {
-            assert.property(ItSoundsNovel, 'Scenario');
+            assert.property(VisualNovel, 'Scenario');
         });
     });
 });

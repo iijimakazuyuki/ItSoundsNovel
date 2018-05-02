@@ -9,10 +9,10 @@ unless there is a message window.
 The `window` argument is necessary for saving or loading progress.
 
 ```html
-<script src="{path/to/it-sounds-novel.js}"></script>
+<script src="{path/to/visual-novel.js}"></script>
 <script type="text/javascript">
-    var ItSoundsNovel = require('it-sounds-novel');
-    var scenario = new ItSoundsNovel.Scenario(window);
+    var VisualNovel = require('visual-novel');
+    var scenario = new VisualNovel.Scenario(window);
     scenario.load('{your scenario file name here}');
 </script>
 ```
