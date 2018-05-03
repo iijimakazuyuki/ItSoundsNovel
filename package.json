@@ -37,7 +37,10 @@
     "url": "git+https://github.com/iijimakazuyuki/VisualNovel.git"
   },
   "author": "Kazuyuki Iijima",
-  "license": "ISC",
+  "license": {
+    "type" : "MIT",
+    "url" : "https://github.com/iijimakazuyuki/VisualNovel/blob/master/LICENSE.txt"
+  },
   "bugs": {
     "url": "https://github.com/iijimakazuyuki/VisualNovel/issues"
   },
